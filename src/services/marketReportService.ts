@@ -237,7 +237,7 @@ function buildCrops(selected: string[]) {
 function buildExchangeRatios() {
   const preferred = ["Café x KCl", "Café x MAP", "Soja x MAP", "Milho x Ureia"];
   const items = preferred
-    .map((pair) => mockExchangeRatios.find((item) => normalizeText(item.pair) === normalizeText(pair)))
+    .map((pair) => mockExchangeRatios.find((item) => normalizeText(item.pair) === pair))
     .filter(Boolean);
 
   return (items.length ? items : mockExchangeRatios.slice(0, 4)).map((item) => ({
@@ -347,35 +347,35 @@ function normalizeSourceName(value: string) {
 
 function normalizeText(value: string) {
   return value
-    .replaceAll("Ã¡", "á")
-    .replaceAll("Ã¢", "â")
-    .replaceAll("Ã£", "ã")
-    .replaceAll("Ã©", "é")
-    .replaceAll("Ãª", "ê")
-    .replaceAll("Ã­", "í")
-    .replaceAll("Ã³", "ó")
-    .replaceAll("Ã´", "ô")
-    .replaceAll("Ãµ", "õ")
-    .replaceAll("Ãº", "ú")
-    .replaceAll("Ã§", "ç")
-    .replaceAll("Ã�", "Á")
-    .replaceAll("Ã‰", "É")
-    .replaceAll("Ã“", "Ó")
-    .replaceAll("Ãš", "Ú")
-    .replaceAll("Ã‡", "Ç")
-    .replaceAll("MÃ©dia", "Média")
-    .replaceAll("CrÃ­tica", "Crítica")
-    .replaceAll("FavorÃ¡vel", "Favorável")
-    .replaceAll("DesfavorÃ¡vel", "Desfavorável")
-    .replaceAll("EstÃ¡vel", "Estável")
-    .replaceAll("potÃ¡ssio", "potássio")
-    .replaceAll("preÃ§o", "preço")
-    .replaceAll("cafÃ©", "café")
+    .replaceAll("\u00C3\u00A1", "á")
+    .replaceAll("\u00C3\u00A2", "â")
+    .replaceAll("\u00C3\u00A3", "ã")
+    .replaceAll("\u00C3\u00A9", "é")
+    .replaceAll("\u00C3\u00AA", "ê")
+    .replaceAll("\u00C3\u00AD", "í")
+    .replaceAll("\u00C3\u00B3", "ó")
+    .replaceAll("\u00C3\u00B4", "ô")
+    .replaceAll("\u00C3\u00B5", "õ")
+    .replaceAll("\u00C3\u00BA", "ú")
+    .replaceAll("\u00C3\u00A7", "ç")
+    .replaceAll("\u00C3\uFFFD", "Á")
+    .replaceAll("\u00C3\u2030", "É")
+    .replaceAll("\u00C3\u201C", "Ó")
+    .replaceAll("\u00C3\u0160", "Ú")
+    .replaceAll("\u00C3\u2021", "Ç")
+    .replaceAll("M\u00C3\u00A9dia", "Média")
+    .replaceAll("Cr\u00C3\u00ADtica", "Crítica")
+    .replaceAll("Favor\u00C3\u00A1vel", "Favorável")
+    .replaceAll("Desfavor\u00C3\u00A1vel", "Desfavorável")
+    .replaceAll("Est\u00C3\u00A1vel", "Estável")
+    .replaceAll("pot\u00C3\u00A1ssio", "potássio")
+    .replaceAll("pre\u00C3\u00A7o", "preço")
+    .replaceAll("caf\u00C3\u00A9", "café")
     .replaceAll("urgencia", "urgência")
     .replaceAll("acessiveis", "acessíveis")
-    .replaceAll("revisÃ£o", "revisão")
-    .replaceAll("relaÃ§Ã£o", "relação")
-    .replaceAll("Ãºltima", "última")
-    .replaceAll("ImportaÃ§Ãµes", "Importações")
-    .replaceAll("CÃ¢mbio", "Câmbio");
+    .replaceAll("revis\u00C3\u00A3o", "revisão")
+    .replaceAll("rela\u00C3\u00A7\u00C3\u00A3o", "relação")
+    .replaceAll("\u00C3\u00BAltima", "última")
+    .replaceAll("Importa\u00C3\u00A7\u00C3\u00B5es", "Importações")
+    .replaceAll("C\u00C3\u00A2mbio", "Câmbio");
 }
