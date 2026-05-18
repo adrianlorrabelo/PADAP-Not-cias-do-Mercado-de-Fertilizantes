@@ -11,25 +11,21 @@ export function BrandLogo({ compact = false, className = "" }: BrandLogoProps) {
       <img
         src={symbolUrl}
         alt="PADAP"
-        className={`h-10 w-10 object-contain drop-shadow-[0_0_10px_rgba(57,211,83,.16)] ${className}`}
+        className={`h-10 w-10 object-contain drop-shadow-[0_0_12px_rgba(0,200,0,.18)] ${className}`}
       />
     );
   }
 
   return (
-    <div className={`flex items-center gap-3 ${className}`} aria-label="PADAP Produtividade Agrícola">
+    <div className={`flex min-w-0 items-center gap-3 ${className}`} aria-label="PADAP Intelligence">
       <img
         src={symbolUrl}
         alt=""
-        className="h-[52px] w-12 shrink-0 object-contain drop-shadow-[0_0_10px_rgba(57,211,83,.14)]"
+        className="h-12 w-11 shrink-0 object-contain drop-shadow-[0_0_14px_rgba(0,200,0,.18)]"
       />
-      <div className="min-w-0 leading-none">
-        <p className="text-[1.95rem] font-semibold tracking-[0.06em] text-white">PADAP</p>
-        <p className="-mt-0.5 text-[0.68rem] font-semibold leading-tight text-white/90">
-          Produtividade
-          <br />
-          Agrícola
-        </p>
+      <div className="min-w-0">
+        <p className="truncate text-[1.08rem] font-semibold leading-tight tracking-[0.01em] text-white">PADAP Intelligence</p>
+        <p className="mt-1 truncate text-[0.72rem] font-medium leading-tight text-slate-300">Produtividade Agrícola</p>
       </div>
     </div>
   );
