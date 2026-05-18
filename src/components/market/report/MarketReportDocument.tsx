@@ -118,11 +118,16 @@ const styles = StyleSheet.create({
   brand: {
     alignItems: "center",
     flexDirection: "row",
-    gap: 9
+    gap: 10
   },
   brandText: {
     color: "#FFFFFF",
-    fontSize: 12.8,
+    fontSize: 15.5,
+    fontWeight: 700
+  },
+  compactBrandText: {
+    color: colors.petroleum,
+    fontSize: 10.5,
     fontWeight: 700
   },
   heroTag: {
@@ -565,7 +570,7 @@ function CompactHeader({ data, pageLabel }: { data: MarketReportData; pageLabel:
     <View style={styles.compactHeader} fixed>
       <View style={styles.brand}>
         <PadapMark small />
-        <Text style={styles.compactTitle}>Relatório Estratégico de Mercado</Text>
+        <Text style={styles.compactBrandText}>PADAP Intelligence</Text>
       </View>
       <Text style={styles.compactMeta}>{pageLabel} | {data.reportDate}</Text>
     </View>
@@ -574,7 +579,7 @@ function CompactHeader({ data, pageLabel }: { data: MarketReportData; pageLabel:
 
 function PadapMark({ small = false }: { small?: boolean }) {
   return (
-    <Svg width={small ? 18 : 28} height={small ? 21 : 32} viewBox="0 0 184 208">
+    <Svg width={small ? 20 : 32} height={small ? 23 : 36} viewBox="0 0 184 208">
       <Path d="M15 168V88C15 48.2355 47.2355 16 87 16H169V96C169 135.765 136.765 168 97 168H45V190L15 168Z" fill={colors.brightGreen} />
       <Path d="M45 124V88C45 64.2518 64.2518 45 88 45H140V81C140 104.748 120.748 124 97 124H45Z" fill="#050505" />
     </Svg>
