@@ -296,8 +296,8 @@ function buildSources(generatedAt: string) {
 
   return (items.length ? items : mockMarketSources.slice(0, 7)).map((source) => ({
     name: normalizeSourceName(source!.name),
-    category: normalizeText(source!.category),
-    confidence: source!.confidence ? `${source!.confidence}%` : "Alta",
+    category: normalizeSourceCategory(source!.id, source!.category),
+    confidence: confidenceLabel(source!.confidence),
     lastUpdate: formatSourceDate(source!.lastUpdate, generatedAt),
     link: compactDomain(source!.link)
   }));
@@ -343,6 +343,18 @@ function normalizeSourceName(value: string) {
   if (normalized === "FAO / AMIS") return "World Bank / FAO / AMIS";
   if (normalized === "World Bank Pink Sheet") return "World Bank";
   return normalized;
+}
+
+function normalizeSourceCategory(id: string, category: string) {
+  if (id === "bcb") return "Câmbio/PTAX";
+  if (id === "comex") return "Comércio exterior";
+  return normalizeText(category);
+}
+
+function confidenceLabel(confidence: number) {
+  if (confidence >= 95) return "Alta";
+  if (confidence >= 85) return "Boa";
+  return "Monitoramento";
 }
 
 function normalizeText(value: string) {

@@ -88,16 +88,16 @@ const pagePaddingX = 38;
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.offWhite,
     color: colors.text,
     fontFamily: "Helvetica",
-    fontSize: 8.6,
-    lineHeight: 1.35,
+    fontSize: 8.8,
+    lineHeight: 1.38,
     paddingBottom: 52
   },
   pageContent: {
     paddingHorizontal: pagePaddingX,
-    paddingTop: 26
+    paddingTop: 24
   },
   firstContent: {
     paddingHorizontal: pagePaddingX,
@@ -106,14 +106,14 @@ const styles = StyleSheet.create({
   hero: {
     backgroundColor: colors.petroleum,
     paddingHorizontal: pagePaddingX,
-    paddingTop: 26,
-    paddingBottom: 24
+    paddingTop: 30,
+    paddingBottom: 28
   },
   heroTop: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 22
+    marginBottom: 24
   },
   brand: {
     alignItems: "center",
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   },
   brandText: {
     color: "#FFFFFF",
-    fontSize: 15.5,
+    fontSize: 16.2,
     fontWeight: 700
   },
   compactBrandText: {
@@ -146,21 +146,21 @@ const styles = StyleSheet.create({
   },
   heroTitle: {
     color: "#FFFFFF",
-    fontSize: 28,
+    fontSize: 29,
     fontWeight: 700,
     lineHeight: 1.05
   },
   heroTitleLineTwo: {
     color: "#FFFFFF",
-    fontSize: 28,
+    fontSize: 29,
     fontWeight: 700,
     lineHeight: 1.05,
     marginTop: 1
   },
   heroSubtitle: {
     color: "#DDF6E5",
-    fontSize: 10.8,
-    marginTop: 9,
+    fontSize: 11,
+    marginTop: 10,
     maxWidth: 330
   },
   heroRuleWrap: {
@@ -203,12 +203,12 @@ const styles = StyleSheet.create({
   infoCard: {
     backgroundColor: "#FFFFFF",
     borderColor: colors.softLine,
-    borderRadius: 10,
+    borderRadius: 11,
     borderWidth: 1,
-    marginBottom: 16,
+    marginBottom: 17,
     paddingHorizontal: 14,
     paddingTop: 12,
-    paddingBottom: 6
+    paddingBottom: 8
   },
   infoGrid: {
     flexDirection: "row",
@@ -217,7 +217,14 @@ const styles = StyleSheet.create({
   infoItem: {
     marginBottom: 10,
     paddingRight: 10,
-    width: "33.333%"
+    width: "25%"
+  },
+  infoSourceItem: {
+    borderTopColor: colors.softLine,
+    borderTopWidth: 1,
+    marginTop: 1,
+    paddingTop: 9,
+    width: "100%"
   },
   label: {
     color: colors.muted,
@@ -256,7 +263,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.darkGreen,
-    fontSize: 13.2,
+    fontSize: 13.5,
     fontWeight: 700
   },
   sectionKicker: {
@@ -266,7 +273,7 @@ const styles = StyleSheet.create({
   },
   paragraph: {
     color: colors.text,
-    fontSize: 9.6,
+    fontSize: 9.8,
     lineHeight: 1.45,
     marginBottom: 8
   },
@@ -299,6 +306,7 @@ const styles = StyleSheet.create({
     fontSize: 8.4
   },
   table: {
+    backgroundColor: "#FFFFFF",
     borderColor: colors.softLine,
     borderRadius: 9,
     borderWidth: 1,
@@ -308,7 +316,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.darkGreen,
     color: "#FFFFFF",
     flexDirection: "row",
-    fontSize: 7.2,
+    fontSize: 7,
     fontWeight: 700,
     textTransform: "uppercase"
   },
@@ -316,7 +324,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.softLine,
     borderTopWidth: 1,
     flexDirection: "row",
-    minHeight: 35
+    minHeight: 36
   },
   tableRowAlt: {
     backgroundColor: colors.offWhite
@@ -324,7 +332,7 @@ const styles = StyleSheet.create({
   cell: {
     borderRightColor: colors.softLine,
     borderRightWidth: 1,
-    paddingHorizontal: 7,
+    paddingHorizontal: 8,
     paddingVertical: 7
   },
   cellLast: {
@@ -340,12 +348,12 @@ const styles = StyleSheet.create({
     gap: 10
   },
   fertilizerCard: {
-    backgroundColor: "#FBFDFB",
+    backgroundColor: "#FFFFFF",
     borderColor: colors.softLine,
     borderRadius: 10,
     borderWidth: 1,
-    minHeight: 122,
-    padding: 12,
+    minHeight: 128,
+    padding: 13,
     width: "48.9%"
   },
   fertilizerTop: {
@@ -356,7 +364,7 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     color: colors.darkGreen,
-    fontSize: 12,
+    fontSize: 12.2,
     fontWeight: 700
   },
   cardRule: {
@@ -377,7 +385,7 @@ const styles = StyleSheet.create({
   },
   miniText: {
     color: colors.text,
-    fontSize: 8.4,
+    fontSize: 8.5,
     lineHeight: 1.35
   },
   badge: {
@@ -400,6 +408,33 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     width: "49%"
+  },
+  cropCard: {
+    backgroundColor: "#FFFFFF",
+    borderColor: colors.softLine,
+    borderRadius: 9,
+    borderWidth: 1,
+    minHeight: 88,
+    padding: 10,
+    width: "31.8%"
+  },
+  cropCardTop: {
+    alignItems: "flex-start",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 7
+  },
+  cropTitle: {
+    color: colors.darkGreen,
+    fontSize: 10.4,
+    fontWeight: 700
+  },
+  cropImpact: {
+    color: colors.muted,
+    fontSize: 7.2,
+    fontWeight: 700,
+    marginBottom: 4,
+    textTransform: "uppercase"
   },
   opportunityTitle: {
     color: colors.darkGreen,
@@ -592,14 +627,13 @@ function InfoCard({ data }: { data: MarketReportData }) {
     ["Período analisado", data.period],
     ["Gerado por", data.generatedBy],
     ["Última atualização", data.lastUpdate],
-    ["Fontes principais", data.mainSources],
-    ["Hora de geração", data.reportTime]
+    ["Fontes principais", data.mainSources]
   ];
   return (
     <View style={styles.infoCard} wrap={false}>
       <View style={styles.infoGrid}>
-        {items.map(([label, value]) => (
-          <View key={label} style={styles.infoItem}>
+        {items.map(([label, value], index) => (
+          <View key={label} style={index === 4 ? [styles.infoItem, styles.infoSourceItem] : styles.infoItem}>
             <Text style={styles.label}>{label}</Text>
             <Text style={styles.value}>{value}</Text>
           </View>
@@ -689,20 +723,16 @@ function FertilizerCards({ items }: { items: MarketReportData["fertilizers"] }) 
 
 function CropsTable({ items }: { items: MarketReportData["crops"] }) {
   return (
-    <Section number="04" title="Culturas em destaque" kicker="Leitura rápida por cultura" minPresenceAhead={245}>
-      <View style={styles.table} wrap={false}>
-        <View style={styles.tableHeader}>
-          <Text style={[styles.cell, { width: "17%" }]}>Cultura</Text>
-          <Text style={[styles.cell, { width: "18%" }]}>Tendência</Text>
-          <Text style={[styles.cell, { width: "16%" }]}>Impacto</Text>
-          <Text style={[styles.cell, styles.cellLast, { width: "49%" }]}>Observação comercial</Text>
-        </View>
-        {items.map((item, index) => (
-          <View key={item.name} style={index % 2 ? [styles.tableRow, styles.tableRowAlt] : styles.tableRow}>
-            <Text style={[styles.cell, styles.strongCell, { width: "17%" }]}>{item.name}</Text>
-            <View style={[styles.cell, { width: "18%" }]}><Badge tone={item.tone}>{item.trend}</Badge></View>
-            <Text style={[styles.cell, { width: "16%" }]}>{item.impact}</Text>
-            <Text style={[styles.cell, styles.cellLast, { width: "49%" }]}>{item.observation}</Text>
+    <Section number="04" title="Culturas em destaque" kicker="Leitura rápida por cultura" minPresenceAhead={260}>
+      <View style={styles.cardGrid}>
+        {items.map((item) => (
+          <View key={item.name} style={styles.cropCard} wrap={false}>
+            <View style={styles.cropCardTop}>
+              <Text style={styles.cropTitle}>{item.name}</Text>
+              <Badge tone={item.tone}>{item.trend}</Badge>
+            </View>
+            <Text style={styles.cropImpact}>Impacto {item.impact}</Text>
+            <Text style={styles.miniText}>{item.observation}</Text>
           </View>
         ))}
       </View>
