@@ -630,17 +630,16 @@ function CompactHeader({ data, pageLabel }: { data: MarketReportData; pageLabel:
 function PdfBrand() {
   return (
     <View style={styles.pdfBrand}>
-      <PadapMark cutoutFill={colors.petroleum} />
+      <PadapMark />
       <Text style={styles.pdfBrandText}>PADAP Intelligence</Text>
     </View>
   );
 }
 
-function PadapMark({ small = false, cutoutFill = colors.offWhite }: { small?: boolean; cutoutFill?: string }) {
+function PadapMark({ small = false }: { small?: boolean }) {
   return (
     <Svg width={small ? 20 : 32} height={small ? 23 : 36} viewBox="0 0 184 208">
-      <Path d="M15 168V88C15 48.2355 47.2355 16 87 16H169V96C169 135.765 136.765 168 97 168H45V190L15 168Z" fill={colors.brightGreen} />
-      <Path d="M45 124V88C45 64.2518 64.2518 45 88 45H140V81C140 104.748 120.748 124 97 124H45Z" fill={cutoutFill} />
+      <Path fillRule="evenodd" d="M15 168V88C15 48.2355 47.2355 16 87 16H169V96C169 135.765 136.765 168 97 168H45V190L15 168ZM45 124V88C45 64.2518 64.2518 45 88 45H140V81C140 104.748 120.748 124 97 124H45Z" fill={colors.brightGreen} />
     </Svg>
   );
 }
