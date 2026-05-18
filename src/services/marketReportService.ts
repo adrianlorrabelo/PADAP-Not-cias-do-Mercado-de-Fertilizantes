@@ -1,35 +1,94 @@
+import { pdf, type DocumentProps } from "@react-pdf/renderer";
+import { createElement, type ReactElement } from "react";
+import { MarketReportDocument, type MarketReportBadgeTone, type MarketReportData } from "../components/market/report/MarketReportDocument";
 import { mockInternalMarketAlerts } from "../data/mockMarketNews";
 import { mockCommercialOpportunities, mockExchangeRatios } from "../data/mockMarketOpportunities";
 import { mockMarketSources } from "../data/mockMarketSources";
 import type { GeneratedMarketReport, MarketReportConfig } from "../types";
 
-type MarketReportMovement = {
-  indicator: string;
-  movement: string;
-  impact: string;
-  action: string;
+const fallback = "Informação não disponível nesta atualização.";
+
+const fertilizerDefaults: Record<string, { trend: string; tone: MarketReportBadgeTone; impact: string; recommendedAction: string }> = {
+  Ureia: {
+    trend: "Atenção",
+    tone: "amber",
+    impact: "Pressão em nitrogenados e maior risco em propostas abertas.",
+    recommendedAction: "Revisar propostas antigas antes do envio."
+  },
+  MAP: {
+    trend: "Atenção",
+    tone: "amber",
+    impact: "Fosfatados exigem cautela em pacotes de soja e café.",
+    recommendedAction: "Confirmar validade e defender trava de preço quando fizer sentido."
+  },
+  KCl: {
+    trend: "Oportunidade",
+    tone: "green",
+    impact: "Condição mais favorável em potássicos.",
+    recommendedAction: "Trabalhar clientes com histórico de compra de K."
+  },
+  Fosfatados: {
+    trend: "Atenção",
+    tone: "amber",
+    impact: "Custo relativo pode pressionar pacotes com maior participação de fósforo.",
+    recommendedAction: "Monitorar MAP e ajustar argumentação por cultura."
+  },
+  Potássicos: {
+    trend: "Oportunidade",
+    tone: "green",
+    impact: "Janela comercial para culturas com demanda ativa de potássio.",
+    recommendedAction: "Priorizar clientes de café, HF e soja com compra recorrente."
+  },
+  Nitrogenados: {
+    trend: "Risco",
+    tone: "red",
+    impact: "Volatilidade em ureia pode reduzir margem se a proposta estiver defasada.",
+    recommendedAction: "Confirmar preço, disponibilidade e validade antes de prometer condição."
+  }
 };
 
-type MarketReportData = {
-  title: string;
-  generatedAt: string;
-  period: string;
-  generatedBy: string;
-  summary: string;
-  bullets: string[];
-  movements: MarketReportMovement[];
-  fertilizers: string[];
-  crops: string[];
-  exchangeRatios: string[];
-  opportunities: { title: string; reason: string; action: string }[];
-  alerts: string[];
-  recommendation: string[];
-  sources: { name: string; update: string; confidence: string }[];
+const cropDefaults: Record<string, { trend: string; tone: MarketReportBadgeTone; impact: string; observation: string }> = {
+  Café: {
+    trend: "Volátil",
+    tone: "amber",
+    impact: "Alto",
+    observation: "Relação de troca deve ser usada na negociação."
+  },
+  Milho: {
+    trend: "Atenção",
+    tone: "amber",
+    impact: "Médio",
+    observation: "Acompanhar poder de compra do produtor antes de alongar prazo."
+  },
+  Soja: {
+    trend: "Atenção",
+    tone: "amber",
+    impact: "Médio",
+    observation: "Fosfatados podem exigir defesa comercial mais cuidadosa."
+  },
+  Cenoura: {
+    trend: "Oportunidade",
+    tone: "green",
+    impact: "Médio",
+    observation: "Janela positiva para pacotes nutricionais com compra planejada."
+  },
+  Alho: {
+    trend: "Estável",
+    tone: "blue",
+    impact: "Médio",
+    observation: "Manter monitoramento e reforçar disponibilidade antes do fechamento."
+  },
+  Cebola: {
+    trend: "Estável",
+    tone: "blue",
+    impact: "Baixo",
+    observation: "Sem alteração relevante; usar qualidade e prazo como apoio."
+  }
 };
 
 export function getDefaultMarketReportConfig(): MarketReportConfig {
   return {
-    period: "Hoje",
+    period: "Últimos 7 dias",
     type: "Briefing comercial rápido",
     crops: ["Café", "Milho", "Soja", "Cenoura", "Alho", "Cebola"],
     fertilizers: ["Ureia", "MAP", "KCl", "Fosfatados", "Potássicos", "Nitrogenados"],
@@ -71,62 +130,65 @@ export function createGeneratedMarketReport(config: MarketReportConfig): Generat
 }
 
 export function buildMarketReportData(report: GeneratedMarketReport): MarketReportData {
-  const config = report.config;
-  const generatedAt = new Date(report.generatedAt).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+  const generatedDate = new Date(report.generatedAt);
+  const reportDate = generatedDate.toLocaleDateString("pt-BR");
+  const reportTime = generatedDate.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+  const generatedAt = generatedDate.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+  const sourceNames = ["Banco Central", "CEPEA", "Comex Stat", "GlobalFert", "Conab"];
 
   return {
     title: "Relatório Estratégico de Mercado",
+    subtitle: "Inteligência para decisões comerciais mais seguras.",
+    reportDate,
+    reportTime,
     generatedAt,
     period: report.period,
     generatedBy: report.generatedBy,
-    summary: "Mercado volátil, com pressão cambial, nitrogenados em atenção e oportunidade comercial em potássicos.",
+    lastUpdate: reportTime,
+    mainSources: sourceNames.join(", "),
+    summary: "O mercado segue volátil, com atenção ao câmbio, aos nitrogenados e à disponibilidade de fertilizantes. O PTAX pode pressionar propostas antigas, enquanto o KCl apresenta oportunidade comercial em potássicos. O momento exige validade curta, revisão de propostas abertas e atenção à relação de troca das principais culturas.",
     bullets: [
-      "PTAX em alta pode pressionar propostas antigas.",
-      "Ureia segue em monitoramento e exige revisão em nitrogenados.",
-      "KCl apresenta oportunidade para clientes com demanda de potássio.",
-      "Café exige atenção na relação de troca antes de prometer condição."
+      "PTAX em atenção.",
+      "Ureia exige monitoramento.",
+      "KCl apresenta oportunidade comercial.",
+      "Relação de troca deve orientar a negociação."
     ],
     movements: [
-      { indicator: "PTAX", movement: "Alta", impact: "Pressiona tabela e propostas antigas", action: "Usar validade curta e reconfirmar condição" },
-      { indicator: "Ureia", movement: "Volátil", impact: "Risco em nitrogenados", action: "Recalcular antes de enviar proposta" },
-      { indicator: "KCl", movement: "Queda", impact: "Oportunidade comercial", action: "Ativar clientes com demanda de potássio" },
-      { indicator: "Café", movement: "Alta", impact: "Pode melhorar poder de compra", action: "Usar argumento de relação de troca" }
+      { indicator: "PTAX", movement: "Alta", movementTone: "red", impact: "Pressiona fertilizantes importados.", commercialAttention: "Revisar propostas antigas e usar validade curta." },
+      { indicator: "Ureia", movement: "Atenção", movementTone: "amber", impact: "Risco em nitrogenados.", commercialAttention: "Confirmar validade antes de enviar." },
+      { indicator: "KCl", movement: "Oportunidade", movementTone: "green", impact: "Melhora em potássicos.", commercialAttention: "Trabalhar clientes com demanda de K." },
+      { indicator: "Café", movement: "Volátil", movementTone: "amber", impact: "Altera relação de troca.", commercialAttention: "Usar relação de troca na argumentação." }
     ],
-    fertilizers: config.fertilizers.map((item) => `${item}: monitorar preço, disponibilidade e validade comercial.`),
-    crops: config.crops.map((item) => `${item}: revisar relação de troca e janela de negociação.`),
-    exchangeRatios: config.includeExchangeRatio
-      ? mockExchangeRatios.slice(0, 4).map((item) => `${item.pair}: antes ${item.previous} ${item.unit}, agora ${item.current} ${item.unit}. ${item.interpretation}`)
-      : ["Relação de troca não incluída nesta configuração."],
-    opportunities: config.includeOpportunities
-      ? mockCommercialOpportunities.slice(0, 4).map((item) => ({ title: item.opportunity, reason: item.justification, action: item.recommendedAction }))
-      : [{ title: "Oportunidades não incluídas", reason: "Opção desmarcada na configuração.", action: "Gerar relatório completo quando necessário." }],
-    alerts: [
-      "Confirmar validade de proposta antes de enviar ao produtor.",
-      "Revisar PTAX utilizada em propostas antigas.",
-      "Recalcular nitrogenados antes de prometer preço.",
-      "Confirmar disponibilidade com compras em produtos de maior giro.",
-      ...mockInternalMarketAlerts.slice(0, 2).map((alert) => alert.message)
-    ],
-    recommendation: [
-      "Revisar propostas impactadas por PTAX e ureia.",
-      "Trabalhar clientes com demanda de potássio enquanto KCl estiver favorável.",
-      "Enviar briefing WhatsApp aos consultores.",
-      "Usar validade curta em cenários de maior volatilidade."
-    ],
-    sources: config.includeSources
-      ? mockMarketSources.slice(0, 7).map((source) => ({
-        name: source.name,
-        update: source.lastUpdate,
-        confidence: `${source.confidence}%`
-      }))
-      : [{ name: "Fontes não incluídas", update: generatedAt, confidence: "-" }]
+    fertilizers: buildFertilizers(report.config.fertilizers),
+    crops: buildCrops(report.config.crops),
+    exchangeRatios: report.config.includeExchangeRatio ? buildExchangeRatios() : [emptyExchangeRatio()],
+    opportunities: report.config.includeOpportunities ? buildOpportunities() : [{
+      opportunity: "Oportunidades não incluídas",
+      reason: "A opção foi desmarcada na configuração do relatório.",
+      recommendedAction: "Gerar relatório completo quando necessário."
+    }],
+    alerts: buildAlerts(),
+    recommendation: report.config.includeRecommendations ? [
+      "Revisar propostas antigas antes de reenviar ao consultor.",
+      "Usar validade curta em produtos impactados pelo câmbio.",
+      "Trabalhar KCl como oportunidade comercial.",
+      "Usar relação de troca na argumentação com produtores.",
+      "Confirmar disponibilidade antes de fechar pedidos.",
+      "Priorizar clientes estratégicos com demanda ativa."
+    ] : [fallback],
+    sources: report.config.includeSources ? buildSources(generatedAt) : [{
+      name: "Fontes não incluídas",
+      category: "Configuração",
+      confidence: "-",
+      lastUpdate: generatedAt
+    }]
   };
 }
 
 export async function createMarketReportPdfBlob(report: GeneratedMarketReport) {
   const data = buildMarketReportData(report);
-  const pdfBytes = buildPdfBytes(data);
-  return new Blob([pdfBytes], { type: "application/pdf" });
+  const document = createElement(MarketReportDocument, { data }) as unknown as ReactElement<DocumentProps>;
+  return pdf(document).toBlob();
 }
 
 export async function downloadMarketReportPdf(report: GeneratedMarketReport) {
@@ -148,170 +210,172 @@ export async function downloadMarketReportPdf(report: GeneratedMarketReport) {
 
 export const downloadMarketReport = downloadMarketReportPdf;
 
-function buildPdfBytes(data: MarketReportData) {
-  const pages = paginateReportLines(buildReportLines(data));
-  const objects: number[][] = [];
-  const pageObjectIds: number[] = [];
-  const fontObjectId = 3 + pages.length * 2;
-
-  objects.push(ascii("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n"));
-  objects.push(ascii(`2 0 obj\n<< /Type /Pages /Kids [${pages.map((_, index) => `${3 + index * 2} 0 R`).join(" ")}] /Count ${pages.length} >>\nendobj\n`));
-
-  pages.forEach((page, index) => {
-    const pageId = 3 + index * 2;
-    const streamId = pageId + 1;
-    pageObjectIds.push(pageId);
-    objects.push(ascii(`${pageId} 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 ${fontObjectId} 0 R >> >> /Contents ${streamId} 0 R >>\nendobj\n`));
-    const content = buildPageContent(page, index + 1, pages.length);
-    objects.push(concatBytes(ascii(`${streamId} 0 obj\n<< /Length ${content.length} >>\nstream\n`), content, ascii("\nendstream\nendobj\n")));
-  });
-
-  objects.push(ascii(`${fontObjectId} 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n`));
-
-  let currentOffset = ascii("%PDF-1.4\n").length;
-  const chunks: number[][] = [ascii("%PDF-1.4\n")];
-  const offsets = [0];
-  for (const object of objects) {
-    offsets.push(currentOffset);
-    chunks.push(object);
-    currentOffset += object.length;
-  }
-
-  const xrefOffset = currentOffset;
-  let xref = `xref\n0 ${objects.length + 1}\n0000000000 65535 f \n`;
-  offsets.slice(1).forEach((offset) => {
-    xref += `${String(offset).padStart(10, "0")} 00000 n \n`;
-  });
-  xref += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
-  chunks.push(ascii(xref));
-
-  return new Uint8Array(chunks.flat());
+function buildFertilizers(selected: string[]) {
+  return selected.map((name) => ({
+    name,
+    ...(fertilizerDefaults[name] ?? {
+      trend: "Estável",
+      tone: "gray" as const,
+      impact: fallback,
+      recommendedAction: "Manter monitoramento comercial."
+    })
+  }));
 }
 
-function buildReportLines(data: MarketReportData) {
-  const lines: { text: string; size?: number; bold?: boolean }[] = [
-    { text: "PADAP Intelligence", size: 12, bold: true },
-    { text: data.title, size: 18, bold: true },
-    { text: `Data de geração: ${data.generatedAt}` },
-    { text: `Período analisado: ${data.period}` },
-    { text: `Gerado por: ${data.generatedBy}` },
-    { text: "" },
-    { text: "Resumo executivo", size: 13, bold: true },
-    { text: data.summary }
+function buildCrops(selected: string[]) {
+  return selected.map((name) => ({
+    name,
+    ...(cropDefaults[name] ?? {
+      trend: "Estável",
+      tone: "gray" as const,
+      impact: "Baixo",
+      observation: fallback
+    })
+  }));
+}
+
+function buildExchangeRatios() {
+  const preferred = ["Café x KCl", "Café x MAP", "Soja x MAP", "Milho x Ureia"];
+  const items = preferred
+    .map((pair) => mockExchangeRatios.find((item) => normalizeText(item.pair) === normalizeText(pair)))
+    .filter(Boolean);
+
+  return (items.length ? items : mockExchangeRatios.slice(0, 4)).map((item) => ({
+    pair: normalizeText(item!.pair),
+    previous: `${formatNumber(item!.previous)} ${item!.unit}`,
+    current: `${formatNumber(item!.current)} ${item!.unit}`,
+    variation: `${item!.variation > 0 ? "+" : ""}${formatNumber(item!.variation)}%`,
+    status: normalizeText(item!.status),
+    tone: ratioTone(normalizeText(item!.status)),
+    interpretation: normalizeText(item!.interpretation)
+  }));
+}
+
+function emptyExchangeRatio() {
+  return {
+    pair: "Relação de troca",
+    previous: "-",
+    current: "-",
+    variation: "-",
+    status: "Não incluída",
+    tone: "gray" as const,
+    interpretation: "Relação de troca não incluída nesta configuração."
+  };
+}
+
+function buildOpportunities() {
+  const items = mockCommercialOpportunities.length ? mockCommercialOpportunities.slice(0, 4) : [];
+  if (!items.length) {
+    return [{ opportunity: "Oportunidade comercial", reason: fallback, recommendedAction: "Manter acompanhamento com a equipe comercial." }];
+  }
+
+  return items.map((item) => ({
+    opportunity: normalizeOpportunityTitle(item.opportunity),
+    reason: normalizeText(item.justification),
+    recommendedAction: normalizeText(item.recommendedAction)
+  }));
+}
+
+function buildAlerts() {
+  const base = [
+    "Não prometer preço sem confirmar validade.",
+    "Propostas antigas podem estar desatualizadas pelo PTAX.",
+    "Nitrogenados exigem revisão antes do envio.",
+    "Confirmar disponibilidade de fábrica antes de fechar.",
+    "Evitar alongar prazo sem validação interna."
   ];
-
-  data.bullets.forEach((bullet) => lines.push({ text: `• ${bullet}` }));
-  lines.push({ text: "" }, { text: "Principais movimentos do mercado", size: 13, bold: true });
-  data.movements.forEach((item) => lines.push({ text: `${item.indicator} | ${item.movement} | ${item.impact} | ${item.action}` }));
-
-  lines.push({ text: "" }, { text: "Fertilizantes em destaque", size: 13, bold: true });
-  data.fertilizers.forEach((item) => lines.push({ text: `• ${item}` }));
-  lines.push({ text: "" }, { text: "Culturas em destaque", size: 13, bold: true });
-  data.crops.forEach((item) => lines.push({ text: `• ${item}` }));
-  lines.push({ text: "" }, { text: "Relação de troca", size: 13, bold: true });
-  data.exchangeRatios.forEach((item) => lines.push({ text: `• ${item}` }));
-  lines.push({ text: "" }, { text: "Oportunidades comerciais", size: 13, bold: true });
-  data.opportunities.forEach((item) => lines.push({ text: `• ${item.title}. Motivo: ${item.reason}. Ação recomendada: ${item.action}` }));
-  lines.push({ text: "" }, { text: "Alertas para consultores", size: 13, bold: true });
-  data.alerts.forEach((item) => lines.push({ text: `• ${item}` }));
-  lines.push({ text: "" }, { text: "Recomendação comercial do dia", size: 13, bold: true });
-  data.recommendation.forEach((item) => lines.push({ text: `• ${item}` }));
-  lines.push({ text: "" }, { text: "Fontes e atualização", size: 13, bold: true });
-  data.sources.forEach((source) => lines.push({ text: `• ${source.name} - ${source.update} - confiança ${source.confidence}` }));
-
-  return lines.flatMap((line) => wrapLine(line, line.size && line.size > 12 ? 78 : 94));
+  const marketAlerts = mockInternalMarketAlerts.slice(0, 1).map((alert) => normalizeText(alert.message));
+  return [...base, ...marketAlerts].slice(0, 6);
 }
 
-function wrapLine(line: { text: string; size?: number; bold?: boolean }, limit: number) {
-  if (!line.text || line.text.length <= limit) return [line];
-  const words = line.text.split(" ");
-  const wrapped: { text: string; size?: number; bold?: boolean }[] = [];
-  let current = "";
-  words.forEach((word) => {
-    if (`${current} ${word}`.trim().length > limit) {
-      wrapped.push({ ...line, text: current });
-      current = word;
-    } else {
-      current = `${current} ${word}`.trim();
-    }
-  });
-  if (current) wrapped.push({ ...line, text: current });
-  return wrapped;
+function buildSources(generatedAt: string) {
+  const preferred = ["bcb", "cepea", "comex", "globalfert", "conab", "world-bank", "fao"];
+  const items = preferred
+    .map((id) => mockMarketSources.find((source) => source.id === id))
+    .filter(Boolean);
+
+  return (items.length ? items : mockMarketSources.slice(0, 7)).map((source) => ({
+    name: normalizeSourceName(source!.name),
+    category: normalizeText(source!.category),
+    confidence: source!.confidence ? `${source!.confidence}%` : "Alta",
+    lastUpdate: formatSourceDate(source!.lastUpdate, generatedAt),
+    link: compactDomain(source!.link)
+  }));
 }
 
-function paginateReportLines(lines: { text: string; size?: number; bold?: boolean }[]) {
-  const pages: { text: string; size?: number; bold?: boolean }[][] = [];
-  let current: { text: string; size?: number; bold?: boolean }[] = [];
-  let y = 760;
-
-  lines.forEach((line) => {
-    const size = line.size ?? 9.5;
-    const height = line.text ? size + 7 : 10;
-    if (y - height < 64 && current.length) {
-      pages.push(current);
-      current = [];
-      y = 760;
-    }
-    current.push(line);
-    y -= height;
-  });
-  if (current.length) pages.push(current);
-  return pages;
+function ratioTone(status: string): MarketReportBadgeTone {
+  if (status === "Favorável") return "green";
+  if (status === "Desfavorável") return "red";
+  if (status === "Estável") return "blue";
+  return "gray";
 }
 
-function buildPageContent(lines: { text: string; size?: number; bold?: boolean }[], pageNumber: number, totalPages: number) {
-  const bytes: number[] = [];
-  pushAscii(bytes, "0.047 0.294 0.239 rg\n0 808 595 34 re f\n");
-  pushAscii(bytes, "1 1 1 rg\nBT /F1 10 Tf 34 820 Td ");
-  pushPdfText(bytes, "PADAP Intelligence");
-  pushAscii(bytes, " Tj ET\n");
-  pushAscii(bytes, "0.12 0.16 0.20 rg\n");
-
-  let y = 780;
-  lines.forEach((line) => {
-    const size = line.size ?? 9.5;
-    if (!line.text) {
-      y -= 10;
-      return;
-    }
-    if (line.bold || size >= 13) pushAscii(bytes, "0.047 0.294 0.239 rg\n");
-    else pushAscii(bytes, "0.12 0.16 0.20 rg\n");
-    pushAscii(bytes, `BT /F1 ${size} Tf 42 ${y} Td `);
-    pushPdfText(bytes, line.text);
-    pushAscii(bytes, " Tj ET\n");
-    y -= size + 7;
-  });
-
-  pushAscii(bytes, "0.45 0.50 0.56 rg\nBT /F1 7 Tf 42 34 Td ");
-  pushPdfText(bytes, "PADAP Agronegócios - Inteligência comercial para decisões melhores.");
-  pushAscii(bytes, " Tj ET\nBT /F1 7 Tf 520 34 Td ");
-  pushPdfText(bytes, `${pageNumber}/${totalPages}`);
-  pushAscii(bytes, " Tj ET\n");
-  return bytes;
+function formatNumber(value: number) {
+  return new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(value);
 }
 
-function pushPdfText(target: number[], text: string) {
-  target.push("(".charCodeAt(0));
-  for (const char of text) {
-    if (char === "(" || char === ")" || char === "\\") target.push("\\".charCodeAt(0));
-    if (char === "•") {
-      target.push(149);
-      continue;
-    }
-    const code = char.charCodeAt(0);
-    target.push(code <= 255 ? code : "?".charCodeAt(0));
+function formatSourceDate(value: string, fallbackDate: string) {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return fallbackDate;
+  return date.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+}
+
+function compactDomain(link?: string) {
+  if (!link) return undefined;
+  try {
+    return new URL(link).hostname.replace(/^www\./, "");
+  } catch {
+    return undefined;
   }
-  target.push(")".charCodeAt(0));
 }
 
-function ascii(value: string) {
-  return Array.from(value).map((char) => char.charCodeAt(0));
+function normalizeOpportunityTitle(value: string) {
+  const normalized = normalizeText(value);
+  if (normalized === "KCl em queda") return "KCl em oportunidade";
+  if (normalized === "PTAX subiu") return "PTAX em atenção";
+  if (normalized === "Ureia volátil") return "Nitrogenados em atenção";
+  return normalized;
 }
 
-function pushAscii(target: number[], value: string) {
-  target.push(...ascii(value));
+function normalizeSourceName(value: string) {
+  const normalized = normalizeText(value);
+  if (normalized === "CONAB") return "Conab";
+  if (normalized === "FAO / AMIS") return "World Bank / FAO / AMIS";
+  if (normalized === "World Bank Pink Sheet") return "World Bank";
+  return normalized;
 }
 
-function concatBytes(...chunks: number[][]) {
-  return chunks.flat();
+function normalizeText(value: string) {
+  return value
+    .replaceAll("Ã¡", "á")
+    .replaceAll("Ã¢", "â")
+    .replaceAll("Ã£", "ã")
+    .replaceAll("Ã©", "é")
+    .replaceAll("Ãª", "ê")
+    .replaceAll("Ã­", "í")
+    .replaceAll("Ã³", "ó")
+    .replaceAll("Ã´", "ô")
+    .replaceAll("Ãµ", "õ")
+    .replaceAll("Ãº", "ú")
+    .replaceAll("Ã§", "ç")
+    .replaceAll("Ã�", "Á")
+    .replaceAll("Ã‰", "É")
+    .replaceAll("Ã“", "Ó")
+    .replaceAll("Ãš", "Ú")
+    .replaceAll("Ã‡", "Ç")
+    .replaceAll("MÃ©dia", "Média")
+    .replaceAll("CrÃ­tica", "Crítica")
+    .replaceAll("FavorÃ¡vel", "Favorável")
+    .replaceAll("DesfavorÃ¡vel", "Desfavorável")
+    .replaceAll("EstÃ¡vel", "Estável")
+    .replaceAll("potÃ¡ssio", "potássio")
+    .replaceAll("preÃ§o", "preço")
+    .replaceAll("cafÃ©", "café")
+    .replaceAll("urgencia", "urgência")
+    .replaceAll("acessiveis", "acessíveis")
+    .replaceAll("revisÃ£o", "revisão")
+    .replaceAll("relaÃ§Ã£o", "relação")
+    .replaceAll("Ãºltima", "última")
+    .replaceAll("ImportaÃ§Ãµes", "Importações")
+    .replaceAll("CÃ¢mbio", "Câmbio");
 }
