@@ -233,6 +233,65 @@ const styles = StyleSheet.create({
     padding: 8,
     width: "31.9%"
   },
+  intro: {
+    backgroundColor: colors.soft,
+    borderColor: colors.line,
+    borderRadius: 9,
+    borderWidth: 1,
+    marginHorizontal: pagePaddingX,
+    marginTop: 14,
+    marginBottom: reportSpacing.sectionGap,
+    overflow: "hidden",
+    paddingHorizontal: 16,
+    paddingVertical: 13
+  },
+  introTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10
+  },
+  introMain: {
+    flexDirection: "row",
+    gap: 12
+  },
+  introTitleBlock: {
+    flex: 1.1
+  },
+  introMeta: {
+    flex: 1,
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 6
+  },
+  introEyebrow: {
+    color: colors.green,
+    fontSize: 7,
+    fontWeight: 700,
+    marginBottom: 5,
+    textTransform: "uppercase"
+  },
+  introTitle: {
+    color: colors.greenDeep,
+    fontSize: 21,
+    fontWeight: 700,
+    lineHeight: 1.05
+  },
+  introSubtitle: {
+    color: colors.muted,
+    fontSize: 8.3,
+    lineHeight: 1.28,
+    marginTop: 5
+  },
+  introMetaCard: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 7,
+    borderWidth: 1,
+    paddingHorizontal: 7,
+    paddingVertical: 5,
+    width: "48.2%"
+  },
   label: {
     color: colors.faint,
     fontSize: 6.6,
@@ -522,11 +581,7 @@ export function MarketReportDocument({ data }: { data: MarketReportData }) {
 function ClientReport({ data }: { data: MarketReportData }) {
   return (
     <Document title={data.title} author="PADAP Intelligence" subject="Relatório de mercado para produtor">
-      <Page size="A4" style={styles.cover} wrap>
-        <ReportCover data={data} label="Relatório Cliente" />
-        <ReportFooter data={data} />
-      </Page>
-      <ReportPage data={data} label="Resumo executivo">
+      <ReportPage data={data} label="Resumo executivo" introLabel="Relatório Cliente">
         <ExecutiveSummary data={data} mode="client" />
         <TrendCards items={data.trendCards} />
       </ReportPage>
@@ -543,11 +598,7 @@ function ClientReport({ data }: { data: MarketReportData }) {
 function ConsultantReport({ data }: { data: MarketReportData }) {
   return (
     <Document title={data.title} author="PADAP Intelligence" subject="Relatório técnico e comercial de mercado">
-      <Page size="A4" style={styles.cover} wrap>
-        <ReportCover data={data} label="Relatório Consultor" />
-        <ReportFooter data={data} />
-      </Page>
-      <ReportPage data={data} label="Resumo comercial">
+      <ReportPage data={data} label="Resumo comercial" introLabel="Relatório Consultor">
         <ExecutiveSummary data={data} mode="consultant" />
         <TrendCards items={data.trendCards} />
       </ReportPage>
@@ -607,13 +658,54 @@ export function ReportCover({ data, label }: { data: MarketReportData; label: st
   );
 }
 
-function ReportPage({ data, label, children }: { data: MarketReportData; label: string; children: ReactNode }) {
+function ReportPage({ data, label, children, introLabel }: { data: MarketReportData; label: string; children: ReactNode; introLabel?: string }) {
   return (
     <Page size="A4" style={styles.page} wrap>
-      <ReportHeader data={data} label={label} />
+      {introLabel ? <CompactReportIntro data={data} label={introLabel} /> : <ReportHeader data={data} label={label} />}
       <View style={styles.pageContent}>{children}</View>
       <ReportFooter data={data} />
     </Page>
+  );
+}
+
+export function CompactReportIntro({ data, label }: { data: MarketReportData; label: string }) {
+  const coverSubtitle = data.audience === "client"
+    ? "Leitura objetiva para decisões comerciais da semana."
+    : "Visão comercial e operacional para orientar o time.";
+  const coverTone = data.audience === "client" ? "Clareza para decisão" : "Inteligência comercial";
+
+  return (
+    <View style={styles.intro} wrap={false}>
+      <View style={styles.introTop}>
+        <View style={styles.brand}>
+          <PadapMark small />
+          <Text style={styles.brandText}>PADAP Intelligence</Text>
+        </View>
+        <Text style={styles.coverPill}>{label}</Text>
+      </View>
+      <View style={styles.introMain}>
+        <View style={styles.introTitleBlock}>
+          <Text style={styles.introEyebrow}>Central de Mercado</Text>
+          <Text style={styles.introTitle}>Relatório de Mercado</Text>
+          <Text style={styles.introSubtitle}>{coverSubtitle}</Text>
+        </View>
+        <View style={styles.introMeta}>
+          <IntroMeta label="Tipo" value={label} />
+          <IntroMeta label="Período" value={data.period} />
+          <IntroMeta label="Data" value={data.reportDate} />
+          <IntroMeta label="Foco" value={coverTone} />
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function IntroMeta({ label, value }: { label: string; value: string }) {
+  return (
+    <View style={styles.introMetaCard}>
+      <Text style={styles.label}>{label}</Text>
+      <Text style={styles.value}>{value}</Text>
+    </View>
   );
 }
 
