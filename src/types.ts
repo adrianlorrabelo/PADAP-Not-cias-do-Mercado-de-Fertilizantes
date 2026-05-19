@@ -368,7 +368,10 @@ export interface ClosingSummaryData {
   tomorrowActions: string[];
 }
 
+export type ReportAudience = "client" | "consultant";
+
 export interface MarketReportConfig {
+  reportAudience: ReportAudience;
   period: "Hoje" | "Últimos 7 dias" | "Últimos 30 dias" | "Personalizado";
   type: "Resumo executivo" | "Relatório completo" | "Briefing comercial rápido";
   crops: string[];

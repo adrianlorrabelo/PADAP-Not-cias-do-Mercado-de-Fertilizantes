@@ -6,16 +6,17 @@ import { Button } from "../ui/Button";
 import { Modal } from "../ui/Modal";
 import { Select } from "../ui/Select";
 
-const crops = ["Café", "Milho", "Soja", "Cenoura", "Alho", "Cebola"];
-const fertilizers = ["Ureia", "MAP", "KCl", "Fosfatados", "Potássicos", "Nitrogenados"];
+const crops = ["Café", "Alho", "Cenoura", "HF geral", "Milho", "Soja"];
+const fertilizers = ["Ureia", "Sulfato de Amônio", "MAP", "KCl", "SSP/TSP", "Yara Especialidades"];
 
 export function MarketReportModal({ open, onClose, report, onGenerated }: { open: boolean; onClose: () => void; report: GeneratedMarketReport | null; onGenerated: (report: GeneratedMarketReport) => void }) {
   const [config, setConfig] = useState<MarketReportConfig>(getDefaultMarketReportConfig());
   const [loading, setLoading] = useState(false);
   const setToggle = (key: keyof MarketReportConfig, value: boolean) => setConfig((current) => ({ ...current, [key]: value }));
 
-  const generate = async () => {
-    const errors = validateMarketReportConfig(config);
+  const generate = async (reportAudience: MarketReportConfig["reportAudience"]) => {
+    const nextConfig = { ...config, reportAudience };
+    const errors = validateMarketReportConfig(nextConfig);
     if (errors.length) {
       notify(errors[0]);
       return;
@@ -23,10 +24,11 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
 
     setLoading(true);
     try {
-      const nextReport = createGeneratedMarketReport(config);
+      const nextReport = createGeneratedMarketReport(nextConfig);
       await downloadMarketReportPdf(nextReport);
+      setConfig(nextConfig);
       onGenerated(nextReport);
-      notify("Relatório gerado com sucesso.");
+      notify(reportAudience === "client" ? "PDF Cliente gerado com sucesso." : "PDF Consultor gerado com sucesso.");
     } catch (error) {
       if (import.meta.env.DEV) console.error("Erro ao gerar relatório PDF", error);
       notify("Não foi possível gerar o relatório. Verifique os dados e tente novamente.");
@@ -37,7 +39,7 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
 
   const downloadLast = async () => {
     if (!report) {
-      await generate();
+      await generate(config.reportAudience);
       return;
     }
     setLoading(true);
@@ -55,7 +57,7 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
   return (
     <Modal title="Gerar relatório PDF" open={open} onClose={onClose}>
       <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-3 text-sm leading-6 text-slate-200">
-        O briefing rápido é o padrão para orientar consultores com objetividade. O relatório completo inclui mais contexto, fontes e relação de troca.
+        Escolha a versão do PDF. Cliente/Produtor é curto e seguro para envio externo. Consultor traz leitura técnica, preços referenciais, fretes, argumentos e alertas internos.
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
@@ -91,7 +93,8 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
       <div className="mt-5 flex flex-wrap justify-end gap-2">
         <Button variant="ghost" onClick={onClose} disabled={loading}>Cancelar</Button>
         {report && <Button variant="ghost" onClick={downloadLast} disabled={loading}>Baixar último PDF</Button>}
-        <Button onClick={generate} disabled={loading}>{loading ? "Gerando relatório..." : "Gerar PDF"}</Button>
+        <Button variant="ghost" onClick={() => generate("client")} disabled={loading}>{loading ? "Gerando..." : "Gerar PDF Cliente"}</Button>
+        <Button onClick={() => generate("consultant")} disabled={loading}>{loading ? "Gerando..." : "Gerar PDF Consultor"}</Button>
       </div>
     </Modal>
   );
