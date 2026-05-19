@@ -605,9 +605,9 @@ function ConsultantReport({ data }: { data: MarketReportData }) {
       <ReportPage data={data} label="Famílias e preços">
         <ProductFamilyAnalysis items={data.productFamilies} />
         <PriceReferenceTable items={data.priceReferences} />
-      </ReportPage>
-      <ReportPage data={data} label="Logística e argumentos">
         <FreightLogisticsTable items={data.freightLogistics} />
+      </ReportPage>
+      <ReportPage data={data} label="Argumentos de venda">
         <ConsultantSalesArguments items={data.salesArguments} />
       </ReportPage>
       <ReportPage data={data} label="Alertas internos">
