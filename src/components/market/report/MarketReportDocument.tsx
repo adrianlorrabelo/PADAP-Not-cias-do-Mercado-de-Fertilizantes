@@ -123,30 +123,30 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
     fontSize: 8.4,
     lineHeight: 1.36,
-    paddingBottom: 52
+    paddingBottom: 38
   },
   cover: {
     backgroundColor: colors.white,
     color: colors.text,
     fontFamily: "Helvetica",
     fontSize: 8.6,
-    paddingBottom: 52
+    paddingBottom: 38
   },
   coverBand: {
     backgroundColor: colors.soft,
     borderBottomColor: colors.line,
     borderBottomWidth: 1,
-    minHeight: 322,
+    minHeight: 238,
     paddingHorizontal: pagePaddingX,
-    paddingTop: 34,
-    paddingBottom: 26,
+    paddingTop: 24,
+    paddingBottom: 18,
     position: "relative"
   },
   coverTop: {
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 44
+    marginBottom: 22
   },
   brand: {
     alignItems: "center",
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     fontSize: 7,
     fontWeight: 700,
     paddingHorizontal: 10,
-    paddingVertical: 5,
+    paddingVertical: 4,
     textTransform: "uppercase"
   },
   coverTitleBlock: {
@@ -178,31 +178,31 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: 700,
     letterSpacing: 0.5,
-    marginBottom: 10,
+    marginBottom: 7,
     textTransform: "uppercase"
   },
   coverTitle: {
     color: colors.greenDeep,
-    fontSize: 30,
+    fontSize: 29,
     fontWeight: 700,
     lineHeight: 1.05
   },
   coverSubtitle: {
     color: colors.muted,
-    fontSize: 11.2,
-    lineHeight: 1.4,
-    marginTop: 12,
-    maxWidth: 350
+    fontSize: 10.6,
+    lineHeight: 1.34,
+    marginTop: 7,
+    maxWidth: 330
   },
   coverRule: {
     backgroundColor: colors.green,
     borderRadius: 8,
-    height: 4,
-    marginTop: 22,
+    height: 3,
+    marginTop: 12,
     width: 118
   },
   coverGraphic: {
-    bottom: 22,
+    bottom: 10,
     position: "absolute",
     right: 30
   },
@@ -210,31 +210,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 10,
     marginHorizontal: pagePaddingX,
-    marginTop: 22
+    marginTop: 9
   },
   coverMetaCard: {
     backgroundColor: colors.white,
     borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
-    padding: 13,
+    padding: 8,
     width: "31.9%"
   },
   label: {
     color: colors.faint,
     fontSize: 6.6,
     fontWeight: 700,
-    marginBottom: 4,
+    marginBottom: 2,
     textTransform: "uppercase"
   },
   value: {
     color: colors.greenDeep,
-    fontSize: 9.2,
+    fontSize: 8.5,
     fontWeight: 700
   },
   pageContent: {
     paddingHorizontal: pagePaddingX,
-    paddingTop: 18
+    paddingTop: 6
   },
   header: {
     alignItems: "center",
@@ -243,8 +243,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: pagePaddingX,
-    paddingBottom: 10,
-    paddingTop: 18
+    paddingBottom: 5,
+    paddingTop: 8
   },
   headerLeft: {
     width: "47%"
@@ -273,14 +273,14 @@ const styles = StyleSheet.create({
     fontWeight: 700
   },
   section: {
-    marginBottom: 16
+    marginBottom: 7
   },
   sectionHeader: {
     alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
-    paddingBottom: 6
+    marginBottom: 4,
+    paddingBottom: 2
   },
   sectionTitleWrap: {
     borderLeftColor: colors.green,
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     color: colors.greenDeep,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 700
   },
   sectionKicker: {
@@ -302,45 +302,45 @@ const styles = StyleSheet.create({
     borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
-    paddingHorizontal: 13,
-    paddingVertical: 12
+    paddingHorizontal: 9,
+    paddingVertical: 7
   },
   paragraph: {
     color: colors.text,
-    fontSize: 9.7,
-    lineHeight: 1.48,
-    marginBottom: 8
+    fontSize: 9.1,
+    lineHeight: 1.36,
+    marginBottom: 4
   },
   highlightBox: {
     backgroundColor: colors.softGreen,
     borderColor: "#BFE7CD",
     borderRadius: 8,
     borderWidth: 1,
-    marginTop: 10,
+    marginTop: 4,
     overflow: "hidden"
   },
   highlightHeader: {
     backgroundColor: "#DDF4E7",
     borderBottomColor: "#BFE7CD",
     borderBottomWidth: 1,
-    paddingHorizontal: 12,
-    paddingVertical: 7
+    paddingHorizontal: 10,
+    paddingVertical: 4
   },
   highlightTitle: {
     color: colors.greenDark,
-    fontSize: 9.4,
+    fontSize: 8.8,
     fontWeight: 700
   },
   highlightText: {
     color: colors.text,
-    fontSize: 8.7,
-    lineHeight: 1.4,
-    paddingHorizontal: 12,
-    paddingVertical: 10
+    fontSize: 8.2,
+    lineHeight: 1.3,
+    paddingHorizontal: 10,
+    paddingVertical: 6
   },
   bulletRow: {
     flexDirection: "row",
-    marginBottom: 5
+    marginBottom: 2
   },
   bulletDot: {
     color: colors.green,
@@ -352,21 +352,21 @@ const styles = StyleSheet.create({
   bulletText: {
     color: colors.text,
     flex: 1,
-    fontSize: 8.3,
-    lineHeight: 1.35
+    fontSize: 8,
+    lineHeight: 1.28
   },
   trendGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 9
+    gap: 6
   },
   trendCard: {
     backgroundColor: colors.white,
     borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
-    minHeight: 88,
-    padding: 12,
+    minHeight: 62,
+    padding: 8,
     width: "31.8%"
   },
   trendCardWide: {
@@ -376,26 +376,26 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8
+    marginBottom: 4
   },
   cardTitle: {
     color: colors.muted,
-    fontSize: 7.2,
+    fontSize: 6.8,
     fontWeight: 700,
     textTransform: "uppercase",
     width: "55%"
   },
   cardValue: {
     color: colors.greenDeep,
-    fontSize: 13.4,
+    fontSize: 12,
     fontWeight: 700,
     lineHeight: 1.1,
-    marginBottom: 6
+    marginBottom: 2
   },
   miniText: {
     color: colors.muted,
-    fontSize: 7.6,
-    lineHeight: 1.34
+    fontSize: 7.1,
+    lineHeight: 1.24
   },
   table: {
     backgroundColor: colors.white,
@@ -417,7 +417,7 @@ const styles = StyleSheet.create({
     borderTopColor: colors.line,
     borderTopWidth: 1,
     flexDirection: "row",
-    minHeight: 39
+    minHeight: 26
   },
   rowAlt: {
     backgroundColor: colors.paper
@@ -425,13 +425,13 @@ const styles = StyleSheet.create({
   cell: {
     borderRightColor: colors.line,
     borderRightWidth: 1,
-    paddingHorizontal: 8,
-    paddingVertical: 8
+    paddingHorizontal: 6,
+    paddingVertical: 4
   },
   cellText: {
     color: colors.text,
-    fontSize: 7.9,
-    lineHeight: 1.34
+    fontSize: 7.4,
+    lineHeight: 1.24
   },
   cellLast: {
     borderRightWidth: 0
@@ -445,39 +445,39 @@ const styles = StyleSheet.create({
     borderRadius: 999,
     fontSize: 6.8,
     fontWeight: 700,
-    paddingHorizontal: 7,
-    paddingVertical: 3
+    paddingHorizontal: 6,
+    paddingVertical: 2
   },
   recommendationGrid: {
     flexDirection: "row",
-    gap: 9,
-    marginBottom: 11
+    gap: 7,
+    marginBottom: 6
   },
   recommendationColumn: {
     backgroundColor: colors.white,
     borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
-    padding: 11,
+    padding: 7,
     width: "31.9%"
   },
   recommendationTitle: {
     color: colors.greenDeep,
-    fontSize: 9.4,
+    fontSize: 8.8,
     fontWeight: 700,
-    marginBottom: 7
+    marginBottom: 4
   },
   footer: {
     alignItems: "center",
     borderTopColor: colors.line,
     borderTopWidth: 1,
-    bottom: 16,
+    bottom: 10,
     color: colors.muted,
     flexDirection: "row",
     fontSize: 6.8,
     justifyContent: "space-between",
     left: pagePaddingX,
-    paddingTop: 8,
+    paddingTop: 4,
     position: "absolute",
     right: pagePaddingX
   },
@@ -515,13 +515,9 @@ function ClientReport({ data }: { data: MarketReportData }) {
         <ExecutiveSummary data={data} mode="client" />
         <TrendCards items={data.trendCards} />
       </ReportPage>
-      <ReportPage data={data} label="Produtos acompanhados">
+      <ReportPage data={data} label="Produtos, culturas e recomendação">
         <ProductTrendTable items={data.productTrends} />
-      </ReportPage>
-      <ReportPage data={data} label="Impacto por cultura">
         <CultureImpactTable items={data.cultureImpacts} />
-      </ReportPage>
-      <ReportPage data={data} label="Frete, dólar e recomendação">
         <FreightLogisticsTable items={data.freightLogistics.slice(0, 4)} simple />
         <RecommendationBlock recommendation={data.recommendation} title="Recomendação PADAP da semana" />
       </ReportPage>
@@ -562,6 +558,9 @@ function ConsultantReport({ data }: { data: MarketReportData }) {
 
 export function ReportCover({ data, label }: { data: MarketReportData; label: string }) {
   const coverTone = data.audience === "client" ? "Clareza para decisão comercial" : "Inteligência para atuação consultiva";
+  const coverSubtitle = data.audience === "client"
+    ? "Leitura objetiva para decisões comerciais da semana."
+    : "Visão comercial e operacional para orientar o time.";
 
   return (
     <>
@@ -575,8 +574,8 @@ export function ReportCover({ data, label }: { data: MarketReportData; label: st
         </View>
         <View style={styles.coverTitleBlock}>
           <Text style={styles.coverEyebrow}>Central de Mercado</Text>
-          <Text style={styles.coverTitle}>{data.title}</Text>
-          <Text style={styles.coverSubtitle}>{data.subtitle}</Text>
+          <Text style={styles.coverTitle}>Relatório de Mercado</Text>
+          <Text style={styles.coverSubtitle}>{coverSubtitle}</Text>
           <View style={styles.coverRule} />
         </View>
         <View style={styles.coverGraphic}>
@@ -837,7 +836,7 @@ export function ReportFooter({ data }: { data: MarketReportData }) {
 
 export function SectionTitle({ title, kicker, children }: { title: string; kicker: string; children: ReactNode }) {
   return (
-    <View style={styles.section} minPresenceAhead={132}>
+    <View style={styles.section} minPresenceAhead={42}>
       <View style={styles.sectionHeader} wrap={false}>
         <View style={styles.sectionTitleWrap}>
           <Text style={styles.sectionTitle}>{title}</Text>
