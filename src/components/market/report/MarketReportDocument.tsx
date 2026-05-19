@@ -91,42 +91,146 @@ export type MarketReportData = {
 };
 
 const colors = {
-  page: "#0B1412",
-  pageSoft: "#101E1A",
-  panel: "#13231F",
-  panelAlt: "#172A25",
-  line: "#29443C",
-  lineSoft: "#1F352F",
-  text: "#E9F5EF",
-  muted: "#9CB4AB",
-  faint: "#6F877D",
-  green: "#00C800",
-  greenDark: "#00843D",
-  amber: "#F2B84B",
-  red: "#F87171",
-  blue: "#38BDF8",
-  gray: "#94A3B8",
-  white: "#FFFFFF"
+  white: "#FFFFFF",
+  paper: "#FAFCFB",
+  soft: "#F3F7F5",
+  softGreen: "#EAF7EF",
+  green: "#00A845",
+  greenDark: "#006E3A",
+  greenDeep: "#073B2F",
+  text: "#172126",
+  muted: "#687A72",
+  faint: "#8EA09A",
+  line: "#D9E5DF",
+  lineDark: "#C6D6CE",
+  amber: "#B7791F",
+  amberBg: "#FFF7E6",
+  red: "#B42318",
+  redBg: "#FEF0EF",
+  blue: "#087990",
+  blueBg: "#E8F6F8",
+  gray: "#5F6F68",
+  grayBg: "#EEF2F1"
 };
 
-const pagePaddingX = 34;
+const pagePaddingX = 38;
+const notice = "Informações referenciais sujeitas a alteração conforme mercado, câmbio, frete e disponibilidade.";
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: colors.page,
+    backgroundColor: colors.white,
     color: colors.text,
     fontFamily: "Helvetica",
     fontSize: 8.4,
-    lineHeight: 1.35,
-    paddingBottom: 44
+    lineHeight: 1.36,
+    paddingBottom: 52
   },
-  hero: {
-    backgroundColor: "#07110F",
+  cover: {
+    backgroundColor: colors.white,
+    color: colors.text,
+    fontFamily: "Helvetica",
+    fontSize: 8.6,
+    paddingBottom: 52
+  },
+  coverBand: {
+    backgroundColor: colors.soft,
     borderBottomColor: colors.line,
     borderBottomWidth: 1,
+    minHeight: 322,
     paddingHorizontal: pagePaddingX,
-    paddingTop: 28,
-    paddingBottom: 24
+    paddingTop: 34,
+    paddingBottom: 26,
+    position: "relative"
+  },
+  coverTop: {
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 44
+  },
+  brand: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 9
+  },
+  brandText: {
+    color: colors.greenDeep,
+    fontSize: 13.2,
+    fontWeight: 700
+  },
+  coverPill: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 999,
+    borderWidth: 1,
+    color: colors.greenDark,
+    fontSize: 7,
+    fontWeight: 700,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    textTransform: "uppercase"
+  },
+  coverTitleBlock: {
+    maxWidth: 415
+  },
+  coverEyebrow: {
+    color: colors.green,
+    fontSize: 8,
+    fontWeight: 700,
+    letterSpacing: 0.5,
+    marginBottom: 10,
+    textTransform: "uppercase"
+  },
+  coverTitle: {
+    color: colors.greenDeep,
+    fontSize: 30,
+    fontWeight: 700,
+    lineHeight: 1.05
+  },
+  coverSubtitle: {
+    color: colors.muted,
+    fontSize: 11.2,
+    lineHeight: 1.4,
+    marginTop: 12,
+    maxWidth: 350
+  },
+  coverRule: {
+    backgroundColor: colors.green,
+    borderRadius: 8,
+    height: 4,
+    marginTop: 22,
+    width: 118
+  },
+  coverGraphic: {
+    bottom: 22,
+    position: "absolute",
+    right: 30
+  },
+  coverMetaWrap: {
+    flexDirection: "row",
+    gap: 10,
+    marginHorizontal: pagePaddingX,
+    marginTop: 22
+  },
+  coverMetaCard: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    padding: 13,
+    width: "31.9%"
+  },
+  label: {
+    color: colors.faint,
+    fontSize: 6.6,
+    fontWeight: 700,
+    marginBottom: 4,
+    textTransform: "uppercase"
+  },
+  value: {
+    color: colors.greenDeep,
+    fontSize: 9.2,
+    fontWeight: 700
   },
   pageContent: {
     paddingHorizontal: pagePaddingX,
@@ -139,152 +243,131 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: pagePaddingX,
-    paddingBottom: 11,
+    paddingBottom: 10,
     paddingTop: 18
   },
-  brand: {
-    alignItems: "center",
-    flexDirection: "row",
-    gap: 8
+  headerLeft: {
+    width: "47%"
   },
-  brandText: {
-    color: colors.white,
-    fontSize: 13,
+  headerCenter: {
+    alignItems: "center",
+    width: "24%"
+  },
+  headerRight: {
+    alignItems: "flex-end",
+    width: "29%"
+  },
+  headerTitle: {
+    color: colors.greenDeep,
+    fontSize: 9.5,
     fontWeight: 700
   },
   headerMeta: {
     color: colors.muted,
-    fontSize: 7.2,
-    textAlign: "right"
-  },
-  tag: {
-    alignSelf: "flex-start",
-    borderColor: colors.green,
-    borderRadius: 999,
-    borderWidth: 1,
-    color: colors.green,
     fontSize: 7,
-    fontWeight: 700,
-    marginBottom: 14,
-    paddingHorizontal: 9,
-    paddingVertical: 4,
-    textTransform: "uppercase"
+    marginTop: 2
   },
-  heroTitle: {
-    color: colors.white,
-    fontSize: 25,
-    fontWeight: 700,
-    lineHeight: 1.05,
-    maxWidth: 430
-  },
-  heroSubtitle: {
-    color: colors.muted,
-    fontSize: 10,
-    marginTop: 9,
-    maxWidth: 390
-  },
-  metaStrip: {
-    borderColor: colors.line,
-    borderRadius: 7,
-    borderWidth: 1,
-    flexDirection: "row",
-    gap: 10,
-    marginTop: 18,
-    padding: 10
-  },
-  metaItem: {
-    flex: 1
-  },
-  label: {
-    color: colors.faint,
-    fontSize: 6.5,
-    fontWeight: 700,
-    marginBottom: 3,
-    textTransform: "uppercase"
-  },
-  value: {
-    color: colors.text,
-    fontSize: 8.2,
+  headerPage: {
+    color: colors.greenDark,
+    fontSize: 7.4,
     fontWeight: 700
   },
   section: {
-    marginBottom: 14
+    marginBottom: 16
   },
   sectionHeader: {
     alignItems: "flex-end",
-    borderBottomColor: colors.lineSoft,
-    borderBottomWidth: 1,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 9,
-    paddingBottom: 7
+    marginBottom: 10,
+    paddingBottom: 6
+  },
+  sectionTitleWrap: {
+    borderLeftColor: colors.green,
+    borderLeftWidth: 4,
+    paddingLeft: 9
   },
   sectionTitle: {
-    color: colors.white,
-    fontSize: 13,
+    color: colors.greenDeep,
+    fontSize: 14,
     fontWeight: 700
   },
   sectionKicker: {
     color: colors.muted,
-    fontSize: 7
+    fontSize: 7.2,
+    paddingBottom: 1
+  },
+  panel: {
+    backgroundColor: colors.white,
+    borderColor: colors.line,
+    borderRadius: 8,
+    borderWidth: 1,
+    paddingHorizontal: 13,
+    paddingVertical: 12
   },
   paragraph: {
     color: colors.text,
-    fontSize: 9.5,
-    lineHeight: 1.42,
+    fontSize: 9.7,
+    lineHeight: 1.48,
     marginBottom: 8
   },
-  panel: {
-    backgroundColor: colors.panel,
-    borderColor: colors.line,
-    borderRadius: 7,
-    borderWidth: 1,
-    padding: 11
-  },
-  callout: {
-    backgroundColor: "#0E261E",
-    borderColor: colors.greenDark,
-    borderRadius: 7,
+  highlightBox: {
+    backgroundColor: colors.softGreen,
+    borderColor: "#BFE7CD",
+    borderRadius: 8,
     borderWidth: 1,
     marginTop: 10,
-    padding: 11
+    overflow: "hidden"
   },
-  calloutTitle: {
-    color: colors.green,
-    fontSize: 9.2,
-    fontWeight: 700,
-    marginBottom: 5
+  highlightHeader: {
+    backgroundColor: "#DDF4E7",
+    borderBottomColor: "#BFE7CD",
+    borderBottomWidth: 1,
+    paddingHorizontal: 12,
+    paddingVertical: 7
+  },
+  highlightTitle: {
+    color: colors.greenDark,
+    fontSize: 9.4,
+    fontWeight: 700
+  },
+  highlightText: {
+    color: colors.text,
+    fontSize: 8.7,
+    lineHeight: 1.4,
+    paddingHorizontal: 12,
+    paddingVertical: 10
   },
   bulletRow: {
     flexDirection: "row",
-    marginBottom: 4
+    marginBottom: 5
   },
   bulletDot: {
     color: colors.green,
     fontSize: 9,
     fontWeight: 700,
-    marginRight: 5,
+    marginRight: 6,
     marginTop: -1
   },
   bulletText: {
     color: colors.text,
     flex: 1,
-    fontSize: 8.2,
+    fontSize: 8.3,
     lineHeight: 1.35
   },
   trendGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 8
+    gap: 9
   },
   trendCard: {
-    backgroundColor: colors.panel,
+    backgroundColor: colors.white,
     borderColor: colors.line,
-    borderRadius: 7,
+    borderRadius: 8,
     borderWidth: 1,
-    minHeight: 77,
-    padding: 10,
-    width: "31.9%"
+    minHeight: 88,
+    padding: 12,
+    width: "31.8%"
   },
   trendCardWide: {
     width: "48.9%"
@@ -293,87 +376,96 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 7
+    marginBottom: 8
   },
   cardTitle: {
-    color: colors.white,
-    fontSize: 10.2,
-    fontWeight: 700
+    color: colors.muted,
+    fontSize: 7.2,
+    fontWeight: 700,
+    textTransform: "uppercase",
+    width: "55%"
   },
   cardValue: {
-    color: colors.text,
-    fontSize: 9,
+    color: colors.greenDeep,
+    fontSize: 13.4,
     fontWeight: 700,
-    marginBottom: 4
+    lineHeight: 1.1,
+    marginBottom: 6
   },
   miniText: {
     color: colors.muted,
-    fontSize: 7.5,
-    lineHeight: 1.32
+    fontSize: 7.6,
+    lineHeight: 1.34
   },
   table: {
-    backgroundColor: colors.panel,
+    backgroundColor: colors.white,
     borderColor: colors.line,
-    borderRadius: 7,
+    borderRadius: 8,
     borderWidth: 1,
     overflow: "hidden"
   },
   tableHeader: {
-    backgroundColor: "#073B3D",
+    backgroundColor: colors.greenDeep,
     color: colors.white,
     flexDirection: "row",
-    fontSize: 6.7,
+    fontSize: 6.8,
     fontWeight: 700,
     textTransform: "uppercase"
   },
   row: {
-    borderTopColor: colors.lineSoft,
+    backgroundColor: colors.white,
+    borderTopColor: colors.line,
     borderTopWidth: 1,
     flexDirection: "row",
-    minHeight: 34
+    minHeight: 39
   },
   rowAlt: {
-    backgroundColor: colors.panelAlt
+    backgroundColor: colors.paper
   },
   cell: {
-    borderRightColor: colors.lineSoft,
+    borderRightColor: colors.line,
     borderRightWidth: 1,
-    paddingHorizontal: 7,
-    paddingVertical: 6
+    paddingHorizontal: 8,
+    paddingVertical: 8
+  },
+  cellText: {
+    color: colors.text,
+    fontSize: 7.9,
+    lineHeight: 1.34
   },
   cellLast: {
     borderRightWidth: 0
   },
   strongCell: {
-    color: colors.white,
+    color: colors.greenDeep,
     fontWeight: 700
   },
   badge: {
     alignSelf: "flex-start",
     borderRadius: 999,
-    fontSize: 6.6,
+    fontSize: 6.8,
     fontWeight: 700,
     paddingHorizontal: 7,
     paddingVertical: 3
   },
   recommendationGrid: {
     flexDirection: "row",
-    gap: 8,
-    marginBottom: 10
+    gap: 9,
+    marginBottom: 11
   },
   recommendationColumn: {
-    backgroundColor: colors.panel,
+    backgroundColor: colors.white,
     borderColor: colors.line,
-    borderRadius: 7,
+    borderRadius: 8,
     borderWidth: 1,
-    padding: 10,
-    width: "32.2%"
+    padding: 11,
+    width: "31.9%"
   },
   recommendationTitle: {
-    color: colors.white,
-    fontSize: 9,
+    color: colors.greenDeep,
+    fontSize: 9.4,
     fontWeight: 700,
-    marginBottom: 6
+    marginBottom: 7
   },
   footer: {
     alignItems: "center",
@@ -390,15 +482,20 @@ const styles = StyleSheet.create({
     right: pagePaddingX
   },
   footerLeft: {
-    width: "72%"
+    width: "74%"
   },
   footerBrand: {
-    color: colors.green,
+    color: colors.greenDark,
     fontWeight: 700
   },
+  footerNotice: {
+    color: colors.muted,
+    fontSize: 6.6,
+    marginTop: 2
+  },
   pageNumber: {
-    color: colors.text,
-    fontSize: 7,
+    color: colors.greenDeep,
+    fontSize: 7.2,
     fontWeight: 700
   }
 });
@@ -410,14 +507,14 @@ export function MarketReportDocument({ data }: { data: MarketReportData }) {
 function ClientReport({ data }: { data: MarketReportData }) {
   return (
     <Document title={data.title} author="PADAP Intelligence" subject="Relatório de mercado para produtor">
-      <Page size="A4" style={styles.page} wrap>
-        <ReportHeader data={data} cover label="Cliente / Produtor" />
-        <View style={styles.pageContent}>
-          <ExecutiveSummary data={data} mode="client" />
-          <TrendCards items={data.trendCards} />
-        </View>
+      <Page size="A4" style={styles.cover} wrap>
+        <ReportCover data={data} label="Relatório Cliente" />
         <ReportFooter data={data} />
       </Page>
+      <ReportPage data={data} label="Resumo executivo">
+        <ExecutiveSummary data={data} mode="client" />
+        <TrendCards items={data.trendCards} />
+      </ReportPage>
       <ReportPage data={data} label="Produtos acompanhados">
         <ProductTrendTable items={data.productTrends} />
       </ReportPage>
@@ -435,14 +532,14 @@ function ClientReport({ data }: { data: MarketReportData }) {
 function ConsultantReport({ data }: { data: MarketReportData }) {
   return (
     <Document title={data.title} author="PADAP Intelligence" subject="Relatório técnico e comercial de mercado">
-      <Page size="A4" style={styles.page} wrap>
-        <ReportHeader data={data} cover label="Consultores" />
-        <View style={styles.pageContent}>
-          <ExecutiveSummary data={data} mode="consultant" />
-          <TrendCards items={data.trendCards} />
-        </View>
+      <Page size="A4" style={styles.cover} wrap>
+        <ReportCover data={data} label="Relatório Consultor" />
         <ReportFooter data={data} />
       </Page>
+      <ReportPage data={data} label="Resumo comercial">
+        <ExecutiveSummary data={data} mode="consultant" />
+        <TrendCards items={data.trendCards} />
+      </ReportPage>
       <ReportPage data={data} label="Famílias de produto">
         <ProductFamilyAnalysis items={data.productFamilies} />
       </ReportPage>
@@ -463,6 +560,43 @@ function ConsultantReport({ data }: { data: MarketReportData }) {
   );
 }
 
+export function ReportCover({ data, label }: { data: MarketReportData; label: string }) {
+  const coverTone = data.audience === "client" ? "Clareza para decisão comercial" : "Inteligência para atuação consultiva";
+
+  return (
+    <>
+      <View style={styles.coverBand} wrap={false}>
+        <View style={styles.coverTop}>
+          <View style={styles.brand}>
+            <PadapMark />
+            <Text style={styles.brandText}>PADAP Intelligence</Text>
+          </View>
+          <Text style={styles.coverPill}>{label}</Text>
+        </View>
+        <View style={styles.coverTitleBlock}>
+          <Text style={styles.coverEyebrow}>Central de Mercado</Text>
+          <Text style={styles.coverTitle}>{data.title}</Text>
+          <Text style={styles.coverSubtitle}>{data.subtitle}</Text>
+          <View style={styles.coverRule} />
+        </View>
+        <View style={styles.coverGraphic}>
+          <CoverGraphic />
+        </View>
+      </View>
+      <View style={styles.coverMetaWrap} wrap={false}>
+        <MetaCard label="Tipo" value={label} />
+        <MetaCard label="Período" value={data.period} />
+        <MetaCard label="Data do boletim" value={data.reportDate} />
+      </View>
+      <View style={[styles.coverMetaWrap, { marginTop: 10 }]} wrap={false}>
+        <MetaCard label="Foco do relatório" value={coverTone} />
+        <MetaCard label="Gerado por" value={data.generatedBy} />
+        <MetaCard label="Identidade" value="Central de Mercado PADAP" />
+      </View>
+    </>
+  );
+}
+
 function ReportPage({ data, label, children }: { data: MarketReportData; label: string; children: ReactNode }) {
   return (
     <Page size="A4" style={styles.page} wrap>
@@ -473,40 +607,32 @@ function ReportPage({ data, label, children }: { data: MarketReportData; label: 
   );
 }
 
-export function ReportHeader({ data, cover = false, label }: { data: MarketReportData; cover?: boolean; label: string }) {
-  if (cover) {
-    return (
-      <View style={styles.hero} wrap={false}>
-        <View style={styles.brand}>
-          <PadapMark />
-          <Text style={styles.brandText}>PADAP Intelligence</Text>
-        </View>
-        <Text style={styles.tag}>{label}</Text>
-        <Text style={styles.heroTitle}>{data.title}</Text>
-        <Text style={styles.heroSubtitle}>{data.subtitle}</Text>
-        <View style={styles.metaStrip}>
-          <MetaItem label="Período" value={data.period} />
-          <MetaItem label="Data" value={data.reportDate} />
-          <MetaItem label="Gerado por" value={data.generatedBy} />
-        </View>
-      </View>
-    );
-  }
+export function ReportHeader({ data, label }: { data: MarketReportData; label: string }) {
+  const typeLabel = data.audience === "client" ? "Relatório Cliente" : "Relatório Consultor";
 
   return (
     <View style={styles.header} fixed>
-      <View style={styles.brand}>
-        <PadapMark small />
-        <Text style={styles.brandText}>PADAP Intelligence</Text>
+      <View style={styles.headerLeft}>
+        <View style={styles.brand}>
+          <PadapMark small />
+          <Text style={styles.brandText}>PADAP Intelligence</Text>
+        </View>
       </View>
-      <Text style={styles.headerMeta}>{label} | {data.reportDate}</Text>
+      <View style={styles.headerCenter}>
+        <Text style={styles.headerTitle}>{label}</Text>
+        <Text style={styles.headerMeta}>{typeLabel}</Text>
+      </View>
+      <View style={styles.headerRight}>
+        <Text style={styles.headerPage} render={({ pageNumber, totalPages }) => `Página ${pageNumber}/${totalPages}`} />
+        <Text style={styles.headerMeta}>{data.period} | {data.reportDate}</Text>
+      </View>
     </View>
   );
 }
 
-function MetaItem({ label, value }: { label: string; value: string }) {
+function MetaCard({ label, value }: { label: string; value: string }) {
   return (
-    <View style={styles.metaItem}>
+    <View style={styles.coverMetaCard}>
       <Text style={styles.label}>{label}</Text>
       <Text style={styles.value}>{value}</Text>
     </View>
@@ -518,22 +644,19 @@ export function ExecutiveSummary({ data, mode }: { data: MarketReportData; mode:
   const title = mode === "client" ? "Leitura da PADAP para o produtor" : "Ação do consultor";
 
   return (
-    <Section title={data.summary.title} kicker="Movimento geral da semana">
+    <SectionTitle title={data.summary.title} kicker="Movimento geral da semana">
       <View style={styles.panel} wrap={false}>
         <Text style={styles.paragraph}>{data.summary.text}</Text>
         {data.summary.bullets.slice(0, 4).map((item) => <BulletLine key={item}>{item}</BulletLine>)}
       </View>
-      <View style={styles.callout} wrap={false}>
-        <Text style={styles.calloutTitle}>{title}</Text>
-        <Text style={styles.miniText}>{actionText}</Text>
-      </View>
-    </Section>
+      <HighlightBox title={title}>{actionText}</HighlightBox>
+    </SectionTitle>
   );
 }
 
 export function TrendCards({ items }: { items: TrendCardData[] }) {
   return (
-    <Section title="Cards de tendência" kicker="Indicadores acompanhados">
+    <SectionTitle title="Cards de tendência" kicker="Indicadores acompanhados">
       <View style={styles.trendGrid}>
         {items.map((item, index) => (
           <View key={item.label} style={index > 2 ? [styles.trendCard, styles.trendCardWide] : styles.trendCard} wrap={false}>
@@ -546,50 +669,50 @@ export function TrendCards({ items }: { items: TrendCardData[] }) {
           </View>
         ))}
       </View>
-    </Section>
+    </SectionTitle>
   );
 }
 
 export function ProductTrendTable({ items }: { items: MarketReportData["productTrends"] }) {
   return (
-    <Section title="Principais produtos acompanhados" kicker="Detalhe por produto">
+    <SectionTitle title="Principais produtos acompanhados" kicker="Detalhe por produto">
       <ReportTable
         headers={["Produto", "Tendência", "Motivo principal", "Atenção comercial"]}
         widths={["18%", "16%", "34%", "32%"]}
         rows={items}
         render={(item) => [
-          <Text style={styles.strongCell}>{item.product}</Text>,
+          <Text style={[styles.cellText, styles.strongCell]}>{item.product}</Text>,
           <Badge tone={item.tone}>{item.trend}</Badge>,
           item.reason,
           item.commercialAttention
         ]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
 export function CultureImpactTable({ items }: { items: MarketReportData["cultureImpacts"] }) {
   return (
-    <Section title="Impacto por cultura" kicker="Leitura agronômica e comercial">
+    <SectionTitle title="Impacto por cultura" kicker="Leitura agronômica e comercial">
       <ReportTable
         headers={["Cultura", "Nutrientes sensíveis", "Leitura da semana", "Ação sugerida"]}
         widths={["16%", "25%", "31%", "28%"]}
         rows={items}
-        render={(item) => [<Text style={styles.strongCell}>{item.culture}</Text>, item.nutrients, item.weeklyReading, item.suggestedAction]}
+        render={(item) => [<Text style={[styles.cellText, styles.strongCell]}>{item.culture}</Text>, item.nutrients, item.weeklyReading, item.suggestedAction]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
 function ProductFamilyAnalysis({ items }: { items: MarketReportData["productFamilies"] }) {
   return (
-    <Section title="Análise por família de produto" kicker="Tendência, risco e ação comercial">
+    <SectionTitle title="Análise por família de produto" kicker="Tendência, risco e ação comercial">
       <ReportTable
         headers={["Família", "Tendência", "Motivo", "Risco", "Praças afetadas", "Ação comercial"]}
         widths={["15%", "13%", "22%", "16%", "16%", "18%"]}
         rows={items}
         render={(item) => [
-          <Text style={styles.strongCell}>{item.family}</Text>,
+          <Text style={[styles.cellText, styles.strongCell]}>{item.family}</Text>,
           <Badge tone={item.tone}>{item.trend}</Badge>,
           item.reason,
           item.risk,
@@ -597,19 +720,19 @@ function ProductFamilyAnalysis({ items }: { items: MarketReportData["productFami
           item.commercialAction
         ]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
 export function PriceReferenceTable({ items }: { items: MarketReportData["priceReferences"] }) {
   return (
-    <Section title="Tabela de preços referenciais" kicker="Dados sem repetir análise textual">
+    <SectionTitle title="Tabela de preços referenciais" kicker="Dados sem repetir análise textual">
       <ReportTable
         headers={["Produto", "Preço atual", "Semana anterior", "Variação", "Tendência", "Observação"]}
         widths={["20%", "15%", "16%", "12%", "14%", "23%"]}
         rows={items}
         render={(item) => [
-          <Text style={styles.strongCell}>{item.product}</Text>,
+          <Text style={[styles.cellText, styles.strongCell]}>{item.product}</Text>,
           item.currentPrice,
           item.previousPrice,
           item.variation,
@@ -617,7 +740,7 @@ export function PriceReferenceTable({ items }: { items: MarketReportData["priceR
           item.observation
         ]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
@@ -629,52 +752,52 @@ export function FreightLogisticsTable({ items, simple = false }: { items: Market
       impact: item.impact
     }));
     return (
-      <Section title="Frete e dólar" kicker="Fatores externos da decisão">
+      <SectionTitle title="Frete e dólar" kicker="Fatores externos da decisão">
         <ReportTable
           headers={["Fator", "Situação", "Impacto"]}
           widths={["24%", "26%", "50%"]}
           rows={factors}
-          render={(item) => [<Text style={styles.strongCell}>{item.factor}</Text>, item.status, item.impact]}
+          render={(item) => [<Text style={[styles.cellText, styles.strongCell]}>{item.factor}</Text>, item.status, item.impact]}
         />
-      </Section>
+      </SectionTitle>
     );
   }
 
   return (
-    <Section title="Fretes e logística" kicker="Apenas logística e frete">
+    <SectionTitle title="Fretes e logística" kicker="Apenas logística e frete">
       <ReportTable
         headers={["Origem", "Destino/região", "Frete atual", "Semana anterior", "Variação", "Impacto"]}
         widths={["16%", "19%", "14%", "16%", "12%", "23%"]}
         rows={items}
         render={(item) => [item.origin, item.destination, item.currentFreight, item.previousFreight, item.variation, item.impact]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
 export function ConsultantSalesArguments({ items }: { items: MarketReportData["salesArguments"] }) {
   return (
-    <Section title="Argumentos de venda por produto" kicker="Objeção provável e resposta sugerida">
+    <SectionTitle title="Argumentos de venda por produto" kicker="Objeção provável e resposta sugerida">
       <ReportTable
         headers={["Produto", "Objeção provável do cliente", "Resposta sugerida"]}
         widths={["20%", "34%", "46%"]}
         rows={items}
-        render={(item) => [<Text style={styles.strongCell}>{item.product}</Text>, item.objection, item.suggestedAnswer]}
+        render={(item) => [<Text style={[styles.cellText, styles.strongCell]}>{item.product}</Text>, item.objection, item.suggestedAnswer]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
 export function InternalAlerts({ items }: { items: MarketReportData["internalAlerts"] }) {
   return (
-    <Section title="Alertas internos" kicker="Operacional e comercial">
+    <SectionTitle title="Alertas internos" kicker="Operacional e comercial">
       <ReportTable
         headers={["Alerta", "Prioridade", "Descrição", "Ação"]}
         widths={["21%", "15%", "36%", "28%"]}
         rows={items}
-        render={(item) => [<Text style={styles.strongCell}>{item.type}</Text>, item.priority, item.description, item.action]}
+        render={(item) => [<Text style={[styles.cellText, styles.strongCell]}>{item.type}</Text>, item.priority, item.description, item.action]}
       />
-    </Section>
+    </SectionTitle>
   );
 }
 
@@ -686,7 +809,7 @@ export function RecommendationBlock({ recommendation, title, compact = false }: 
   ] as const;
 
   return (
-    <Section title={title} kicker="Somente ação prática">
+    <SectionTitle title={title} kicker="Somente ação prática">
       <View style={styles.recommendationGrid} wrap={false}>
         {groups.map(([groupTitle, items]) => (
           <View key={groupTitle} style={styles.recommendationColumn}>
@@ -695,11 +818,8 @@ export function RecommendationBlock({ recommendation, title, compact = false }: 
           </View>
         ))}
       </View>
-      <View style={styles.callout} wrap={false}>
-        <Text style={styles.calloutTitle}>Recomendação PADAP da semana</Text>
-        <Text style={styles.miniText}>{recommendation.finalText}</Text>
-      </View>
-    </Section>
+      <HighlightBox title="Recomendação PADAP da semana">{recommendation.finalText}</HighlightBox>
+    </SectionTitle>
   );
 }
 
@@ -707,22 +827,35 @@ export function ReportFooter({ data }: { data: MarketReportData }) {
   return (
     <View style={styles.footer} fixed>
       <View style={styles.footerLeft}>
-        <Text><Text style={styles.footerBrand}>PADAP Intelligence</Text> | {data.footerNote}</Text>
-        <Text>Gerado em {data.generatedAt}</Text>
+        <Text><Text style={styles.footerBrand}>PADAP Intelligence</Text> | Central de Mercado</Text>
+        <Text style={styles.footerNotice}>{notice}</Text>
       </View>
       <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => `Página ${pageNumber}/${totalPages}`} />
     </View>
   );
 }
 
-function Section({ title, kicker, children }: { title: string; kicker: string; children: ReactNode }) {
+export function SectionTitle({ title, kicker, children }: { title: string; kicker: string; children: ReactNode }) {
   return (
-    <View style={styles.section} minPresenceAhead={120}>
+    <View style={styles.section} minPresenceAhead={132}>
       <View style={styles.sectionHeader} wrap={false}>
-        <Text style={styles.sectionTitle}>{title}</Text>
+        <View style={styles.sectionTitleWrap}>
+          <Text style={styles.sectionTitle}>{title}</Text>
+        </View>
         <Text style={styles.sectionKicker}>{kicker}</Text>
       </View>
       {children}
+    </View>
+  );
+}
+
+export function HighlightBox({ title, children }: { title: string; children: string }) {
+  return (
+    <View style={styles.highlightBox} wrap={false}>
+      <View style={styles.highlightHeader}>
+        <Text style={styles.highlightTitle}>{title}</Text>
+      </View>
+      <Text style={styles.highlightText}>{children}</Text>
     </View>
   );
 }
@@ -741,7 +874,7 @@ function ReportTable<T>({ headers, widths, rows, render }: { headers: string[]; 
           <View key={rowIndex} style={rowIndex % 2 ? [styles.row, styles.rowAlt] : styles.row} wrap={false}>
             {cells.map((cell, cellIndex) => (
               <View key={cellIndex} style={cellIndex === cells.length - 1 ? [styles.cell, styles.cellLast, { width: widths[cellIndex] }] : [styles.cell, { width: widths[cellIndex] }]}>
-                {typeof cell === "string" ? <Text>{cell}</Text> : cell}
+                {typeof cell === "string" ? <Text style={styles.cellText}>{cell}</Text> : cell}
               </View>
             ))}
           </View>
@@ -762,11 +895,11 @@ function BulletLine({ children }: { children: string }) {
 
 function Badge({ tone, children }: { tone: MarketReportBadgeTone; children: string }) {
   const palette = {
-    green: { backgroundColor: "#123B2B", color: colors.green },
-    amber: { backgroundColor: "#3B2C12", color: colors.amber },
-    red: { backgroundColor: "#3B1717", color: colors.red },
-    blue: { backgroundColor: "#112E3B", color: colors.blue },
-    gray: { backgroundColor: "#202A34", color: colors.gray }
+    green: { backgroundColor: "#E4F6EB", color: colors.greenDark },
+    amber: { backgroundColor: colors.amberBg, color: colors.amber },
+    red: { backgroundColor: colors.redBg, color: colors.red },
+    blue: { backgroundColor: colors.blueBg, color: colors.blue },
+    gray: { backgroundColor: colors.grayBg, color: colors.gray }
   }[tone];
 
   return <Text style={[styles.badge, palette]}>{children}</Text>;
@@ -774,8 +907,23 @@ function Badge({ tone, children }: { tone: MarketReportBadgeTone; children: stri
 
 function PadapMark({ small = false }: { small?: boolean }) {
   return (
-    <Svg width={small ? 18 : 30} height={small ? 20 : 34} viewBox="0 0 184 208">
+    <Svg width={small ? 18 : 32} height={small ? 20 : 36} viewBox="0 0 184 208">
       <Path fillRule="evenodd" d="M15 168V88C15 48.2355 47.2355 16 87 16H169V96C169 135.765 136.765 168 97 168H45V190L15 168ZM45 124V88C45 64.2518 64.2518 45 88 45H140V81C140 104.748 120.748 124 97 124H45Z" fill={colors.green} />
+    </Svg>
+  );
+}
+
+function CoverGraphic() {
+  return (
+    <Svg width={178} height={142} viewBox="0 0 178 142">
+      <Path d="M14 102 C38 62, 52 92, 76 58 S121 41, 156 20" stroke={colors.green} strokeWidth={4} fill="none" strokeLinecap="round" />
+      <Path d="M22 118 H158" stroke={colors.lineDark} strokeWidth={1.5} />
+      <Path d="M42 118 V83" stroke={colors.lineDark} strokeWidth={1.5} />
+      <Path d="M78 118 V63" stroke={colors.lineDark} strokeWidth={1.5} />
+      <Path d="M114 118 V49" stroke={colors.lineDark} strokeWidth={1.5} />
+      <Path d="M150 118 V25" stroke={colors.lineDark} strokeWidth={1.5} />
+      <Path d="M31 110 C46 91, 59 87, 75 93 C63 112, 45 117, 31 110Z" fill="#DDF4E7" />
+      <Path d="M104 86 C122 67, 139 64, 155 73 C139 94, 119 100, 104 86Z" fill="#CBEED9" />
     </Svg>
   );
 }
