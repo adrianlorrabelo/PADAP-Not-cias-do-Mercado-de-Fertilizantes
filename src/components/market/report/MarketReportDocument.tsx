@@ -113,7 +113,20 @@ const colors = {
   grayBg: "#EEF2F1"
 };
 
-const pagePaddingX = 38;
+const reportSpacing = {
+  pagePaddingTop: 6,
+  pagePaddingBottom: 38,
+  pagePaddingHorizontal: 38,
+  sectionGap: 7,
+  blockGap: 4,
+  tableGap: 0,
+  cardPadding: 8,
+  cardGap: 6,
+  headerHeight: 30,
+  footerHeight: 28
+};
+
+const pagePaddingX = reportSpacing.pagePaddingHorizontal;
 const notice = "Informações referenciais sujeitas a alteração conforme mercado, câmbio, frete e disponibilidade.";
 
 const styles = StyleSheet.create({
@@ -123,14 +136,14 @@ const styles = StyleSheet.create({
     fontFamily: "Helvetica",
     fontSize: 8.4,
     lineHeight: 1.36,
-    paddingBottom: 38
+    paddingBottom: reportSpacing.pagePaddingBottom
   },
   cover: {
     backgroundColor: colors.white,
     color: colors.text,
     fontFamily: "Helvetica",
     fontSize: 8.6,
-    paddingBottom: 38
+    paddingBottom: reportSpacing.pagePaddingBottom
   },
   coverBand: {
     backgroundColor: colors.soft,
@@ -234,7 +247,7 @@ const styles = StyleSheet.create({
   },
   pageContent: {
     paddingHorizontal: pagePaddingX,
-    paddingTop: 6
+    paddingTop: reportSpacing.pagePaddingTop
   },
   header: {
     alignItems: "center",
@@ -243,6 +256,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: pagePaddingX,
+    minHeight: reportSpacing.headerHeight,
     paddingBottom: 5,
     paddingTop: 8
   },
@@ -273,13 +287,13 @@ const styles = StyleSheet.create({
     fontWeight: 700
   },
   section: {
-    marginBottom: 7
+    marginBottom: reportSpacing.sectionGap
   },
   sectionHeader: {
     alignItems: "flex-end",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 4,
+    marginBottom: reportSpacing.blockGap,
     paddingBottom: 2
   },
   sectionTitleWrap: {
@@ -316,7 +330,7 @@ const styles = StyleSheet.create({
     borderColor: "#BFE7CD",
     borderRadius: 8,
     borderWidth: 1,
-    marginTop: 4,
+    marginTop: reportSpacing.blockGap,
     overflow: "hidden"
   },
   highlightHeader: {
@@ -358,7 +372,7 @@ const styles = StyleSheet.create({
   trendGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 6
+    gap: reportSpacing.cardGap
   },
   trendCard: {
     backgroundColor: colors.white,
@@ -366,7 +380,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     minHeight: 62,
-    padding: 8,
+    padding: reportSpacing.cardPadding,
     width: "31.8%"
   },
   trendCardWide: {
@@ -376,7 +390,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 4
+    marginBottom: reportSpacing.blockGap
   },
   cardTitle: {
     color: colors.muted,
@@ -451,14 +465,14 @@ const styles = StyleSheet.create({
   recommendationGrid: {
     flexDirection: "row",
     gap: 7,
-    marginBottom: 6
+    marginBottom: reportSpacing.cardGap
   },
   recommendationColumn: {
     backgroundColor: colors.white,
     borderColor: colors.line,
     borderRadius: 8,
     borderWidth: 1,
-    padding: 7,
+    padding: reportSpacing.cardPadding - 1,
     width: "31.9%"
   },
   recommendationTitle: {
@@ -477,6 +491,7 @@ const styles = StyleSheet.create({
     fontSize: 6.8,
     justifyContent: "space-between",
     left: pagePaddingX,
+    minHeight: reportSpacing.footerHeight,
     paddingTop: 4,
     position: "absolute",
     right: pagePaddingX
@@ -536,16 +551,12 @@ function ConsultantReport({ data }: { data: MarketReportData }) {
         <ExecutiveSummary data={data} mode="consultant" />
         <TrendCards items={data.trendCards} />
       </ReportPage>
-      <ReportPage data={data} label="Famílias de produto">
+      <ReportPage data={data} label="Famílias e preços">
         <ProductFamilyAnalysis items={data.productFamilies} />
-      </ReportPage>
-      <ReportPage data={data} label="Preços referenciais">
         <PriceReferenceTable items={data.priceReferences} />
       </ReportPage>
-      <ReportPage data={data} label="Fretes e logística">
+      <ReportPage data={data} label="Logística e argumentos">
         <FreightLogisticsTable items={data.freightLogistics} />
-      </ReportPage>
-      <ReportPage data={data} label="Argumentos de venda">
         <ConsultantSalesArguments items={data.salesArguments} />
       </ReportPage>
       <ReportPage data={data} label="Alertas internos">
@@ -817,7 +828,7 @@ export function RecommendationBlock({ recommendation, title, compact = false }: 
           </View>
         ))}
       </View>
-      <HighlightBox title="Recomendação PADAP da semana">{recommendation.finalText}</HighlightBox>
+      <HighlightBox title="Orientação prática">{recommendation.finalText}</HighlightBox>
     </SectionTitle>
   );
 }
