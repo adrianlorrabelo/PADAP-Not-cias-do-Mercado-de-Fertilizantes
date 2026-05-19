@@ -1,4 +1,4 @@
-import { BarChart3, Boxes, Brain, ChevronLeft, ChevronRight, ClipboardCheck, FileSpreadsheet, Home, PackageOpen, Settings, Users, UserCog, UserRoundCheck } from "lucide-react";
+import { BarChart3, Boxes, Brain, ChevronLeft, ChevronRight, ClipboardCheck, FileSpreadsheet, Home, MessageCircle, PackageOpen, Settings, Users, UserCog, UserRoundCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
@@ -20,6 +20,7 @@ const pricingRole: Role = "Compras / Precificação";
 const items: SidebarItem[] = [
   { to: "/", label: "Cockpit", icon: Home },
   { to: "/mercado", label: "Central de Inteligência de Mercado", icon: Brain, roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Visualizador"] },
+  { to: "/lista-transmissao", label: "Lista de Transmissão", icon: MessageCircle, roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Visualizador"] },
   { to: "/tabela", label: "Tabela da Semana", icon: FileSpreadsheet, roles: ["Administrador Geral", pricingRole] },
   { to: "/propostas", label: "Propostas", icon: ClipboardCheck, roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Consultor"] },
   { to: "/pacotes", label: "Pacotes", icon: Boxes, roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },

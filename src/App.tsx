@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "./components/layout/AppShell";
 import { ProtectedRoute } from "./components/layout/ProtectedRoute";
@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Cockpit from "./pages/Cockpit";
 import MarketIntelligence from "./pages/MarketIntelligence";
 import WeeklyTable from "./pages/WeeklyTable";
+import BroadcastList from "./pages/BroadcastList";
 import Proposals from "./pages/Proposals";
 import Packages from "./pages/Packages";
 import Approvals from "./pages/Approvals";
@@ -42,8 +43,10 @@ export default function App() {
         <Route path="/consultores" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Consultants /></RoleOnly>} />
         <Route path="/relatorios" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Visualizador"]}><Reports /></RoleOnly>} />
         <Route path="/usuarios" element={<AdminOnly><Users /></AdminOnly>} />
+        <Route path="/lista-transmissao" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Visualizador"]}><BroadcastList /></RoleOnly>} />
         <Route path="/configuracoes" element={<Settings />} />
       </Route>
     </Routes>
   );
 }
+

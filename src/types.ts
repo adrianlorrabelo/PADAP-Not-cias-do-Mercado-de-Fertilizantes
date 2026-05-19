@@ -448,6 +448,39 @@ export interface WhatsAppSendHistory {
   reportFileName?: string;
 }
 
+export type ProducerContactStatus = "ativo" | "inativo";
+export type BroadcastManualStatus = "pendente" | "enviado" | "erro" | "nao_enviar";
+
+export interface ProducerContact {
+  id: string;
+  name: string;
+  farm: string;
+  whatsapp: string;
+  formattedWhatsapp: string;
+  city: string;
+  mainCrop: string;
+  groups: string[];
+  notes: string;
+  status: ProducerContactStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface BroadcastHistory {
+  id: string;
+  producerId: string;
+  producerName: string;
+  farm: string;
+  whatsapp: string;
+  reportType: ReportAudience;
+  reportDate: string;
+  period: string;
+  status: BroadcastManualStatus;
+  sentAt: string;
+  notes: string;
+  message: string;
+}
+
 export interface AnalystPrediction {
   id: string;
   predictionDate: string;
