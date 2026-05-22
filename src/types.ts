@@ -123,6 +123,8 @@ export interface Proposal {
 
 export type ProductAvailability = "Confirmada" | "Aguardando fornecedor" | "Indisponível" | "Não verificada" | "";
 export type ProductClassification = "Adubo especialidade" | "Adubo commodity" | "Foliar" | "Produto em estoque" | "Pacote comercial" | "Cotação manual" | "Não identificado";
+export type QuotationStatus = "Pode negociar" | "Em análise" | "Requer aprovação" | "Bloqueada" | "Vencida/Inativa";
+export type QuotationItemStatus = "Pode enviar" | "Atenção" | "Requer aprovação" | "Bloqueado";
 
 export interface QuotationAssistantInput {
   client: string;
@@ -163,6 +165,77 @@ export interface QuotationSecurityScore {
   positives: string[];
   pending: string[];
   recommendation: string;
+}
+
+export interface QuotationItem {
+  id: string;
+  product: string;
+  supplier: string;
+  quantity: number;
+  unit: string;
+  baseCost: number;
+  freight: number;
+  taxes: number;
+  commission: number;
+  interest: number;
+  desiredMargin: number;
+  minimumMargin: number;
+  finalPrice: number;
+}
+
+export interface QuotationChecklist {
+  priceChecked: boolean;
+  freightChecked: boolean;
+  termChecked: boolean;
+  validityChecked: boolean;
+  availabilityChecked: boolean;
+  marginChecked: boolean;
+  supplierChecked: boolean;
+}
+
+export interface QuotationTrafficLight {
+  status: QuotationStatus;
+  reason: string;
+  nextAction: string;
+  owner: string;
+  expectedReturn: string;
+  updatedAt: string;
+}
+
+export interface QuotationHistoryEntry {
+  id: string;
+  date: string;
+  client: string;
+  consultant: string;
+  itemCount: number;
+  totalValue: number;
+  averageMargin: number;
+  status: QuotationStatus;
+  action: string;
+}
+
+export interface Quotation {
+  id: string;
+  client: string;
+  consultant: string;
+  farm: string;
+  term: string;
+  freightMode: "CIF" | "FOB" | "";
+  deliveryCity: string;
+  validity: string;
+  availability: ProductAvailability;
+  priceOrigin: string;
+  productType: ProductClassification;
+  strategy: string;
+  suggestedSupplier: string;
+  suggestedMinimumMargin: number;
+  packageMode: boolean;
+  packageTargetMargin: number;
+  items: QuotationItem[];
+  trafficLight: QuotationTrafficLight;
+  checklist: QuotationChecklist;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface PackageItem {
