@@ -109,6 +109,60 @@ export interface Proposal {
   createdBy: string;
   ptaxUsed: number;
   ptaxDate: string;
+  assistantProductName?: string;
+  assistantClientName?: string;
+  assistantConsultantName?: string;
+  assistantDeliveryCity?: string;
+  assistantPriceOrigin?: string;
+  assistantProductType?: ProductClassification;
+  assistantPricingStrategy?: string;
+  assistantSuggestedSupplier?: string;
+  assistantSuggestedMinimumMargin?: number;
+  assistantAvailability?: ProductAvailability;
+}
+
+export type ProductAvailability = "Confirmada" | "Aguardando fornecedor" | "Indisponível" | "Não verificada" | "";
+export type ProductClassification = "Adubo especialidade" | "Adubo commodity" | "Foliar" | "Produto em estoque" | "Pacote comercial" | "Cotação manual" | "Não identificado";
+
+export interface QuotationAssistantInput {
+  client: string;
+  consultant: string;
+  product: string;
+  quantity: string;
+  unit: string;
+  term: string;
+  freightMode: "CIF" | "FOB" | "";
+  deliveryCity: string;
+  supplierOrPriceOrigin: string;
+  basePrice: string;
+  validity: string;
+  availability: ProductAvailability;
+  productType?: ProductClassification;
+  pricingStrategy?: string;
+  suggestedSupplier?: string;
+  suggestedMinimumMargin?: string;
+}
+
+export interface PricingStrategySuggestion {
+  productType: ProductClassification;
+  suggestedSupplier: string;
+  strategy: string;
+  minimumMargin: number;
+  needsSupplierQuote: boolean;
+  suggestedSuppliers?: string[];
+  nextAction: string;
+}
+
+export interface QuotationDiagnosis extends PricingStrategySuggestion {
+  availability: ProductAvailability;
+}
+
+export interface QuotationSecurityScore {
+  percentage: number;
+  classification: "Alta" | "Boa" | "Média" | "Baixa";
+  positives: string[];
+  pending: string[];
+  recommendation: string;
 }
 
 export interface PackageItem {
