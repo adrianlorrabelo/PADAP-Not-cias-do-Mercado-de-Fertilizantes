@@ -5,21 +5,26 @@ export default {
     extend: {
       colors: {
         padap: {
-          green: "#39d353",
-          emerald: "#16a34a",
-          mint: "#9cffb1",
-          cyan: "#42d7ff",
-          amber: "#f6b73c",
-          oil: "#062b2b",
-          deep: "#031a18",
-          graphite: "#091116",
-          panel: "rgba(7, 19, 18, 0.78)"
+          green: "#1dba2c",
+          emerald: "#0f4c4f",
+          mint: "#e2f8e5",
+          cyan: "#2d7f82",
+          amber: "#c98200",
+          oil: "#143f42",
+          deep: "#0f4c4f",
+          graphite: "#ffffff",
+          panel: "#ffffff",
+          paper: "#ffffff",
+          field: "#f4f7fa",
+          line: "#dce6e2",
+          ink: "#0b1f1e",
+          muted: "#4f655d"
         }
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(57, 211, 83, 0.22), 0 18px 46px rgba(57, 211, 83, 0.10)",
-        panel: "0 24px 70px rgba(0, 0, 0, 0.34)",
-        lift: "0 18px 48px rgba(0, 0, 0, 0.28)"
+        glow: "0 0 0 1px rgba(29, 186, 44, 0.24), 0 14px 34px rgba(15, 76, 79, 0.14)",
+        panel: "0 18px 44px rgba(15, 76, 79, 0.10)",
+        lift: "0 16px 36px rgba(15, 76, 79, 0.14)"
       },
       fontFamily: {
         sans: ["Inter", "ui-sans-serif", "system-ui", "Segoe UI", "Arial", "sans-serif"]

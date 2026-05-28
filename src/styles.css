@@ -3,32 +3,260 @@
 @tailwind utilities;
 
 * { box-sizing: border-box; }
-html { color-scheme: dark; }
+html { color-scheme: light; }
 body {
   margin: 0;
   min-width: 320px;
-  background: #071112;
+  background: #ffffff;
+  color: #0b1f1e;
   font-family: Inter, ui-sans-serif, system-ui, Segoe UI, Arial, sans-serif;
+  font-weight: 450;
   text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
 }
 button, a, input, select { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(57, 211, 83, 0.35); }
-::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.03); }
-::-webkit-scrollbar-thumb { background: rgba(57, 211, 83, 0.24); border-radius: 999px; border: 2px solid rgba(7, 17, 18, 0.92); }
-::-webkit-scrollbar-thumb:hover { background: rgba(57, 211, 83, 0.38); }
+::selection { background: rgba(29, 186, 44, 0.22); }
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: #f4f7fa; }
+::-webkit-scrollbar-thumb { background: #b4c8c0; border-radius: 999px; border: 2px solid #f4f7fa; }
+::-webkit-scrollbar-thumb:hover { background: #7fa995; }
 
 .page-title {
-  @apply mb-7 flex flex-col gap-2;
+  @apply mb-7 flex flex-col gap-1.5;
 }
 .page-title h1 {
-  @apply max-w-5xl text-2xl font-semibold leading-tight text-white lg:text-[2.15rem];
+  @apply max-w-5xl text-3xl font-bold leading-tight tracking-tight text-padap-ink;
 }
 .page-title p {
-  @apply max-w-3xl text-sm leading-6 text-slate-400;
+  @apply max-w-3xl text-sm font-medium leading-relaxed text-padap-muted;
 }
 
-.page-title::before {
-  content: "";
-  @apply mb-1 h-1 w-16 rounded-full bg-gradient-to-r from-padap-green via-padap-mint to-padap-cyan;
+/* Light-theme compatibility: neutralize residual dark utility classes in pages not fully migrated. */
+.text-white,
+.text-slate-100,
+.text-slate-200 {
+  color: #0b1f1e !important;
+}
+
+.text-slate-300,
+.text-slate-400 {
+  color: #4f655d !important;
+  font-weight: 500;
+}
+
+.text-slate-500,
+.text-slate-600 {
+  color: #4f655d !important;
+  font-weight: 500;
+}
+
+.text-padap-mint {
+  color: #0f7a1e !important;
+  font-weight: 650;
+}
+
+.text-cyan-100 {
+  color: #0f4c4f !important;
+  font-weight: 650;
+}
+
+.text-amber-100 {
+  color: #8a5b00 !important;
+}
+
+.text-red-100,
+.text-red-200 {
+  color: #b42318 !important;
+}
+
+.bg-\[\#061314\]\/55,
+.bg-\[\#061314\]\/70,
+.bg-\[\#061314\]\/80,
+.bg-\[\#061314\]\/90,
+.bg-\[\#061615\]\/70,
+.bg-\[\#071918\]\/80,
+.bg-\[\#081313\],
+.bg-\[\#0a1112\]\/82,
+.bg-\[\#020807\],
+.bg-black\/15,
+.bg-black\/20,
+.bg-black\/30,
+.bg-black\/10,
+.bg-white\/\[0\.02\],
+.bg-white\/\[0\.025\],
+.bg-white\/\[0\.03\],
+.bg-white\/\[0\.035\],
+.bg-white\/\[0\.04\],
+.bg-white\/\[0\.045\],
+.bg-white\/\[0\.05\],
+.bg-white\/\[0\.055\],
+.bg-white\/\[0\.06\],
+.bg-white\/\[0\.065\],
+.bg-white\/\[0\.075\] {
+  background-color: #f4f7fa !important;
+}
+
+.bg-\[linear-gradient\(135deg\2c rgba\(7\2c 26\2c 24\2c \.92\)\2c rgba\(3\2c 11\2c 13\2c \.86\)\)\] {
+  background: #f4f7fa !important;
+}
+
+.border-white\/10,
+.border-white\/20,
+.border-white\/\[0\.07\],
+.border-white\/\[0\.08\],
+.border-white\/\[0\.09\],
+.border-white\/\[0\.10\],
+.border-white\/\[0\.14\] {
+  border-color: #dce6e2 !important;
+}
+
+.divide-white\/\[0\.07\] > :not([hidden]) ~ :not([hidden]),
+.divide-white\/\[0\.08\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: #dce6e2 !important;
+}
+
+.padap-green-sidebar,
+.padap-green-sidebar .text-white,
+.padap-green-sidebar .text-white\/65,
+.padap-green-sidebar .text-white\/78,
+.padap-green-sidebar .text-white\/85,
+.padap-green-sidebar .text-white\/88 {
+  color: #ffffff !important;
+}
+
+.padap-green-sidebar .text-padap-muted {
+  color: rgba(255, 255, 255, 0.86) !important;
+  font-weight: 500;
+}
+
+.padap-green-sidebar .text-white\/65,
+.padap-green-sidebar .text-white\/78,
+.padap-green-sidebar .text-white\/85,
+.padap-green-sidebar .text-white\/88 {
+  font-weight: 600;
+}
+
+.padap-green-sidebar .bg-white {
+  background-color: #ffffff !important;
+}
+
+.padap-green-sidebar .text-\[\#0f4c4f\] {
+  color: #0f4c4f !important;
+}
+
+.campaign-preview,
+.campaign-preview .text-white {
+  color: #ffffff !important;
+}
+
+.campaign-preview .text-slate-300,
+.campaign-preview .text-slate-400 {
+  color: rgba(255, 255, 255, 0.82) !important;
+}
+
+.campaign-preview .text-padap-mint {
+  color: #78f085 !important;
+}
+
+.campaign-preview .text-\[\#10201a\] {
+  color: #10201a !important;
+}
+
+.campaign-preview .text-\[\#496156\],
+.campaign-preview .text-\[\#6a7f73\] {
+  color: #30483b !important;
+}
+
+.campaign-preview thead,
+.campaign-preview thead .text-white,
+.campaign-preview thead th {
+  color: #ffffff !important;
+}
+
+.campaign-preview tbody td {
+  color: #10201a;
+}
+
+.campaign-preview tbody .text-slate-300 {
+  color: #6b7c6e !important;
+}
+
+/* Dark decision-center surface scoped to Market Intelligence. */
+.market-decision-center {
+  background-color: rgba(6, 19, 20, 0.86) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color-scheme: dark;
+}
+
+.market-decision-center .bg-white,
+.market-decision-center .bg-padap-panel,
+.market-decision-center .bg-\[\#061314\]\/55,
+.market-decision-center .bg-\[\#061314\]\/70,
+.market-decision-center .bg-\[\#061314\]\/80,
+.market-decision-center .bg-\[\#061314\]\/90,
+.market-decision-center .bg-\[\#061615\]\/70,
+.market-decision-center .bg-\[\#071918\]\/80,
+.market-decision-center .bg-\[\#081313\],
+.market-decision-center .bg-\[\#0a1112\]\/82,
+.market-decision-center .bg-\[\#020807\] {
+  background-color: #071312 !important;
+}
+
+.market-decision-center .bg-black\/10,
+.market-decision-center .bg-black\/15,
+.market-decision-center .bg-black\/20,
+.market-decision-center .bg-black\/30 {
+  background-color: rgba(0, 0, 0, 0.28) !important;
+}
+
+.market-decision-center .bg-white\/\[0\.02\],
+.market-decision-center .bg-white\/\[0\.025\],
+.market-decision-center .bg-white\/\[0\.03\],
+.market-decision-center .bg-white\/\[0\.035\],
+.market-decision-center .bg-white\/\[0\.04\],
+.market-decision-center .bg-white\/\[0\.045\],
+.market-decision-center .bg-white\/\[0\.05\],
+.market-decision-center .bg-white\/\[0\.055\],
+.market-decision-center .bg-white\/\[0\.06\],
+.market-decision-center .bg-white\/\[0\.065\],
+.market-decision-center .bg-white\/\[0\.075\] {
+  background-color: rgba(255, 255, 255, 0.045) !important;
+}
+
+.market-decision-center .text-white,
+.market-decision-center .text-slate-100,
+.market-decision-center .text-slate-200 {
+  color: #ffffff !important;
+}
+
+.market-decision-center .text-slate-300,
+.market-decision-center .text-slate-400 {
+  color: #c3d0cb !important;
+  font-weight: 500;
+}
+
+.market-decision-center .text-slate-500,
+.market-decision-center .text-slate-600 {
+  color: #7f9690 !important;
+  font-weight: 500;
+}
+
+.market-decision-center .text-padap-mint {
+  color: #78f085 !important;
+}
+
+.market-decision-center .border-padap-line,
+.market-decision-center .border-white\/10,
+.market-decision-center .border-white\/20,
+.market-decision-center .border-white\/\[0\.07\],
+.market-decision-center .border-white\/\[0\.08\],
+.market-decision-center .border-white\/\[0\.09\],
+.market-decision-center .border-white\/\[0\.10\],
+.market-decision-center .border-white\/\[0\.14\] {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.market-decision-center .divide-white\/\[0\.07\] > :not([hidden]) ~ :not([hidden]),
+.market-decision-center .divide-white\/\[0\.08\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(255, 255, 255, 0.1) !important;
 }
