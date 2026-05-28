@@ -72,6 +72,16 @@ interface SourceHealthRow {
   observation: string;
 }
 
+function SectionDivider({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3">
+      <div className="h-px flex-1 bg-padap-line" />
+      <span className="text-xs font-bold uppercase tracking-[0.2em] text-padap-muted">{label}</span>
+      <div className="h-px flex-1 bg-padap-line" />
+    </div>
+  );
+}
+
 export default function MarketIntelligence() {
   const [statuses, setStatuses] = useState(mockMarketUpdateStatuses);
   const [lastUpdate, setLastUpdate] = useState(new Date().toISOString());
@@ -297,6 +307,8 @@ export default function MarketIntelligence() {
         <MarketThermometer score={score} thermometer={marketAnalysis?.thermometer} />
       </div>
 
+      <SectionDivider label="Leitura do mercado" />
+
       <CurrencyPtaxCard indicators={decisionIndicators} proposals={mockImpactedProposals} onDetails={() => setShowAdvanced(true)} />
 
       <CommercialIndicatorsPanel indicators={mockMarketCommercialIndicators} />
@@ -313,10 +325,14 @@ export default function MarketIntelligence() {
         <InternalStockCard summary={stockSummary} onOpen={() => action("Abra Compras > Estoque para importar ou revisar o estoque interno.")} />
       </div>
 
+      <SectionDivider label="Decisão comercial" />
+
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
         <CommercialAlertsCard alerts={mockInternalMarketAlerts} proposals={mockImpactedProposals.slice(0, 4)} opportunities={analysisOpportunities} onAction={action} onDetails={() => setShowAdvanced(true)} />
         <SourcesHealthCard sources={marketSources.filter((source) => source.isActive)} latestHistory={latestHistory} onOpen={() => setShowSources(true)} onManage={() => setShowSourcesManager(true)} />
       </div>
+
+      <SectionDivider label="Ação e transmissão" />
 
       <ReportBriefingPanel onReport={() => setShowReport(true)} onBriefing={openBriefingWhatsApp} onWhatsApp={openReportWhatsApp} onRecipients={() => setShowRecipients(true)} canManageRecipients={canManageRecipients} />
 
@@ -368,13 +384,13 @@ export default function MarketIntelligence() {
       <Modal title="Configurar alertas" open={showAlertConfig} onClose={() => setShowAlertConfig(false)}>
         <div className="grid gap-3 md:grid-cols-2">
           {["Risco cambial", "Risco de margem", "Oportunidade em potássicos", "Propostas impactadas", "Relação de troca", "Notícia crítica"].map((item) => (
-            <label key={item} className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300">
+            <label key={item} className="flex items-center justify-between gap-3 rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">
               <span>{item}</span>
               <input type="checkbox" defaultChecked />
             </label>
           ))}
         </div>
-        <p className="mt-4 text-sm leading-6 text-slate-400">Configuração simulada nesta versão. A persistência real fica preparada para integração futura.</p>
+        <p className="mt-4 text-sm leading-6 text-padap-muted">Configuração simulada nesta versão. A persistência real fica preparada para integração futura.</p>
       </Modal>
 
       <MarketUpdateHistoryModal
@@ -396,14 +412,14 @@ export default function MarketIntelligence() {
       />
 
       <Modal title="Análise completa do mercado" open={showAnalysis} onClose={() => setShowAnalysis(false)}>
-        <div className="space-y-4 text-sm leading-6 text-slate-300">
-          <p><strong className="text-white">Resumo:</strong> {marketAnalysis?.briefing.summary ?? mockMarketAnalystInsight.summary}</p>
-          <p><strong className="text-white">O que mudou:</strong> {marketAnalysis?.whatChanged ?? "PTAX, ureia e KCl seguem no radar comercial."}</p>
-          <p><strong className="text-white">Impacto PADAP:</strong> {marketAnalysis?.briefing.impactPadap ?? mockMarketAnalystInsight.padapImpact}</p>
-          <p><strong className="text-white">Produtos afetados:</strong> {(marketAnalysis?.briefing.affectedProducts ?? mockMarketAnalystInsight.affectedProducts).join(", ")}</p>
-          <p><strong className="text-white">Termômetro:</strong> {marketAnalysis ? `${marketAnalysis.thermometer.score}/100 - ${marketAnalysis.thermometer.trend}` : "Aguardando atualização automática."}</p>
-          <p className="text-padap-mint"><strong>Ação recomendada:</strong> {marketAnalysis?.briefing.recommendedAction ?? mockMarketAnalystInsight.recommendedAction}</p>
-          <p><strong className="text-white">Fontes:</strong> {(marketAnalysis?.briefing.sourcesUsed ?? mockMarketAnalystInsight.sources).join(", ")}</p>
+        <div className="space-y-4 text-sm leading-6 text-padap-muted">
+          <p><strong className="text-padap-ink">Resumo:</strong> {marketAnalysis?.briefing.summary ?? mockMarketAnalystInsight.summary}</p>
+          <p><strong className="text-padap-ink">O que mudou:</strong> {marketAnalysis?.whatChanged ?? "PTAX, ureia e KCl seguem no radar comercial."}</p>
+          <p><strong className="text-padap-ink">Impacto PADAP:</strong> {marketAnalysis?.briefing.impactPadap ?? mockMarketAnalystInsight.padapImpact}</p>
+          <p><strong className="text-padap-ink">Produtos afetados:</strong> {(marketAnalysis?.briefing.affectedProducts ?? mockMarketAnalystInsight.affectedProducts).join(", ")}</p>
+          <p><strong className="text-padap-ink">Termômetro:</strong> {marketAnalysis ? `${marketAnalysis.thermometer.score}/100 - ${marketAnalysis.thermometer.trend}` : "Aguardando atualização automática."}</p>
+          <p className="text-padap-emerald"><strong>Ação recomendada:</strong> {marketAnalysis?.briefing.recommendedAction ?? mockMarketAnalystInsight.recommendedAction}</p>
+          <p><strong className="text-padap-ink">Fontes:</strong> {(marketAnalysis?.briefing.sourcesUsed ?? mockMarketAnalystInsight.sources).join(", ")}</p>
         </div>
       </Modal>
     </div>
@@ -417,7 +433,7 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
       <div className="space-y-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <p className="text-sm leading-6 text-slate-400">Leituras geradas por atualização manual ou automática enquanto a Central está aberta no navegador.</p>
+            <p className="text-sm leading-6 text-padap-muted">Leituras geradas por atualização manual ou automática enquanto a Central está aberta no navegador.</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge tone="cyan">{history.length} leituras salvas</Badge>
               {history[0] && <Badge tone={statusTone(history[0].status)}>Última: {history[0].status}</Badge>}
@@ -430,18 +446,18 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
         </div>
 
         {!history.length && (
-          <div className="rounded-lg border border-white/10 bg-white/[0.03] p-5 text-sm leading-6 text-slate-400">
+          <div className="rounded-lg border border-padap-line bg-padap-field p-5 text-sm leading-6 text-padap-muted">
             Nenhuma leitura registrada ainda. Clique em Atualizar mercado agora para criar o primeiro histórico da Central de Mercado.
           </div>
         )}
 
         {selected ? (
           <div className="space-y-4">
-            <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+            <div className="rounded-lg border border-padap-line bg-padap-field p-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <h3 className="font-semibold text-white">Leitura de {formatDateTime(selected.updatedAt)}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-400">{selected.summary}</p>
+                  <h3 className="font-semibold text-padap-ink">Leitura de {formatDateTime(selected.updatedAt)}</h3>
+                  <p className="mt-2 text-sm leading-6 text-padap-muted">{selected.summary}</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   <Badge tone={selectedTrigger === "Automática" ? "cyan" : "neutral"}>{selectedTrigger}</Badge>
@@ -457,15 +473,15 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
                 <HistoryMetric label="Score análise" value={selected.analysisScore ?? "--"} />
                 <HistoryMetric label="Origem" value={selectedTrigger} />
               </div>
-              {selected.analysisSummary && <p className="mt-3 text-sm leading-6 text-padap-mint">Análise: {selected.analysisSummary}</p>}
+              {selected.analysisSummary && <p className="mt-3 text-sm leading-6 text-padap-emerald">Análise: {selected.analysisSummary}</p>}
               <div className="mt-4">
                 <Button variant="ghost" onClick={() => onCopy(selected.summary)}><Copy size={14} />Copiar resumo</Button>
               </div>
             </div>
 
-            <div className="overflow-x-auto rounded-lg border border-white/10">
+            <div className="overflow-x-auto rounded-lg border border-padap-line">
               <table className="w-full min-w-[780px] text-left text-sm">
-                <thead className="bg-white/[0.035] text-xs uppercase tracking-[0.12em] text-slate-500">
+                <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
                   <tr>
                     <th className="px-4 py-3">Fonte</th>
                     <th className="px-4 py-3">Categoria</th>
@@ -474,14 +490,14 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
                     <th className="px-4 py-3">Horário</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-white/[0.07]">
+                <tbody className="divide-y divide-padap-line">
                   {selected.sourceResults.map((source) => (
                     <tr key={`${selected.id}-${source.sourceId}`}>
-                      <td className="px-4 py-3 font-semibold text-white">{source.sourceName}</td>
-                      <td className="px-4 py-3 text-slate-300">{source.category}</td>
+                      <td className="px-4 py-3 font-semibold text-padap-ink">{source.sourceName}</td>
+                      <td className="px-4 py-3 text-padap-muted">{source.category}</td>
                       <td className="px-4 py-3"><Badge tone={sourceStatusTone(source.status)}>{source.status}</Badge></td>
-                      <td className="px-4 py-3 text-slate-400">{source.message ?? "Sem mensagem adicional."}</td>
-                      <td className="px-4 py-3 text-slate-400">{formatTime(source.checkedAt)}</td>
+                      <td className="px-4 py-3 text-padap-muted">{source.message ?? "Sem mensagem adicional."}</td>
+                      <td className="px-4 py-3 text-padap-muted">{formatTime(source.checkedAt)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -491,19 +507,19 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
         ) : (
           <div className="space-y-3">
             {history.map((item) => (
-              <article key={item.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+              <article key={item.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
                 <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-semibold text-white">{formatDateTime(item.updatedAt)}</h3>
+                      <h3 className="font-semibold text-padap-ink">{formatDateTime(item.updatedAt)}</h3>
                       <Badge tone={getHistoryTrigger(item) === "Automática" ? "cyan" : "neutral"}>{getHistoryTrigger(item)}</Badge>
                       <Badge tone={statusTone(item.status)}>{item.status}</Badge>
                       <Badge tone="neutral">Confiança {item.confidence}</Badge>
                       {item.analysisScore !== undefined && <Badge tone="cyan">Score {item.analysisScore}</Badge>}
                     </div>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">{item.summary}</p>
-                    {item.analysisSummary && <p className="mt-1 text-sm leading-6 text-padap-mint">{item.analysisSummary}</p>}
-                    <p className="mt-2 text-xs leading-5 text-slate-500">
+                    <p className="mt-2 text-sm leading-6 text-padap-muted">{item.summary}</p>
+                    {item.analysisSummary && <p className="mt-1 text-sm leading-6 text-padap-emerald">{item.analysisSummary}</p>}
+                    <p className="mt-2 text-xs leading-5 text-padap-muted">
                       {item.sourcesChecked} fontes lidas, {item.sourcesSucceeded} com sucesso e {item.sourcesFailed} com erro.
                     </p>
                   </div>
@@ -555,28 +571,28 @@ function AutoUpdateSettingsModal({ open, settings, latestAutoHistory, onClose, o
           A atualização automática funciona enquanto o sistema estiver aberto no navegador.
         </div>
 
-        <label className="flex items-center justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-4 text-sm text-slate-300">
+        <label className="flex items-center justify-between gap-3 rounded-lg border border-padap-line bg-padap-field p-4 text-sm text-padap-muted">
           <span>
-            <span className="block font-semibold text-white">Ativar atualização automática</span>
-            <span className="mt-1 block text-xs leading-5 text-slate-500">Sem backend nesta etapa; a rotina depende da Central aberta.</span>
+            <span className="block font-semibold text-padap-ink">Ativar atualização automática</span>
+            <span className="mt-1 block text-xs leading-5 text-padap-muted">Sem backend nesta etapa; a rotina depende da Central aberta.</span>
           </span>
           <input type="checkbox" checked={settings.enabled} onChange={(event) => save({ enabled: event.target.checked })} />
         </label>
 
         <div>
           <div className="mb-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <h3 className="font-semibold text-white">Horários de atualização</h3>
+            <h3 className="font-semibold text-padap-ink">Horários de atualização</h3>
             <Button variant="ghost" onClick={addTime}><Plus size={15} />Adicionar horário</Button>
           </div>
           <div className="grid gap-2 md:grid-cols-2">
             {settings.times.map((time, index) => (
-              <div key={`${time}-${index}`} className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/[0.03] p-3">
+              <div key={`${time}-${index}`} className="flex items-center gap-2 rounded-lg border border-padap-line bg-padap-field p-3">
                 <Input type="time" value={time} onChange={(event) => updateTime(index, event.target.value)} />
                 <Button variant="danger" className="h-10 w-10 shrink-0 px-0" onClick={() => removeTime(index)} aria-label="Remover horário"><Trash2 size={15} /></Button>
               </div>
             ))}
           </div>
-          {!settings.times.length && <p className="mt-3 text-sm leading-6 text-slate-400">Adicione pelo menos um horário para ativar uma janela automática.</p>}
+          {!settings.times.length && <p className="mt-3 text-sm leading-6 text-padap-muted">Adicione pelo menos um horário para ativar uma janela automática.</p>}
         </div>
 
         <div className="grid gap-3 md:grid-cols-3">
@@ -601,9 +617,9 @@ function getHistoryTrigger(history: MarketUpdateHistory): MarketUpdateTrigger {
 
 function HistoryMetric({ label, value }: { label: string; value: ReactNode }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-black/10 px-3 py-2.5">
-      <p className="text-[11px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
-      <p className="mt-1 font-semibold text-white">{value}</p>
+    <div className="rounded-lg border border-padap-line bg-padap-field px-3 py-2.5">
+      <p className="text-[11px] uppercase tracking-[0.12em] text-padap-muted">{label}</p>
+      <p className="mt-1 font-semibold text-padap-ink">{value}</p>
     </div>
   );
 }
@@ -679,7 +695,7 @@ function RealityWarnings({ snapshot }: { snapshot: MarketRealitySnapshot | null 
   if (!snapshot?.warnings.length) return null;
   return (
     <div className="rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-50">
-      <strong className="text-white">Atenção sobre os dados:</strong> {snapshot.warnings.join(" ")}
+      <strong className="text-padap-ink">Atenção sobre os dados:</strong> {snapshot.warnings.join(" ")}
     </div>
   );
 }
@@ -704,13 +720,13 @@ function DecisionSummary({ analysis, status, confidence, onOpen }: { analysis: M
       <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
         <div className="min-w-0 flex-1">
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-padap-cyan">Resumo de decisão</p>
-          <h2 className="mt-3 max-w-3xl text-2xl font-semibold leading-tight text-white">{analysis?.summaryTitle ?? "Mercado volátil, com pressão em nitrogenados e oportunidade em potássicos."}</h2>
-          <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">Leitura comercial para decidir preço, validade, revisão de propostas e foco de abordagem dos consultores.</p>
+          <h2 className="mt-3 max-w-3xl text-2xl font-semibold leading-tight text-padap-ink">{analysis?.summaryTitle ?? "Mercado volátil, com pressão em nitrogenados e oportunidade em potássicos."}</h2>
+          <p className="mt-2 max-w-3xl text-sm leading-6 text-padap-muted">Leitura comercial para decidir preço, validade, revisão de propostas e foco de abordagem dos consultores.</p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {decisionItems.map((item) => (
-              <div key={item.label} className="rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2.5">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{item.label}</p>
-                <p className="mt-1 text-sm leading-6 text-slate-200">{item.value}</p>
+              <div key={item.label} className="rounded-lg border border-padap-line bg-padap-field px-3 py-2.5">
+                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-padap-muted">{item.label}</p>
+                <p className="mt-1 text-sm leading-6 text-padap-ink">{item.value}</p>
               </div>
             ))}
           </div>
@@ -730,6 +746,8 @@ function CurrencyPtaxCard({ indicators, proposals, onDetails }: { indicators: Ma
   const ptax = findIndicator(indicators, ["ptax"]) ?? fallbackMainIndicators[0];
   const riskyProposals = proposals.filter((proposal) => proposal.impactReason.toLowerCase().includes("ptax") || proposal.impactReason.toLowerCase().includes("câmbio")).slice(0, 3);
   const isPositive = ptax.day >= 0;
+  const portfolioImpact = Math.abs(ptax.day / 100 * 0.4 * proposals.reduce((sum, p) => sum + (p.value ?? 0), 0));
+  const impactLabel = portfolioImpact > 0 ? `PTAX ${ptax.day >= 0 ? "+" : ""}${ptax.day.toFixed(1)}% → pressão estimada de ${formatCurrency(portfolioImpact)} no portfólio` : "Aguardando dados de portfólio.";
   return (
     <Card>
       <div className="grid gap-5 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
@@ -737,37 +755,40 @@ function CurrencyPtaxCard({ indicators, proposals, onDetails }: { indicators: Ma
           <SectionTop title="Câmbio/PTAX" action={<Badge tone={isPositive ? "amber" : "green"}>{isPositive ? "Pressão cambial" : "Alívio cambial"}</Badge>} />
           <div className="flex items-end justify-between gap-3">
             <div>
-              <p className="text-sm text-slate-500">Referência atual</p>
-              <p className="mt-1 text-4xl font-semibold text-white">{ptax.value}</p>
-              <p className="mt-2 text-sm leading-6 text-slate-400">{ptax.trend} - {ptax.source}</p>
+              <p className="text-sm text-padap-muted">Referência atual</p>
+              <p className="mt-1 text-4xl font-semibold text-padap-ink">{ptax.value}</p>
+              <p className="mt-2 text-sm leading-6 text-padap-muted">{ptax.trend} - {ptax.source}</p>
             </div>
-            {isPositive ? <TrendingUp size={30} className="text-amber-200" /> : <TrendingDown size={30} className="text-padap-mint" />}
+            {isPositive ? <TrendingUp size={30} className="text-amber-200" /> : <TrendingDown size={30} className="text-padap-emerald" />}
           </div>
           <div className="mt-4 h-12"><Sparkline data={ptax.history.map((value) => ({ value }))} color={isPositive ? "#f6b73c" : "#1dba2c"} /></div>
           <div className="mt-4 grid grid-cols-2 gap-2">
             <IndicatorMini label="Hoje" value={formatPercent(ptax.day)} tone={isPositive ? "amber" : "green"} />
             <IndicatorMini label="Semana" value={formatPercent(ptax.week)} tone={ptax.week >= 0 ? "amber" : "green"} />
           </div>
+          <p className={`mt-3 rounded-lg border px-3 py-2 text-xs font-semibold ${isPositive ? "border-amber-200/40 bg-amber-50 text-amber-700" : "border-padap-green/20 bg-padap-green/5 text-padap-emerald"}`}>
+            {impactLabel}
+          </p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+        <div className="rounded-lg border border-padap-line bg-padap-field p-4">
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h3 className="font-semibold text-white">Decisão comercial</h3>
-              <p className="mt-1 text-sm leading-6 text-slate-400">Usar validade curta e revisar propostas antigas antes de confirmar preço indexado.</p>
+              <h3 className="font-semibold text-padap-ink">Decisão comercial</h3>
+              <p className="mt-1 text-sm leading-6 text-padap-muted">Usar validade curta e revisar propostas antigas antes de confirmar preço indexado.</p>
             </div>
             <Button variant="ghost" onClick={onDetails}>Ver impactos</Button>
           </div>
           <div className="mt-4 space-y-3">
             {riskyProposals.length ? riskyProposals.map((proposal) => (
-              <div key={proposal.id} className="rounded-lg border border-white/10 bg-black/10 p-3">
+              <div key={proposal.id} className="rounded-lg border border-padap-line bg-padap-field p-3">
                 <div className="flex items-center justify-between gap-2">
-                  <p className="font-semibold text-white">{proposal.id} - {proposal.client}</p>
+                  <p className="font-semibold text-padap-ink">{proposal.id} - {proposal.client}</p>
                   <Badge tone={priorityTone(proposal.priority)}>{proposal.priority}</Badge>
                 </div>
-                <p className="mt-1 text-sm leading-5 text-slate-400">{proposal.impactReason}</p>
+                <p className="mt-1 text-sm leading-5 text-padap-muted">{proposal.impactReason}</p>
               </div>
             )) : (
-              <div className="rounded-lg border border-white/10 bg-black/10 p-3 text-sm leading-6 text-slate-400">Nenhuma proposta cambial crítica no mock atual.</div>
+              <div className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-muted">Nenhuma proposta cambial crítica no mock atual.</div>
             )}
           </div>
         </div>
@@ -795,12 +816,12 @@ function CommercialIndicatorsPanel({ indicators }: { indicators: MarketCommercia
         <MiniMetric value={released} label="produtos liberados" />
         <MiniMetric value={reviewOrApproval} label="revisão/aprovação" />
       </div>
-      <p className="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm leading-6 text-slate-400">
+      <p className="mt-4 rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-muted">
         Estrutura temporária com dados simulados para validar a leitura comercial antes de conectar banco, integrações ou tabelas reais.
       </p>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-[1180px] w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="text-xs uppercase tracking-[0.12em] text-padap-muted">
             <tr>
               <th className="pb-2 pr-4">PTAX/dólar atual</th>
               <th className="pb-2 pr-4">Variação dólar</th>
@@ -815,20 +836,20 @@ function CommercialIndicatorsPanel({ indicators }: { indicators: MarketCommercia
               <th className="pb-2">Motivo</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.07]">
+          <tbody className="divide-y divide-padap-line">
             {rows.map((item) => (
               <tr key={item.id}>
-                <td className="py-3 pr-4 font-semibold text-white">{item.ptaxCurrent.toFixed(2).replace(".", ",")}</td>
-                <td className="py-3 pr-4 text-slate-300">{formatPercent(item.dollarVariationSinceLastUpdate)}</td>
-                <td className="py-3 pr-4 font-semibold text-white">{item.product}</td>
+                <td className="py-3 pr-4 font-semibold text-padap-ink">{item.ptaxCurrent.toFixed(2).replace(".", ",")}</td>
+                <td className="py-3 pr-4 text-padap-muted">{formatPercent(item.dollarVariationSinceLastUpdate)}</td>
+                <td className="py-3 pr-4 font-semibold text-padap-ink">{item.product}</td>
                 <td className="py-3 pr-4"><Badge tone={familyTone(item.productFamily)}>{item.productFamily}</Badge></td>
-                <td className="py-3 pr-4 text-right text-slate-300">{formatCurrency(item.baseCost)}</td>
-                <td className="py-3 pr-4 text-right font-semibold text-white">{formatCurrency(item.padapFinalPrice)}</td>
-                <td className="py-3 pr-4 text-right text-slate-300">{formatPercent(item.minimumMargin)}</td>
-                <td className="py-3 pr-4 text-right text-slate-300">{formatPercent(item.currentMargin)}</td>
-                <td className="py-3 pr-4 text-slate-300">{formatDateTime(item.proposalValidity)}</td>
+                <td className="py-3 pr-4 text-right text-padap-muted">{formatCurrency(item.baseCost)}</td>
+                <td className="py-3 pr-4 text-right font-semibold text-padap-ink">{formatCurrency(item.padapFinalPrice)}</td>
+                <td className="py-3 pr-4 text-right text-padap-muted">{formatPercent(item.minimumMargin)}</td>
+                <td className="py-3 pr-4 text-right text-padap-muted">{formatPercent(item.currentMargin)}</td>
+                <td className="py-3 pr-4 text-padap-muted">{formatDateTime(item.proposalValidity)}</td>
                 <td className="py-3 pr-4"><Badge tone={commercialStatusTone(item.commercial.status)}>{item.commercial.status}</Badge></td>
-                <td className="py-3 text-slate-400">{item.commercial.reason}</td>
+                <td className="py-3 text-padap-muted">{item.commercial.reason}</td>
               </tr>
             ))}
           </tbody>
@@ -849,8 +870,8 @@ function FertilizerFamilyCard({ family, productKeys, indicators, products, marke
       <div className="flex min-h-[270px] flex-col">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-white">{family}</h2>
-            <p className="mt-1 text-sm leading-6 text-slate-400">{product?.movement ?? indicator?.trend ?? "Monitoramento comercial"}</p>
+            <h2 className="text-lg font-semibold text-padap-ink">{family}</h2>
+            <p className="mt-1 text-sm leading-6 text-padap-muted">{product?.movement ?? indicator?.trend ?? "Monitoramento comercial"}</p>
           </div>
           <Badge tone={tone}>{product?.impact ?? padap?.status ?? "Radar"}</Badge>
         </div>
@@ -865,8 +886,8 @@ function FertilizerFamilyCard({ family, productKeys, indicators, products, marke
           <IndicatorMini label="Hoje" value={formatPercent(indicator?.day ?? product?.dailyVariation ?? 0)} tone={isPositive ? "amber" : "green"} />
           <IndicatorMini label="Semana" value={formatPercent(indicator?.week ?? product?.weeklyVariation ?? 0)} tone={(indicator?.week ?? product?.weeklyVariation ?? 0) >= 0 ? "amber" : "green"} />
         </div>
-        <p className="mt-4 text-sm leading-6 text-slate-300">{product?.reason ?? padap?.marketTrend ?? "Leitura mockada para manter a decisão sem integração externa."}</p>
-        <p className="mt-auto pt-3 text-sm leading-6 text-padap-mint">{product?.recommendedAction ?? padap?.recommendedAction ?? "Monitorar antes de cotar."}</p>
+        <p className="mt-4 text-sm leading-6 text-padap-muted">{product?.reason ?? padap?.marketTrend ?? "Leitura mockada para manter a decisão sem integração externa."}</p>
+        <p className="mt-auto pt-3 text-sm leading-6 text-padap-emerald">{product?.recommendedAction ?? padap?.recommendedAction ?? "Monitorar antes de cotar."}</p>
       </div>
     </Card>
   );
@@ -881,21 +902,21 @@ function ExchangeDecisionCard({ ratios }: { ratios: ExchangeRatioItem[] }) {
         {ratios.map((ratio) => {
           const favorable = ratio.status === "Favorável";
           return (
-            <div key={ratio.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+            <div key={ratio.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
               <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-white">{ratio.pair}</h3>
+                <h3 className="font-semibold text-padap-ink">{ratio.pair}</h3>
                 <Badge tone={favorable ? "green" : ratio.status === "Estável" ? "cyan" : "amber"}>{ratio.status}</Badge>
               </div>
               <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                <p className="text-slate-500">Antes<br /><span className="font-semibold text-slate-200">{ratio.previous} {ratio.unit}</span></p>
-                <p className="text-slate-500">Agora<br /><span className="font-semibold text-white">{ratio.current} {ratio.unit}</span></p>
+                <p className="text-padap-muted">Antes<br /><span className="font-semibold text-padap-ink">{ratio.previous} {ratio.unit}</span></p>
+                <p className="text-padap-muted">Agora<br /><span className="font-semibold text-padap-ink">{ratio.current} {ratio.unit}</span></p>
               </div>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{ratio.interpretation}</p>
+              <p className="mt-3 text-sm leading-6 text-padap-muted">{ratio.interpretation}</p>
             </div>
           );
         })}
       </div>
-      {main && <p className="mt-4 rounded-lg border border-white/10 bg-black/10 p-3 text-sm leading-6 text-padap-mint">Prioridade: usar {main.pair} como argumento comercial principal quando estiver favorável ao produtor.</p>}
+      {main && <p className="mt-4 rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-emerald">Prioridade: usar {main.pair} como argumento comercial principal quando estiver favorável ao produtor.</p>}
     </Card>
   );
 }
@@ -914,15 +935,15 @@ function InternalStockCard({ summary, onOpen }: { summary: { items: Consolidated
       </div>
       <div className="mt-4 space-y-3">
         {visibleItems.length ? visibleItems.map((item) => (
-          <div key={item.productName} className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
+          <div key={item.productName} className="rounded-lg border border-padap-line bg-padap-field p-3">
             <div className="flex items-start justify-between gap-2">
               <div>
-                <p className="font-semibold text-white">{item.productName}</p>
-                <p className="mt-1 text-xs text-slate-500">{item.group || "Grupo não informado"} - disponível: {item.totalAvailable}</p>
+                <p className="font-semibold text-padap-ink">{item.productName}</p>
+                <p className="mt-1 text-xs text-padap-muted">{item.group || "Grupo não informado"} - disponível: {item.totalAvailable}</p>
               </div>
               <Badge tone={stockTone(item.status)}>{item.status}</Badge>
             </div>
-            <p className="mt-2 text-sm leading-5 text-slate-400">{item.reason}{item.purchaseSuggestion ? ` - sugestão de compra: ${item.purchaseSuggestion}` : ""}</p>
+            <p className="mt-2 text-sm leading-5 text-padap-muted">{item.reason}{item.purchaseSuggestion ? ` - sugestão de compra: ${item.purchaseSuggestion}` : ""}</p>
           </div>
         )) : (
           <div className="rounded-lg border border-amber-300/20 bg-amber-300/[0.06] p-4 text-sm leading-6 text-amber-50">
@@ -934,22 +955,41 @@ function InternalStockCard({ summary, onOpen }: { summary: { items: Consolidated
   );
 }
 
+function getAlertPriorityBadge(alert: MarketAlert): { label: string; className: string } {
+  if (alert.priority === "Alta" || alert.priority === "Crítica" || alert.type === "Alerta crítico") {
+    return { label: "🔴 Urgente", className: "inline-flex items-center rounded-md bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-600 border border-red-200/60" };
+  }
+  if (alert.priority === "Média") {
+    return { label: "🟡 Esta semana", className: "inline-flex items-center rounded-md bg-amber-50 px-2 py-0.5 text-xs font-semibold text-amber-700 border border-amber-200/60" };
+  }
+  return { label: "🔵 Monitorar", className: "inline-flex items-center rounded-md bg-padap-field px-2 py-0.5 text-xs font-semibold text-padap-cyan border border-padap-line" };
+}
+
 function CommercialAlertsCard({ alerts, proposals, opportunities, onAction, onDetails }: { alerts: MarketAlert[]; proposals: ImpactedProposal[]; opportunities: CommercialOpportunity[]; onAction: (message: string) => void; onDetails: () => void }) {
   return (
     <Card>
       <SectionTop title="Alertas comerciais" action={<Button variant="ghost" onClick={onDetails}>Ver detalhes</Button>} />
       <div className="grid gap-3 lg:grid-cols-2">
-        {alerts.slice(0, 4).map((alert) => (
-          <div key={alert.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+        {alerts.slice(0, 4).map((alert) => {
+          const priorityBadge = getAlertPriorityBadge(alert);
+          return (
+          <div key={alert.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
             <div className="flex items-center justify-between gap-2">
-              <Badge tone={priorityTone(alert.priority)}>{alert.type}</Badge>
-              <span className="text-xs text-slate-500">{alert.relatedTo}</span>
+              <div className="flex items-center gap-2">
+                <Badge tone={priorityTone(alert.priority)}>{alert.type}</Badge>
+                <span className={priorityBadge.className}>{priorityBadge.label}</span>
+              </div>
+              <span className="text-xs text-padap-muted">{alert.relatedTo}</span>
             </div>
-            <h3 className="mt-3 font-semibold text-white">{alert.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-400">{alert.message}</p>
-            <Button variant="ghost" className="mt-3 min-h-8 px-3 py-1.5 text-xs" onClick={() => onAction("Alerta comercial copiado.")}><Copy size={13} />Copiar alerta</Button>
+            <h3 className="mt-3 font-semibold text-padap-ink">{alert.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-padap-muted">{alert.message}</p>
+            <div className="mt-3 flex flex-wrap gap-2">
+              <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={() => onAction("Alerta comercial copiado.")}><Copy size={13} />Copiar alerta</Button>
+              <Button variant="ghost" className="min-h-7 px-2 py-1 text-xs" onClick={() => onAction(`Transmissão preparada: ${alert.message}`)}><Send size={11} />Transmitir</Button>
+            </div>
           </div>
-        ))}
+          );
+        })}
       </div>
       <div className="mt-4 grid gap-3 md:grid-cols-2">
         <MiniMetric value={proposals.length} label="propostas em atenção" />
@@ -975,15 +1015,15 @@ function SourcesHealthCard({ sources, latestHistory, onOpen, onManage }: { sourc
         <MiniMetric value={attention + notConfigured} label="atenção/fallback" />
         <MiniMetric value={`${averageConfidence}%`} label="confiança média" />
       </div>
-      <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.03] p-4">
-        <p className="text-sm font-semibold text-white">Leitura operacional</p>
-        <p className="mt-1 text-sm leading-6 text-slate-400">
+      <div className="mt-4 rounded-lg border border-padap-line bg-padap-field p-4">
+        <p className="text-sm font-semibold text-padap-ink">Leitura operacional</p>
+        <p className="mt-1 text-sm leading-6 text-padap-muted">
           Dados simulados para preparar a estrutura visual. {latestHistory ? `Última leitura do sistema: ${formatDateTime(latestHistory.updatedAt)} - ${latestHistory.summary}` : "Aguardando primeira leitura registrada nesta sessão."}
         </p>
       </div>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-[920px] w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="text-xs uppercase tracking-[0.12em] text-padap-muted">
             <tr>
               <th className="pb-2">Fonte</th>
               <th className="pb-2">Tipo</th>
@@ -994,16 +1034,16 @@ function SourcesHealthCard({ sources, latestHistory, onOpen, onManage }: { sourc
               <th className="pb-2">Observação operacional</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.07]">
+          <tbody className="divide-y divide-padap-line">
             {rows.map((source) => (
               <tr key={source.id}>
-                <td className="py-3 pr-4 font-semibold text-white">{source.name}</td>
+                <td className="py-3 pr-4 font-semibold text-padap-ink">{source.name}</td>
                 <td className="py-3 pr-4"><Badge tone={sourceTypeTone(source.type)}>{source.type}</Badge></td>
                 <td className="py-3 pr-4"><Badge tone={sourceHealthStatusTone(source.status)}>{source.status}</Badge></td>
-                <td className="py-3 pr-4 text-slate-300">{formatDateTime(source.lastUpdate)}</td>
-                <td className="py-3 pr-4 text-slate-300">{formatDateTime(source.nextUpdate)}</td>
-                <td className="py-3 pr-4 text-right font-semibold text-white">{source.confidence}%</td>
-                <td className="py-3 text-slate-400">{source.observation}</td>
+                <td className="py-3 pr-4 text-padap-muted">{formatDateTime(source.lastUpdate)}</td>
+                <td className="py-3 pr-4 text-padap-muted">{formatDateTime(source.nextUpdate)}</td>
+                <td className="py-3 pr-4 text-right font-semibold text-padap-ink">{source.confidence}%</td>
+                <td className="py-3 text-padap-muted">{source.observation}</td>
               </tr>
             ))}
           </tbody>
@@ -1105,8 +1145,8 @@ function MainIndicators({ indicators }: { indicators: MarketRealityIndicator[] }
     <Card>
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Indicadores principais</h2>
-          <p className="mt-1 text-sm leading-6 text-slate-400">Valor, tendência e impacto comercial com origem do dado explícita.</p>
+          <h2 className="text-lg font-semibold text-padap-ink">Indicadores principais</h2>
+          <p className="mt-1 text-sm leading-6 text-padap-muted">Valor, tendência e impacto comercial com origem do dado explícita.</p>
         </div>
         <Badge tone="cyan">fontes identificadas</Badge>
       </div>
@@ -1116,26 +1156,26 @@ function MainIndicators({ indicators }: { indicators: MarketRealityIndicator[] }
           const badgeTone = item.confidence === "verified" ? "green" : item.confidence === "internal" ? "cyan" : "amber";
           const sourceLabel = item.confidence === "verified" ? item.source : item.confidence === "internal" ? getInternalSourceLabel(item.source) : "Sem fonte ativa";
           return (
-            <div key={item.name} className="rounded-lg border border-white/10 bg-white/[0.03] p-3.5">
+            <div key={item.name} className="rounded-lg border border-padap-line bg-padap-field p-3.5">
               <div className="flex items-start justify-between gap-2">
                 <div>
-                  <p className="text-sm font-semibold text-white">{normalizeIndicatorName(item.name)}</p>
-                  <p className="mt-2 text-xl font-semibold text-white">{item.value}</p>
+                  <p className="text-sm font-semibold text-padap-ink">{normalizeIndicatorName(item.name)}</p>
+                  <p className="mt-2 text-xl font-semibold text-padap-ink">{item.value}</p>
                 </div>
-                {isPositive ? <TrendingUp size={17} className="text-amber-200" /> : <TrendingDown size={17} className="text-padap-mint" />}
+                {isPositive ? <TrendingUp size={17} className="text-amber-200" /> : <TrendingDown size={17} className="text-padap-emerald" />}
               </div>
               <div className="mt-3 h-8"><Sparkline data={item.history.map((value) => ({ value }))} color={isPositive ? "#f6b73c" : "#1dba2c"} /></div>
               <div className="mt-3 grid grid-cols-2 gap-2 text-xs">
                 <IndicatorMini label="Hoje" value={formatPercent(item.day)} tone={isPositive ? "amber" : "green"} />
                 <IndicatorMini label="Semana" value={formatPercent(item.week)} tone={item.week >= 0 ? "amber" : "green"} />
               </div>
-              <p className="mt-3 text-xs leading-5 text-slate-400">Tendência: <span className="text-slate-200">{item.trend}</span></p>
+              <p className="mt-3 text-xs leading-5 text-padap-muted">Tendência: <span className="text-padap-ink">{item.trend}</span></p>
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 <Badge tone={badgeTone}>{item.confidence === "verified" ? "verificado" : item.confidence === "internal" ? "fonte interna" : "sem fonte"}</Badge>
-                <span className="text-xs text-slate-500">{sourceLabel} - {item.updated}</span>
+                <span className="text-xs text-padap-muted">{sourceLabel} - {item.updated}</span>
               </div>
-              <p className="mt-2 text-xs leading-5 text-padap-mint">Impacto PADAP: {getIndicatorImpact(item)}</p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">{item.note}</p>
+              <p className="mt-2 text-xs leading-5 text-padap-emerald">Impacto PADAP: {getIndicatorImpact(item)}</p>
+              <p className="mt-1 text-xs leading-5 text-padap-muted">{item.note}</p>
             </div>
           );
         })}
@@ -1231,9 +1271,9 @@ function getIndicatorImpact(item: MarketRealityIndicator) {
 
 function IndicatorMini({ label, value, tone }: { label: string; value: string; tone: "green" | "amber" }) {
   return (
-    <div className="rounded-md border border-white/10 bg-black/10 px-2 py-1.5">
-      <p className="text-[10px] uppercase tracking-[0.12em] text-slate-500">{label}</p>
-      <p className={tone === "amber" ? "font-semibold text-amber-100" : "font-semibold text-padap-mint"}>{value}</p>
+    <div className="rounded-md border border-padap-line bg-padap-field px-2 py-1.5">
+      <p className="text-[10px] uppercase tracking-[0.12em] text-padap-muted">{label}</p>
+      <p className={tone === "amber" ? "font-semibold text-amber-100" : "font-semibold text-padap-emerald"}>{value}</p>
     </div>
   );
 }
@@ -1242,21 +1282,21 @@ function CompactProducts({ products, onAll }: { products: ProductAttention[]; on
   return (
     <Card>
       <SectionTop title="Produtos em atenção" action={<Button variant="ghost" onClick={onAll}>Ver todos</Button>} />
-      <p className="mb-3 text-sm leading-6 text-slate-400">Produtos que exigem ação comercial ou revisão de preço.</p>
+      <p className="mb-3 text-sm leading-6 text-padap-muted">Produtos que exigem ação comercial ou revisão de preço.</p>
       <div className="overflow-x-auto">
         <table className="min-w-[760px] w-full text-left text-sm">
-          <thead className="text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="text-xs uppercase tracking-[0.12em] text-padap-muted">
             <tr><th className="pb-2">Produto</th><th className="pb-2">Movimento</th><th className="pb-2">Impacto</th><th className="pb-2">Ação recomendada</th><th className="pb-2">Fonte</th><th className="pb-2 text-right">Score</th></tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.07]">
+          <tbody className="divide-y divide-padap-line">
             {products.map((item) => (
               <tr key={item.product}>
-                <td className="py-2.5 font-semibold text-white">{item.product}</td>
-                <td className="py-2.5 text-slate-300">{item.movement}</td>
+                <td className="py-2.5 font-semibold text-padap-ink">{item.product}</td>
+                <td className="py-2.5 text-padap-muted">{item.movement}</td>
                 <td className="py-2.5"><Badge tone={item.impact === "Oportunidade" ? "green" : item.impact === "Alto" ? "amber" : item.impact === "Médio" ? "cyan" : "green"}>{item.impact}</Badge></td>
-                <td className="py-2.5 text-slate-300">{item.recommendedAction}</td>
-                <td className="py-2.5 text-xs text-slate-500">{item.source ?? "Fonte interna"}</td>
-                <td className="py-2.5 text-right font-semibold text-padap-mint">{item.score}</td>
+                <td className="py-2.5 text-padap-muted">{item.recommendedAction}</td>
+                <td className="py-2.5 text-xs text-padap-muted">{item.source ?? "Fonte interna"}</td>
+                <td className="py-2.5 text-right font-semibold text-padap-emerald">{item.score}</td>
               </tr>
             ))}
           </tbody>
@@ -1271,7 +1311,7 @@ function CompactProposals({ proposals, total, value, urgent, onDetails }: { prop
     <div id="propostas-impactadas">
       <Card>
         <SectionTop title="Propostas impactadas" action={<Button variant="ghost" onClick={onDetails}>Ver detalhes</Button>} />
-        <p className="mb-3 text-sm leading-6 text-slate-400">Propostas abertas que podem sofrer impacto de câmbio, fertilizante, validade ou margem.</p>
+        <p className="mb-3 text-sm leading-6 text-padap-muted">Propostas abertas que podem sofrer impacto de câmbio, fertilizante, validade ou margem.</p>
         <div className="mb-4 grid gap-2 sm:grid-cols-3">
           <MiniMetric value={total} label="propostas impactadas" />
           <MiniMetric value={formatCurrency(value)} label="em negociação" />
@@ -1279,16 +1319,16 @@ function CompactProposals({ proposals, total, value, urgent, onDetails }: { prop
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-[620px] w-full text-left text-sm">
-            <thead className="text-xs uppercase tracking-[0.12em] text-slate-500">
+            <thead className="text-xs uppercase tracking-[0.12em] text-padap-muted">
               <tr><th className="pb-2">Proposta</th><th className="pb-2">Cliente</th><th className="pb-2">Produto</th><th className="pb-2">Motivo</th><th className="pb-2">Ação</th></tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.07]">
+            <tbody className="divide-y divide-padap-line">
               {proposals.map((item) => (
                 <tr key={item.id}>
-                  <td className="py-2.5 font-semibold text-white">{item.id}</td>
-                  <td className="py-2.5 text-slate-300">{item.client}</td>
-                  <td className="py-2.5 text-slate-300">{item.product}</td>
-                  <td className="py-2.5 text-slate-400">{item.impactReason}</td>
+                  <td className="py-2.5 font-semibold text-padap-ink">{item.id}</td>
+                  <td className="py-2.5 text-padap-muted">{item.client}</td>
+                  <td className="py-2.5 text-padap-muted">{item.product}</td>
+                  <td className="py-2.5 text-padap-muted">{item.impactReason}</td>
                   <td className="py-2.5"><Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs">{item.recommendedAction || (item.product === "KCl" ? "Melhorar oferta" : "Revisar")}</Button></td>
                 </tr>
               ))}
@@ -1308,16 +1348,16 @@ function CompactExchangeRatios({ ratios }: { ratios: ExchangeRatioItem[] }) {
         {ratios.map((ratio) => {
           const favorable = ratio.status === "Favorável";
           return (
-            <div key={ratio.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+            <div key={ratio.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
               <div className="flex items-start justify-between gap-2">
-                <h3 className="font-semibold text-white">{ratio.pair}</h3>
+                <h3 className="font-semibold text-padap-ink">{ratio.pair}</h3>
                 <Badge tone={favorable ? "green" : "amber"}>{favorable ? "Melhorou" : ratio.status}</Badge>
               </div>
               <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                <p className="text-slate-500">Antes<br /><span className="font-semibold text-slate-200">{ratio.previous} {ratio.unit}</span></p>
-                <p className="text-slate-500">Agora<br /><span className="font-semibold text-white">{ratio.current} {ratio.unit}</span></p>
+                <p className="text-padap-muted">Antes<br /><span className="font-semibold text-padap-ink">{ratio.previous} {ratio.unit}</span></p>
+                <p className="text-padap-muted">Agora<br /><span className="font-semibold text-padap-ink">{ratio.current} {ratio.unit}</span></p>
               </div>
-              <p className="mt-3 text-sm leading-6 text-slate-400">{ratio.interpretation}</p>
+              <p className="mt-3 text-sm leading-6 text-padap-muted">{ratio.interpretation}</p>
             </div>
           );
         })}
@@ -1333,13 +1373,13 @@ function CompactOpportunities({ opportunities, onAction }: { opportunities: Comm
         <SectionTop title="Oportunidades comerciais" />
         <div className="space-y-3">
           {opportunities.slice(0, 3).map((item) => (
-            <div key={item.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+            <div key={item.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
               <div className="flex flex-wrap items-start justify-between gap-2">
                 <div>
-                  <h3 className="font-semibold text-white">{item.title ?? item.opportunity}</h3>
-                  <p className="mt-1 text-sm leading-6 text-slate-400">Motivo: {item.reason ?? item.justification}</p>
-                  <p className="text-sm leading-6 text-slate-300">Clientes sugeridos: {item.suggestedClients ?? "Clientes a definir"}</p>
-                  <p className="text-sm leading-6 text-padap-mint">Ação recomendada: {item.recommendedAction}</p>
+                  <h3 className="font-semibold text-padap-ink">{item.title ?? item.opportunity}</h3>
+                  <p className="mt-1 text-sm leading-6 text-padap-muted">Motivo: {item.reason ?? item.justification}</p>
+                  <p className="text-sm leading-6 text-padap-muted">Clientes sugeridos: {item.suggestedClients ?? "Clientes a definir"}</p>
+                  <p className="text-sm leading-6 text-padap-emerald">Ação recomendada: {item.recommendedAction}</p>
                 </div>
                 <Badge tone={priorityTone(item.priority)}>{item.priority}</Badge>
               </div>
@@ -1367,19 +1407,19 @@ function CompactSourcesRadar({ sources, onCopy }: { sources: MarketSource[]; onC
           </div>
         )}
         {sources.slice(0, 6).map((source) => (
-          <article key={source.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+          <article key={source.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone="cyan">{source.category}</Badge>
               <Badge tone={source.confidence === "Alta" ? "green" : source.confidence === "Média" ? "amber" : "neutral"}>{source.confidence}</Badge>
               <Badge tone={sourceStatusTone(source.lastStatus)}>{source.lastStatus ?? "Pendente"}</Badge>
-              <span className="text-xs text-slate-500">{source.lastCheckedAt ? formatDateTime(source.lastCheckedAt) : "Aguardando atualização"}</span>
+              <span className="text-xs text-padap-muted">{source.lastCheckedAt ? formatDateTime(source.lastCheckedAt) : "Aguardando atualização"}</span>
             </div>
-            <h3 className="mt-3 font-semibold text-white">{source.name}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-400">{source.observation || "Fonte cadastrada para consulta e validação leve na Central de Mercado."}</p>
-            <p className="mt-2 text-sm text-padap-mint">Impacto PADAP: {sourceImpact(source)}</p>
+            <h3 className="mt-3 font-semibold text-padap-ink">{source.name}</h3>
+            <p className="mt-2 text-sm leading-6 text-padap-muted">{source.observation || "Fonte cadastrada para consulta e validação leve na Central de Mercado."}</p>
+            <p className="mt-2 text-sm text-padap-emerald">Impacto PADAP: {sourceImpact(source)}</p>
             {source.lastStatus === "Indisponível" && <p className="mt-2 text-xs leading-5 text-amber-100">Fonte indisponível para leitura automática. Link mantido para consulta manual.</p>}
             <div className="mt-3 flex flex-wrap gap-2">
-              {source.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-8 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] px-3 py-1.5 text-xs font-semibold text-slate-100 transition hover:border-padap-green/25"><ExternalLink size={13} />Ver fonte</a>}
+              {source.url && <a href={source.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-8 items-center gap-2 rounded-lg border border-padap-line bg-padap-field px-3 py-1.5 text-xs font-semibold text-padap-ink transition hover:border-padap-green/25"><ExternalLink size={13} />Ver fonte</a>}
               {source.url && <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={() => onCopy(source.url)}><Copy size={13} />Copiar link</Button>}
             </div>
           </article>
@@ -1425,17 +1465,17 @@ function CompactNews({ news, onCopy }: { news: MarketNews[]; onCopy: (url: strin
       <SectionTop title="Radar de fontes confiáveis" />
       <div className="space-y-3">
         {news.map((item) => (
-          <article key={item.id} className="rounded-lg border border-white/10 bg-white/[0.03] p-4">
+          <article key={item.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
             <div className="flex flex-wrap items-center gap-2">
               <Badge tone="cyan">{item.category ?? item.tag}</Badge>
               <Badge tone="green">Confiança alta</Badge>
-              <span className="text-xs text-slate-500">{item.source} - {formatDateTime(item.date)}</span>
+              <span className="text-xs text-padap-muted">{item.source} - {formatDateTime(item.date)}</span>
             </div>
-            <h3 className="mt-3 font-semibold text-white">{item.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-400">{item.summary}</p>
-            <p className="mt-2 text-sm text-padap-mint">Impacto PADAP: {item.impact}</p>
+            <h3 className="mt-3 font-semibold text-padap-ink">{item.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-padap-muted">{item.summary}</p>
+            <p className="mt-2 text-sm text-padap-emerald">Impacto PADAP: {item.impact}</p>
             <div className="mt-3 flex flex-wrap gap-2">
-              <a href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-8 items-center gap-2 rounded-lg border border-white/10 bg-white/[0.045] px-3 py-1.5 text-xs font-semibold text-slate-100 transition hover:border-padap-green/25"><ExternalLink size={13} />Ver notícia</a>
+              <a href={item.url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-8 items-center gap-2 rounded-lg border border-padap-line bg-padap-field px-3 py-1.5 text-xs font-semibold text-padap-ink transition hover:border-padap-green/25"><ExternalLink size={13} />Ver notícia</a>
               <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={() => item.url && onCopy(item.url)}><Copy size={13} />Copiar link</Button>
             </div>
           </article>
@@ -1452,10 +1492,10 @@ function CompactAnalyst({ analysis, onAnalysis, onBriefing, onCopy }: { analysis
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2"><Bot className="text-padap-cyan" size={20} /><h2 className="text-lg font-semibold text-white">Analista de Mercado / Briefing final</h2></div>
+        <div className="flex items-center gap-2"><Bot className="text-padap-cyan" size={20} /><h2 className="text-lg font-semibold text-padap-ink">Analista de Mercado / Briefing final</h2></div>
         <Badge tone="green">{confidenceLabel}</Badge>
       </div>
-      <div className="space-y-3 text-sm leading-6 text-slate-300">
+      <div className="space-y-3 text-sm leading-6 text-padap-muted">
         <ShortBlock label="Resumo" value={analysis?.briefing.summary ?? "Mercado segue volátil, com atenção em câmbio e nitrogenados."} />
         <ShortBlock label="Impacto PADAP" value={analysis?.briefing.impactPadap ?? "Propostas antigas precisam de revisão antes do envio."} />
         <ShortBlock label="Produtos afetados" value={(analysis?.briefing.affectedProducts ?? insight.affectedProducts).slice(0, 4).join(", ")} />
@@ -1473,8 +1513,8 @@ function ReportBriefingPanel({ onReport, onBriefing, onWhatsApp, onRecipients, c
     <Card>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Relatório PDF e Briefing WhatsApp</h2>
-          <p className="mt-1 text-sm leading-6 text-slate-400">Gere materiais curtos para orientar consultores sem sobrecarregar a leitura.</p>
+          <h2 className="text-lg font-semibold text-padap-ink">Relatório PDF e Briefing WhatsApp</h2>
+          <p className="mt-1 text-sm leading-6 text-padap-muted">Gere materiais curtos para orientar consultores sem sobrecarregar a leitura.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={onReport}><FileText size={16} />Gerar relatório PDF</Button>
@@ -1492,8 +1532,8 @@ function AdvancedArea({ open, onToggle, children }: { open: boolean; onToggle: (
     <Card>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-white">Recursos avançados</h2>
-          <p className="mt-1 text-sm leading-6 text-slate-400">Simulador, mapa de risco, fontes, histórico e análises completas ficam em segundo nível.</p>
+          <h2 className="text-lg font-semibold text-padap-ink">Recursos avançados</h2>
+          <p className="mt-1 text-sm leading-6 text-padap-muted">Simulador, mapa de risco, fontes, histórico e análises completas ficam em segundo nível.</p>
         </div>
         <Button variant="ghost" onClick={onToggle}>{open ? "Ocultar recursos" : "Ver detalhes"}</Button>
       </div>
@@ -1503,25 +1543,25 @@ function AdvancedArea({ open, onToggle, children }: { open: boolean; onToggle: (
 }
 
 function StripItem({ label, value }: { label: string; value: ReactNode }) {
-  return <div><p className="text-[11px] uppercase leading-4 tracking-[0.12em] text-slate-500">{label}</p><div className="mt-1 text-sm font-medium leading-5 text-slate-100">{value}</div></div>;
+  return <div><p className="text-[11px] uppercase leading-4 tracking-[0.12em] text-padap-muted">{label}</p><div className="mt-1 text-sm font-medium leading-5 text-padap-ink">{value}</div></div>;
 }
 
 function SummaryPill({ label, value, tone }: { label: string; value: string; tone: "green" | "amber" | "cyan" }) {
-  return <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3"><p className="text-xs text-slate-500">{label}</p><div className="mt-1"><Badge tone={tone}>{value}</Badge></div></div>;
+  return <div className="rounded-lg border border-padap-line bg-padap-field p-3"><p className="text-xs text-padap-muted">{label}</p><div className="mt-1"><Badge tone={tone}>{value}</Badge></div></div>;
 }
 
 function SectionTop({ title, action }: { title: string; action?: ReactNode }) {
-  return <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-lg font-semibold text-white">{title}</h2>{action}</div>;
+  return <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-lg font-semibold text-padap-ink">{title}</h2>{action}</div>;
 }
 
 function MiniMetric({ value, label }: { value: ReactNode; label: string }) {
-  return <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3"><p className="text-lg font-semibold text-white">{value}</p><p className="text-xs leading-5 text-slate-500">{label}</p></div>;
+  return <div className="rounded-lg border border-padap-line bg-padap-field p-3"><p className="text-lg font-semibold text-padap-ink">{value}</p><p className="text-xs leading-5 text-padap-muted">{label}</p></div>;
 }
 
 function MenuButton({ icon, label, onClick }: { icon: ReactNode; label: string; onClick: () => void }) {
-  return <button type="button" onClick={onClick} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-slate-200 transition hover:bg-white/[0.06] hover:text-white">{icon}{label}<ChevronRight size={14} className="ml-auto text-slate-500" /></button>;
+  return <button type="button" onClick={onClick} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm text-padap-ink transition hover:bg-padap-field hover:text-padap-ink">{icon}{label}<ChevronRight size={14} className="ml-auto text-padap-muted" /></button>;
 }
 
 function ShortBlock({ label, value }: { label: string; value: string }) {
-  return <p><span className="font-semibold text-white">{label}:</span> {value}</p>;
+  return <p><span className="font-semibold text-padap-ink">{label}:</span> {value}</p>;
 }
