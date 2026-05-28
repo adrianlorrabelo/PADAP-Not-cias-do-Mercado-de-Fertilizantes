@@ -10,9 +10,9 @@ export function CommercialArgumentsLibrary({ argumentsList, onAction }: { argume
       <SectionHeader title="Argumentos Comerciais" subtitle="Argumentos prontos para consultores usarem com produtores." />
       <div className="grid gap-3 md:grid-cols-2">
         {argumentsList.map((item) => (
-          <div key={item.id} className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
-            <h3 className="font-semibold text-white">{item.category}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-400">{item.argument}</p>
+          <div key={item.id} className="rounded-lg border border-padap-line bg-padap-field p-4">
+            <h3 className="font-semibold text-padap-ink">{item.category}</h3>
+            <p className="mt-2 text-sm leading-6 text-padap-muted">{item.argument}</p>
             <div className="mt-4 flex flex-wrap gap-2">
               <Button variant="ghost" onClick={() => onAction("Argumento copiado.")}><Copy size={14} />Copiar</Button>
               <Button variant="ghost" onClick={() => onAction("Argumento adicionado ao briefing.")}><Plus size={14} />Adicionar</Button>

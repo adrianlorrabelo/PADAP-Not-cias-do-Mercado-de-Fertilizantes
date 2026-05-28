@@ -145,7 +145,7 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
       <div className="space-y-5">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
           <div>
-            <p className="max-w-3xl text-sm leading-6 text-slate-400">Cadastre e organize as fontes usadas pela Central de Inteligência de Mercado.</p>
+            <p className="max-w-3xl text-sm leading-6 text-padap-muted">Cadastre e organize as fontes usadas pela Central de Inteligência de Mercado.</p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge tone="green">{totals.active} ativas</Badge>
               <Badge tone="cyan">{totals.briefing} no briefing</Badge>
@@ -160,9 +160,9 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
           </div>
         </div>
 
-        <div className="rounded-lg border border-white/10 bg-white/[0.025] p-4">
+        <div className="rounded-lg border border-padap-line bg-padap-field p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-slate-300">{editingId ? "Editar fonte" : "Adicionar fonte"}</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-padap-muted">{editingId ? "Editar fonte" : "Adicionar fonte"}</h3>
             {editingId && <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={resetForm}>Cancelar edição</Button>}
           </div>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -194,15 +194,15 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
             </div>
           </div>
           <Field label="Observação" className="mt-3">
-            <textarea value={form.observation ?? ""} rows={3} onChange={(event) => setFormValue("observation", event.target.value)} className="w-full rounded-lg border border-white/10 bg-[#061314]/80 px-3.5 py-2.5 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-padap-green/70 focus:bg-[#071b18] focus:shadow-[0_0_0_3px_rgba(29,186,44,.10)]" />
+            <textarea value={form.observation ?? ""} rows={3} onChange={(event) => setFormValue("observation", event.target.value)} className="w-full rounded-lg border border-padap-line bg-white px-3.5 py-2.5 text-sm text-padap-ink outline-none transition placeholder:text-padap-muted focus:border-padap-green/70 focus:shadow-[0_0_0_3px_rgba(29,186,44,.10)]" />
           </Field>
-          {error && <p className="mt-3 text-sm font-semibold text-red-200">{error}</p>}
-          {requiresUrl(form.sourceType) && !form.url && <p className="mt-3 text-xs leading-5 text-amber-100">URL recomendada para API ou Link monitorado. A fonte pode ser salva agora e completada depois.</p>}
+          {error && <p className="mt-3 text-sm font-semibold text-red-600">{error}</p>}
+          {requiresUrl(form.sourceType) && !form.url && <p className="mt-3 text-xs leading-5 text-amber-700">URL recomendada para API ou Link monitorado. A fonte pode ser salva agora e completada depois.</p>}
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-white/10">
+        <div className="overflow-x-auto rounded-lg border border-padap-line">
           <table className="w-full min-w-[1080px] text-left text-sm">
-            <thead className="bg-white/[0.035] text-xs uppercase tracking-[0.12em] text-slate-500">
+            <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
               <tr>
                 <th className="px-4 py-3">Fonte</th>
                 <th className="px-4 py-3">Categoria</th>
@@ -214,15 +214,15 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
                 <th className="px-4 py-3 text-right">Ações</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/[0.07]">
+            <tbody className="divide-y divide-padap-line">
               {sources.map((source) => (
                 <tr key={source.id} className="align-top">
                   <td className="px-4 py-3">
-                    <p className="font-semibold text-white">{source.name}</p>
-                    <p className="mt-1 max-w-xs truncate text-xs text-slate-500">{source.url || source.observation || "Sem URL cadastrada"}</p>
+                    <p className="font-semibold text-padap-ink">{source.name}</p>
+                    <p className="mt-1 max-w-xs truncate text-xs text-padap-muted">{source.url || source.observation || "Sem URL cadastrada"}</p>
                   </td>
                   <td className="px-4 py-3"><CategoryChip category={source.category} /></td>
-                  <td className="px-4 py-3 text-slate-300">{source.sourceType}</td>
+                  <td className="px-4 py-3 text-padap-muted">{source.sourceType}</td>
                   <td className="px-4 py-3"><ConfidenceChip confidence={source.confidence} /></td>
                   <td className="px-4 py-3"><StatusChip status={source.lastStatus ?? getStatusForSource(source)} /></td>
                   <td className="px-4 py-3"><SwitchButton active={source.useInBriefing} onClick={() => toggleBriefing(source)} /></td>
@@ -252,12 +252,12 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
 }
 
 function Field({ label, children, className = "" }: { label: string; children: ReactNode; className?: string }) {
-  return <label className={`block text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 ${className}`}><span className="mb-2 block">{label}</span>{children}</label>;
+  return <label className={`block text-xs font-semibold uppercase tracking-[0.12em] text-padap-muted ${className}`}><span className="mb-2 block">{label}</span>{children}</label>;
 }
 
 function ToggleField({ label, checked, onChange }: { label: string; checked: boolean; onChange: (checked: boolean) => void }) {
   return (
-    <label className="flex min-h-[66px] items-center justify-between gap-3 rounded-lg border border-white/10 bg-[#061314]/70 px-3.5 py-2.5 text-sm font-semibold text-slate-200">
+    <label className="flex min-h-[66px] items-center justify-between gap-3 rounded-lg border border-padap-line bg-padap-field px-3.5 py-2.5 text-sm font-semibold text-padap-ink">
       <span>{label}</span>
       <input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} className="h-4 w-4 accent-padap-green" />
     </label>
@@ -266,7 +266,7 @@ function ToggleField({ label, checked, onChange }: { label: string; checked: boo
 
 function IconButton({ label, children, danger = false, onClick }: { label: string; children: ReactNode; danger?: boolean; onClick: () => void }) {
   return (
-    <button type="button" title={label} aria-label={label} onClick={onClick} className={`inline-flex h-8 w-8 items-center justify-center rounded-lg border transition ${danger ? "border-red-400/25 bg-red-500/10 text-red-100 hover:bg-red-500/20" : "border-white/10 bg-white/[0.045] text-slate-100 hover:border-padap-green/25 hover:bg-padap-green/[0.08]"}`}>
+    <button type="button" title={label} aria-label={label} onClick={onClick} className={`inline-flex h-8 w-8 items-center justify-center rounded-lg border transition ${danger ? "border-red-400/25 bg-red-500/10 text-red-600 hover:bg-red-500/20" : "border-padap-line bg-padap-field text-padap-ink hover:border-padap-green/25 hover:bg-padap-green/[0.08]"}`}>
       {children}
     </button>
   );
@@ -274,8 +274,8 @@ function IconButton({ label, children, danger = false, onClick }: { label: strin
 
 function SwitchButton({ active, onClick }: { active: boolean; onClick: () => void }) {
   return (
-    <button type="button" onClick={onClick} className={`h-6 w-11 rounded-full border p-0.5 transition ${active ? "border-padap-green/30 bg-padap-green/20" : "border-white/10 bg-white/[0.05]"}`} aria-label={active ? "Ativo" : "Inativo"}>
-      <span className={`block h-4 w-4 rounded-full transition ${active ? "translate-x-5 bg-padap-mint" : "translate-x-0 bg-slate-500"}`} />
+    <button type="button" onClick={onClick} className={`h-6 w-11 rounded-full border p-0.5 transition ${active ? "border-padap-green/30 bg-padap-green/20" : "border-padap-line bg-padap-field"}`} aria-label={active ? "Ativo" : "Inativo"}>
+      <span className={`block h-4 w-4 rounded-full transition ${active ? "translate-x-5 bg-padap-emerald" : "translate-x-0 bg-padap-muted"}`} />
     </button>
   );
 }

@@ -14,7 +14,7 @@ export function ProductsAttentionTable({ products }: { products: ProductAttentio
         rows={products.map((item) => [
           item.product,
           item.movement,
-          <span className={item.dailyVariation >= 0 ? "text-padap-mint" : "text-amber-200"}>{formatPercent(item.dailyVariation)}</span>,
+          <span className={item.dailyVariation >= 0 ? "text-padap-emerald" : "text-amber-700"}>{formatPercent(item.dailyVariation)}</span>,
           formatPercent(item.weeklyVariation),
           <Badge tone={priorityTone(item.impact === "Oportunidade" ? "Alta" : item.impact === "Alto" ? "Alta" : item.impact === "Médio" ? "Média" : "Baixa")}>{item.impact}</Badge>,
           item.reason,

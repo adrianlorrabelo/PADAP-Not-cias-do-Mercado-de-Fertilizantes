@@ -98,9 +98,9 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
             {canManage && <Button variant="ghost" onClick={startNew}><Plus size={15} />Novo destinatário</Button>}
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-white/[0.09] bg-[#061314]/55">
+          <div className="overflow-x-auto rounded-xl border border-padap-line bg-white">
             <table className="min-w-[980px] w-full text-left text-sm">
-              <thead className="bg-white/[0.04] text-xs uppercase tracking-[0.12em] text-slate-500">
+              <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
                 <tr>
                   <th className="px-4 py-3">Nome</th>
                   <th className="px-4 py-3">Cargo/Função</th>
@@ -112,16 +112,16 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
                   <th className="px-4 py-3">Ações</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/[0.07]">
+              <tbody className="divide-y divide-padap-line">
                 {filtered.map((recipient) => (
                   <tr key={recipient.id}>
-                    <td className="px-4 py-3 font-semibold text-white">{recipient.name}</td>
-                    <td className="px-4 py-3 text-slate-300">{recipient.role ?? "-"}</td>
-                    <td className="px-4 py-3 text-slate-300">{recipient.formattedPhone}</td>
-                    <td className="px-4 py-3 text-slate-300">{recipient.group ?? "-"}</td>
+                    <td className="px-4 py-3 font-semibold text-padap-ink">{recipient.name}</td>
+                    <td className="px-4 py-3 text-padap-muted">{recipient.role ?? "-"}</td>
+                    <td className="px-4 py-3 text-padap-muted">{recipient.formattedPhone}</td>
+                    <td className="px-4 py-3 text-padap-muted">{recipient.group ?? "-"}</td>
                     <td className="px-4 py-3"><Badge tone={recipient.status === "ativo" ? "green" : "neutral"}>{recipient.status}</Badge></td>
-                    <td className="px-4 py-3 text-slate-300">{recipient.receivesMarketReport ? "Sim" : "Não"}</td>
-                    <td className="px-4 py-3 text-slate-300">{recipient.receivesBriefing ? "Sim" : "Não"}</td>
+                    <td className="px-4 py-3 text-padap-muted">{recipient.receivesMarketReport ? "Sim" : "Não"}</td>
+                    <td className="px-4 py-3 text-padap-muted">{recipient.receivesBriefing ? "Sim" : "Não"}</td>
                     <td className="px-4 py-3">
                       <div className="flex flex-wrap gap-2">
                         <Button variant="ghost" className="h-8 w-8 p-0" onClick={() => startEdit(recipient)} disabled={!canManage}><Edit2 size={13} /></Button>
@@ -137,8 +137,8 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-white/[0.03] p-4">
-          <h3 className="font-semibold text-white">{editingId ? "Editar destinatário" : "Novo destinatário"}</h3>
+        <div className="rounded-xl border border-padap-line bg-padap-field p-4">
+          <h3 className="font-semibold text-padap-ink">{editingId ? "Editar destinatário" : "Novo destinatário"}</h3>
           <div className="mt-4 space-y-3">
             <Field label="Nome *"><Input disabled={!canManage} value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
             <Field label="Cargo/Função"><Input disabled={!canManage} value={form.role} onChange={(event) => setForm((current) => ({ ...current, role: event.target.value }))} /></Field>
@@ -147,7 +147,7 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
             <Field label="Status"><Select disabled={!canManage} value={form.status} onChange={(event) => setForm((current) => ({ ...current, status: event.target.value as "ativo" | "inativo" }))}><option value="ativo">Ativo</option><option value="inativo">Inativo</option></Select></Field>
             <Toggle checked={form.receivesMarketReport} disabled={!canManage} label="Recebe relatório de mercado" onChange={(checked) => setForm((current) => ({ ...current, receivesMarketReport: checked }))} />
             <Toggle checked={form.receivesBriefing} disabled={!canManage} label="Recebe briefing WhatsApp" onChange={(checked) => setForm((current) => ({ ...current, receivesBriefing: checked }))} />
-            <Field label="Observações"><textarea disabled={!canManage} className="min-h-20 w-full rounded-lg border border-white/10 bg-[#061314]/90 px-3.5 py-2.5 text-sm text-white outline-none focus:border-padap-green/70 disabled:opacity-60" value={form.notes} onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))} /></Field>
+            <Field label="Observações"><textarea disabled={!canManage} className="min-h-20 w-full rounded-lg border border-padap-line bg-white px-3.5 py-2.5 text-sm text-padap-ink outline-none focus:border-padap-green/70 disabled:opacity-60" value={form.notes} onChange={(event) => setForm((current) => ({ ...current, notes: event.target.value }))} /></Field>
           </div>
           <div className="mt-4 flex flex-wrap justify-end gap-2">
             <Button variant="ghost" onClick={startNew}>Limpar</Button>
@@ -160,9 +160,9 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
 }
 
 function Field({ label, children }: { label: string; children: ReactNode }) {
-  return <label className="block text-sm leading-6 text-slate-300">{label}{children}</label>;
+  return <label className="block text-sm leading-6 text-padap-muted">{label}{children}</label>;
 }
 
 function Toggle({ label, checked, disabled, onChange }: { label: string; checked: boolean; disabled?: boolean; onChange: (checked: boolean) => void }) {
-  return <label className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300"><input type="checkbox" disabled={disabled} checked={checked} onChange={(event) => onChange(event.target.checked)} />{label}</label>;
+  return <label className="flex items-center gap-3 rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted"><input type="checkbox" disabled={disabled} checked={checked} onChange={(event) => onChange(event.target.checked)} />{label}</label>;
 }

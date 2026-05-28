@@ -144,18 +144,18 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
             <Button variant="ghost" onClick={clearSelection}>Limpar seleção</Button>
           </div>
           <div className="mb-3 grid gap-2 sm:grid-cols-2">
-            <input className="min-h-10 rounded-lg border border-white/10 bg-[#061314]/90 px-3 text-sm text-white outline-none focus:border-padap-green/70" placeholder="Buscar destinatário" value={query} onChange={(event) => setQuery(event.target.value)} />
+            <input className="min-h-10 rounded-lg border border-padap-line bg-white px-3 text-sm text-padap-ink outline-none focus:border-padap-green/70" placeholder="Buscar destinatário" value={query} onChange={(event) => setQuery(event.target.value)} />
             <Select value={group} onChange={(event) => setGroup(event.target.value)}>{groups.map((item) => <option key={item}>{item}</option>)}</Select>
           </div>
           <div className="max-h-[420px] space-y-2 overflow-auto pr-1">
-            {eligibleRecipients.length === 0 && <p className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-400">Nenhum destinatário cadastrado. Cadastre um número de WhatsApp para enviar relatórios.</p>}
-            {eligibleRecipients.length > 0 && visibleRecipients.length === 0 && <p className="rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-400">Nenhum destinatário encontrado neste filtro.</p>}
+            {eligibleRecipients.length === 0 && <p className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">Nenhum destinatário cadastrado. Cadastre um número de WhatsApp para enviar relatórios.</p>}
+            {eligibleRecipients.length > 0 && visibleRecipients.length === 0 && <p className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">Nenhum destinatário encontrado neste filtro.</p>}
             {visibleRecipients.map((recipient) => (
-              <label key={recipient.id} className="flex items-start justify-between gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300">
+              <label key={recipient.id} className="flex items-start justify-between gap-3 rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">
                 <span>
                   <input className="mr-2" type="checkbox" checked={selectedIds.includes(recipient.id)} onChange={(event) => toggle(recipient.id, event.target.checked)} />
-                  <span className="font-semibold text-white">{recipient.name}</span>
-                  <span className="block pl-6 text-xs leading-5 text-slate-500">{recipient.role ?? "Sem função"} - {recipient.formattedPhone} - {recipient.group ?? "Sem grupo"}</span>
+                  <span className="font-semibold text-padap-ink">{recipient.name}</span>
+                  <span className="block pl-6 text-xs leading-5 text-padap-muted">{recipient.role ?? "Sem função"} - {recipient.formattedPhone} - {recipient.group ?? "Sem grupo"}</span>
                 </span>
                 {selectedIds.includes(recipient.id) && <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={(event) => { event.preventDefault(); openRecipient(recipient); }}>Abrir WhatsApp</Button>}
               </label>
@@ -164,11 +164,11 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
         </div>
 
         <div>
-          <h3 className="mb-2 font-semibold text-white">Mensagem</h3>
-          <textarea className="min-h-64 w-full rounded-lg border border-white/10 bg-[#061314]/80 p-3 text-sm leading-6 text-white outline-none focus:border-padap-green/70" value={message} onChange={(event) => setMessage(event.target.value)} />
-          <p className="mt-2 text-sm leading-6 text-slate-400">PDF anexado: {report?.fileName ?? "Nenhum relatório gerado ainda"} | Período: {report?.period ?? "Hoje"}</p>
-          <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-xs leading-5 text-slate-400">
-            <p className="font-semibold text-slate-200">Link gerado para teste</p>
+          <h3 className="mb-2 font-semibold text-padap-ink">Mensagem</h3>
+          <textarea className="min-h-64 w-full rounded-lg border border-padap-line bg-white p-3 text-sm leading-6 text-padap-ink outline-none focus:border-padap-green/70" value={message} onChange={(event) => setMessage(event.target.value)} />
+          <p className="mt-2 text-sm leading-6 text-padap-muted">PDF anexado: {report?.fileName ?? "Nenhum relatório gerado ainda"} | Período: {report?.period ?? "Hoje"}</p>
+          <div className="mt-3 rounded-lg border border-padap-line bg-padap-field p-3 text-xs leading-5 text-padap-muted">
+            <p className="font-semibold text-padap-ink">Link gerado para teste</p>
             <p className="mt-1 break-all">{firstLink || "Selecione um destinatário válido para gerar o link."}</p>
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
@@ -181,22 +181,22 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
         </div>
       </div>
 
-      <h3 className="mt-6 font-semibold text-white">Histórico de envios WhatsApp</h3>
-      <div className="mt-2 overflow-x-auto rounded-xl border border-white/[0.09] bg-[#061314]/55">
+      <h3 className="mt-6 font-semibold text-padap-ink">Histórico de envios WhatsApp</h3>
+      <div className="mt-2 overflow-x-auto rounded-xl border border-padap-line bg-white">
         <table className="min-w-[860px] w-full text-left text-sm">
-          <thead className="bg-white/[0.04] text-xs uppercase tracking-[0.12em] text-slate-500">
+          <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
             <tr><th className="px-4 py-3">Data/hora</th><th className="px-4 py-3">Tipo</th><th className="px-4 py-3">Destinatário</th><th className="px-4 py-3">WhatsApp</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Enviado por</th><th className="px-4 py-3">Ações</th></tr>
           </thead>
-          <tbody className="divide-y divide-white/[0.07]">
-            {history.length === 0 && <tr><td className="px-4 py-3 text-slate-500" colSpan={7}>Nenhum envio registrado nesta sessão.</td></tr>}
+          <tbody className="divide-y divide-padap-line">
+            {history.length === 0 && <tr><td className="px-4 py-3 text-padap-muted" colSpan={7}>Nenhum envio registrado nesta sessão.</td></tr>}
             {history.map((item) => (
               <tr key={item.id}>
-                <td className="px-4 py-3 text-slate-300">{new Date(item.date).toLocaleString("pt-BR")}</td>
-                <td className="px-4 py-3 text-slate-300">{item.type}</td>
-                <td className="px-4 py-3 font-semibold text-white">{item.recipient}</td>
-                <td className="px-4 py-3 text-slate-300">{item.whatsapp}</td>
-                <td className="px-4 py-3 text-slate-300">{item.status}</td>
-                <td className="px-4 py-3 text-slate-300">{item.sentBy}</td>
+                <td className="px-4 py-3 text-padap-muted">{new Date(item.date).toLocaleString("pt-BR")}</td>
+                <td className="px-4 py-3 text-padap-muted">{item.type}</td>
+                <td className="px-4 py-3 font-semibold text-padap-ink">{item.recipient}</td>
+                <td className="px-4 py-3 text-padap-muted">{item.whatsapp}</td>
+                <td className="px-4 py-3 text-padap-muted">{item.status}</td>
+                <td className="px-4 py-3 text-padap-muted">{item.sentBy}</td>
                 <td className="px-4 py-3"><Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={() => copyWhatsAppMessage(item.message).then((result) => onAction(result.ok ? "Mensagem copiada com sucesso." : result.message))}>Copiar mensagem</Button></td>
               </tr>
             ))}

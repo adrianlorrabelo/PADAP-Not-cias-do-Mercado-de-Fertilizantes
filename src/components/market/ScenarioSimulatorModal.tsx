@@ -41,7 +41,7 @@ export function ScenarioSimulatorModal({ open, onClose }: { open: boolean; onClo
         <Field label="Variação do KCl (%)" value={input.kclVariation} onChange={(v) => update("kclVariation", v)} />
         <Field label="Variação do Café (%)" value={input.coffeeVariation} onChange={(v) => update("coffeeVariation", v)} />
         <Field label="Variação do Milho (%)" value={input.cornVariation} onChange={(v) => update("cornVariation", v)} />
-        <label className="text-sm leading-6 text-slate-300">
+        <label className="text-sm leading-6 text-padap-muted">
           Período simulado
           <Select value={input.period} onChange={(event) => setInput((current) => ({ ...current, period: event.target.value }))}>
             <option>Próximos 7 dias</option>
@@ -49,21 +49,21 @@ export function ScenarioSimulatorModal({ open, onClose }: { open: boolean; onClo
             <option>Próximos 30 dias</option>
           </Select>
         </label>
-        <label className="flex min-h-[74px] items-center gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300">
+        <label className="flex min-h-[74px] items-center gap-3 rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">
           <input type="checkbox" checked={input.applyOpenProposals} onChange={(event) => update("applyOpenProposals", event.target.checked)} />
           Aplicar em propostas abertas?
         </label>
       </div>
 
       <div className="mt-5 rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4">
-        <h3 className="font-semibold text-white">Resultado da simulação</h3>
-        <div className="mt-3 grid gap-3 text-sm leading-6 text-slate-200 md:grid-cols-2">
+        <h3 className="font-semibold text-padap-ink">Resultado da simulação</h3>
+        <div className="mt-3 grid gap-3 text-sm leading-6 text-padap-ink md:grid-cols-2">
           <p>Propostas impactadas: <strong>{result.affectedProposals}</strong></p>
           <p>Valor impactado: <strong>{formatCurrency(result.impactedValue)}</strong></p>
           <p>Margem média: <strong>{result.averageMarginBefore}% {"->"} {result.averageMarginAfter}%</strong></p>
           <p>Pacotes abaixo da meta: <strong>{result.packagesBelowTarget}</strong></p>
           <p className="md:col-span-2">Produtos sensíveis: <strong>{result.sensitiveProducts.join(", ") || "Nenhum"}</strong></p>
-          <p className="md:col-span-2 text-padap-mint">Ação recomendada: {result.recommendedAction}</p>
+          <p className="md:col-span-2 text-padap-emerald">Ação recomendada: {result.recommendedAction}</p>
         </div>
       </div>
     </Modal>
@@ -72,7 +72,7 @@ export function ScenarioSimulatorModal({ open, onClose }: { open: boolean; onClo
 
 function Field({ label, value, onChange }: { label: string; value: number; onChange: (value: string) => void }) {
   return (
-    <label className="text-sm leading-6 text-slate-300">
+    <label className="text-sm leading-6 text-padap-muted">
       {label}
       <Input type="number" step="0.1" value={value} onChange={(event) => onChange(event.target.value)} />
     </label>

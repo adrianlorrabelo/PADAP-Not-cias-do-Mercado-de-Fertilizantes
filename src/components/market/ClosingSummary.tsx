@@ -18,9 +18,9 @@ export function ClosingSummary({ summary, onAction }: { summary: ClosingSummaryD
       <SectionHeader title="Resumo de Fechamento" subtitle="Gerado automaticamente às 17:00 ou sob demanda." action={<div className="flex flex-wrap gap-2"><Button variant="ghost" onClick={() => onAction("Fechamento atualizado.")}><RefreshCw size={14} />Gerar agora</Button><Button variant="ghost" onClick={() => onAction("Resumo copiado.")}><Copy size={14} />Copiar</Button><Button variant="ghost" onClick={() => onAction("WhatsApp preparado.")}><MessageCircle size={14} />Enviar</Button><Button variant="ghost" onClick={() => onAction("Histórico salvo.")}><History size={14} />Salvar</Button></div>} />
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {groups.map(([title, items]) => (
-          <div key={title as string} className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
-            <h3 className="font-semibold text-white">{title as string}</h3>
-            <ul className="mt-3 space-y-2 text-sm text-slate-400">{(items as string[]).map((item) => <li key={item}>- {item}</li>)}</ul>
+          <div key={title as string} className="rounded-lg border border-padap-line bg-padap-field p-4">
+            <h3 className="font-semibold text-padap-ink">{title as string}</h3>
+            <ul className="mt-3 space-y-2 text-sm text-padap-muted">{(items as string[]).map((item) => <li key={item}>- {item}</li>)}</ul>
           </div>
         ))}
       </div>

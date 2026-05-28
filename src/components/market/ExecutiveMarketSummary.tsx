@@ -9,17 +9,17 @@ export function ExecutiveMarketSummary({ status, lastUpdate, confidence, onOpenA
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-padap-cyan">Resumo executivo do mercado</p>
-          <h2 className="mt-3 text-3xl font-semibold text-white">Hoje o mercado esta: <span className="text-padap-mint">{status.toUpperCase()}</span></h2>
+          <h2 className="mt-3 text-3xl font-semibold text-padap-ink">Hoje o mercado esta: <span className="text-padap-emerald">{status.toUpperCase()}</span></h2>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {impacts.map((impact, index) => <div key={impact} className="rounded-lg border border-white/10 bg-white/[0.035] p-3 text-sm text-slate-200"><span className="mr-2 text-padap-green">{index + 1}.</span>{impact}</div>)}
+            {impacts.map((impact, index) => <div key={impact} className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-ink"><span className="mr-2 text-padap-green">{index + 1}.</span>{impact}</div>)}
           </div>
         </div>
         <div className="min-w-56 rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4">
           <Badge tone="cyan">Atualizado</Badge>
-          <p className="mt-3 text-sm text-slate-400">Última atualização</p>
-          <p className="font-semibold text-white">{lastUpdate}</p>
-          <p className="mt-3 text-sm text-slate-400">Nível de confiança</p>
-          <p className="text-2xl font-semibold text-padap-mint">{confidence}%</p>
+          <p className="mt-3 text-sm text-padap-muted">Última atualização</p>
+          <p className="font-semibold text-padap-ink">{lastUpdate}</p>
+          <p className="mt-3 text-sm text-padap-muted">Nível de confiança</p>
+          <p className="text-2xl font-semibold text-padap-emerald">{confidence}%</p>
           <Button className="mt-4 w-full" onClick={onOpenAnalysis}>Ver analise completa</Button>
         </div>
       </div>

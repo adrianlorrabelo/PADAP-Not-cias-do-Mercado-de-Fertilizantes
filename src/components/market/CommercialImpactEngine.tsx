@@ -32,8 +32,8 @@ export function CommercialImpactEngine({ summary }: { summary: Summary }) {
         <MetricTile label="Ações urgentes" value={summary.urgentActions} tone="red" detail="Prioridade alta/crítica" />
       </div>
       <div className="mt-4 flex items-start gap-3 rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4">
-        <CheckCircle2 className="mt-0.5 text-padap-mint" size={18} />
-        <p className="text-sm leading-6 text-slate-200"><span className="font-semibold text-white">Ação recomendada:</span> {summary.recommendedAction}</p>
+        <CheckCircle2 className="mt-0.5 text-padap-emerald" size={18} />
+        <p className="text-sm leading-6 text-padap-ink"><span className="font-semibold text-padap-ink">Ação recomendada:</span> {summary.recommendedAction}</p>
       </div>
     </Card>
   );
@@ -41,5 +41,5 @@ export function CommercialImpactEngine({ summary }: { summary: Summary }) {
 
 function ImpactLine({ label, value }: { label: string; value: string }) {
   const Icon = label === "Café" ? Users : label === "PTAX" ? DollarSign : AlertTriangle;
-  return <div className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.035] p-3"><Icon size={17} className="text-padap-cyan" /><span className="text-sm text-slate-400">{label}</span><strong className="ml-auto text-white">{value}</strong></div>;
+  return <div className="flex items-center gap-3 rounded-lg border border-padap-line bg-padap-field p-3"><Icon size={17} className="text-padap-cyan" /><span className="text-sm text-padap-muted">{label}</span><strong className="ml-auto text-padap-ink">{value}</strong></div>;
 }

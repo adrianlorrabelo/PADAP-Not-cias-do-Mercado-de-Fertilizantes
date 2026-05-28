@@ -12,8 +12,8 @@ export function MarketThermometer({ score, thermometer }: { score: number; therm
     <Card>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-white">Termômetro do mercado</h2>
-          <p className="mt-1 text-sm leading-6 text-slate-400">Leitura rápida de risco e oportunidade comercial.</p>
+          <h2 className="text-lg font-semibold text-padap-ink">Termômetro do mercado</h2>
+          <p className="mt-1 text-sm leading-6 text-padap-muted">Leitura rápida de risco e oportunidade comercial.</p>
         </div>
         <Badge tone={activeScore > 78 ? "amber" : "green"}>{status}</Badge>
       </div>
@@ -25,8 +25,8 @@ export function MarketThermometer({ score, thermometer }: { score: number; therm
           </RadialBarChart>
         </ResponsiveContainer>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <p className="text-4xl font-semibold text-white">{activeScore}<span className="text-lg text-slate-500">/100</span></p>
-          <p className="text-xs uppercase tracking-[0.14em] text-slate-500">score geral</p>
+          <p className="text-4xl font-semibold text-padap-ink">{activeScore}<span className="text-lg text-padap-muted">/100</span></p>
+          <p className="text-xs uppercase tracking-[0.14em] text-padap-muted">score geral</p>
         </div>
       </div>
 
@@ -39,14 +39,14 @@ export function MarketThermometer({ score, thermometer }: { score: number; therm
         <Mini label="Leitura" value="Validar preço antes de enviar" />
       </div>
 
-      <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.03] p-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">Composição do score</p>
-        <p className="mt-2 text-xs leading-5 text-slate-400">Base 70 ajustada por fontes internas/externas, PTAX, erros de fonte, KCl, nitrogenados e validade da Lista Yara.</p>
+      <div className="mt-3 rounded-lg border border-padap-line bg-padap-field p-3">
+        <p className="text-xs font-semibold uppercase tracking-[0.12em] text-padap-muted">Composição do score</p>
+        <p className="mt-2 text-xs leading-5 text-padap-muted">Base 70 ajustada por fontes internas/externas, PTAX, erros de fonte, KCl, nitrogenados e validade da Lista Yara.</p>
       </div>
     </Card>
   );
 }
 
 function Mini({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 font-semibold leading-5 text-slate-100">{value}</p></div>;
+  return <div className="rounded-lg border border-padap-line bg-padap-field p-3"><p className="text-xs text-padap-muted">{label}</p><p className="mt-1 font-semibold leading-5 text-padap-ink">{value}</p></div>;
 }

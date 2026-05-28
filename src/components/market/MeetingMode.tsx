@@ -24,8 +24,8 @@ export function MeetingMode({ open, onClose, score, products, proposals, mainRat
           <Panel title="Briefing final" items={[`${mainRatio.pair}: ${mainRatio.interpretation}`, "Confirmar validade, disponibilidade e condição atualizada com compras antes de prometer preço ao produtor."]} />
         </div>
 
-        <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4 text-sm leading-6 text-slate-200">
-          <strong className="text-white">Recomendação final:</strong> confirmar validade, disponibilidade e condição atualizada com compras antes de prometer preço ao produtor.
+        <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4 text-sm leading-6 text-padap-ink">
+          <strong className="text-padap-ink">Recomendação final:</strong> confirmar validade, disponibilidade e condição atualizada com compras antes de prometer preço ao produtor.
         </div>
 
         <div className="flex flex-wrap justify-end gap-2">
@@ -40,9 +40,9 @@ export function MeetingMode({ open, onClose, score, products, proposals, mainRat
 
 function Panel({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-5">
-      <h3 className="text-base font-semibold text-white">{title}</h3>
-      <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-300">{items.map((item) => <li key={item}>{item}</li>)}</ul>
+    <div className="rounded-lg border border-padap-line bg-padap-field p-5">
+      <h3 className="text-base font-semibold text-padap-ink">{title}</h3>
+      <ul className="mt-3 space-y-2 text-sm leading-6 text-padap-muted">{items.map((item) => <li key={item}>{item}</li>)}</ul>
     </div>
   );
 }

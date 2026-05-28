@@ -56,12 +56,12 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
 
   return (
     <Modal title="Gerar relatório PDF" open={open} onClose={onClose}>
-      <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-3 text-sm leading-6 text-slate-200">
+      <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-3 text-sm leading-6 text-padap-ink">
         Escolha a versão do PDF. Cliente/Produtor é curto e seguro para envio externo. Consultor traz leitura técnica, preços referenciais, fretes, argumentos e alertas internos.
       </div>
 
       <div className="mt-4 grid gap-3 md:grid-cols-2">
-        <label className="text-sm leading-6 text-slate-300">
+        <label className="text-sm leading-6 text-padap-muted">
           Período
           <Select value={config.period} disabled={loading} onChange={(event) => setConfig((current) => ({ ...current, period: event.target.value as MarketReportConfig["period"] }))}>
             <option>Hoje</option>
@@ -70,7 +70,7 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
             <option>Personalizado</option>
           </Select>
         </label>
-        <label className="text-sm leading-6 text-slate-300">
+        <label className="text-sm leading-6 text-padap-muted">
           Tipo de relatório
           <Select value={config.type} disabled={loading} onChange={(event) => setConfig((current) => ({ ...current, type: event.target.value as MarketReportConfig["type"] }))}>
             <option>Briefing comercial rápido</option>
@@ -102,11 +102,11 @@ export function MarketReportModal({ open, onClose, report, onGenerated }: { open
 
 function Checklist({ title, items, selected, disabled, onChange }: { title: string; items: string[]; selected: string[]; disabled?: boolean; onChange: (items: string[]) => void }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.03] p-3">
-      <p className="mb-2 text-sm font-semibold text-white">{title}</p>
+    <div className="rounded-lg border border-padap-line bg-padap-field p-3">
+      <p className="mb-2 text-sm font-semibold text-padap-ink">{title}</p>
       <div className="grid grid-cols-2 gap-2">
         {items.map((item) => (
-          <label key={item} className="flex items-center gap-2 text-sm text-slate-300">
+          <label key={item} className="flex items-center gap-2 text-sm text-padap-muted">
             <input type="checkbox" disabled={disabled} checked={selected.includes(item)} onChange={(event) => onChange(event.target.checked ? [...selected, item] : selected.filter((selectedItem) => selectedItem !== item))} />
             {item}
           </label>
@@ -118,7 +118,7 @@ function Checklist({ title, items, selected, disabled, onChange }: { title: stri
 
 function Toggle({ label, checked, disabled, onChange }: { label: string; checked: boolean; disabled?: boolean; onChange: (value: boolean) => void }) {
   return (
-    <label className="flex items-center gap-3 rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm text-slate-300">
+    <label className="flex items-center gap-3 rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-muted">
       <input type="checkbox" disabled={disabled} checked={checked} onChange={(event) => onChange(event.target.checked)} />
       {label}
     </label>
