@@ -24,9 +24,9 @@ export function priorityTone(priority: string): "green" | "amber" | "red" | "cya
 }
 
 export function statusTone(status: string): "green" | "amber" | "red" | "cyan" | "neutral" {
-  if (["atualizado", "Favorável", "ativa"].includes(status)) return "green";
-  if (["atenção", "Desfavorável"].includes(status)) return "amber";
-  if (status === "erro") return "red";
+  if (["atualizado", "Completa", "Atualizada", "Favorável", "ativa"].includes(status)) return "green";
+  if (["atenção", "parcial", "Parcial", "pendente", "Indisponível", "Pendente", "Desfavorável"].includes(status)) return "amber";
+  if (["erro", "com falhas", "Com falhas", "Erro"].includes(status)) return "red";
   if (["monitorando", "Estável"].includes(status)) return "cyan";
   return "neutral";
 }

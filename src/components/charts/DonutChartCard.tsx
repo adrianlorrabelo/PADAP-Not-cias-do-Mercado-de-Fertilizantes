@@ -8,10 +8,10 @@ export function DonutChartCard({ title, data }: { title: string; data: { label: 
       <div className="h-56">
         <ResponsiveContainer>
           <PieChart>
-            <Pie data={data} dataKey="value" nameKey="label" innerRadius={58} outerRadius={84} paddingAngle={5} stroke="rgba(5,18,18,.9)" strokeWidth={3}>
+            <Pie data={data} dataKey="value" nameKey="label" innerRadius={58} outerRadius={84} paddingAngle={5} stroke="rgba(15,76,79,.9)" strokeWidth={3}>
               {data.map((item) => <Cell key={item.label} fill={item.color} />)}
             </Pie>
-            <Tooltip contentStyle={{ background: "rgba(5,18,18,.96)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, boxShadow: "0 18px 48px rgba(0,0,0,.35)" }} labelStyle={{ color: "#e2e8f0" }} />
+            <Tooltip contentStyle={{ background: "rgba(15,76,79,.96)", border: "1px solid rgba(255,255,255,.12)", borderRadius: 10, boxShadow: "0 18px 48px rgba(0,0,0,.28)" }} labelStyle={{ color: "#e2e8f0" }} />
           </PieChart>
         </ResponsiveContainer>
       </div>

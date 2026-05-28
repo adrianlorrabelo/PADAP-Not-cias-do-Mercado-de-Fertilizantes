@@ -16,7 +16,7 @@ export function ProductsAttentionTable({ products }: { products: ProductAttentio
           item.movement,
           <span className={item.dailyVariation >= 0 ? "text-padap-mint" : "text-amber-200"}>{formatPercent(item.dailyVariation)}</span>,
           formatPercent(item.weeklyVariation),
-          <Badge tone={priorityTone(item.impact === "Alto" ? "Alta" : item.impact === "Médio" ? "Média" : "Baixa")}>{item.impact}</Badge>,
+          <Badge tone={priorityTone(item.impact === "Oportunidade" ? "Alta" : item.impact === "Alto" ? "Alta" : item.impact === "Médio" ? "Média" : "Baixa")}>{item.impact}</Badge>,
           item.reason,
           item.recommendedAction,
           `${item.score}/100`

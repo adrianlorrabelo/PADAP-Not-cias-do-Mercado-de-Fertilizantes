@@ -1,11 +1,11 @@
-import type { MarketSource } from "../../types";
+import type { MarketConfidenceSource } from "../../types";
 import { formatDateTime, statusTone } from "../../utils/marketFormatting";
 import { Badge } from "../ui/Badge";
 import { Card } from "../ui/Card";
 import { Table } from "../ui/Table";
 import { SectionHeader } from "./MarketPrimitives";
 
-export function SourcesConfidenceCenter({ sources }: { sources: MarketSource[] }) {
+export function SourcesConfidenceCenter({ sources }: { sources: MarketConfidenceSource[] }) {
   return (
     <Card>
       <SectionHeader title="Fontes e Confiança" subtitle="Fontes cadastradas por nível, categoria e confiabilidade." />

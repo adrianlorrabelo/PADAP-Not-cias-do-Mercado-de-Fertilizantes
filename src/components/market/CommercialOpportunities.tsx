@@ -14,10 +14,10 @@ export function CommercialOpportunities({ opportunities, onAction }: { opportuni
       <Table
         headers={["Oportunidade", "Produto/cultura", "Justificativa", "Clientes sugeridos", "Ação recomendada", "Prioridade", "Ações"]}
         rows={opportunities.map((item) => [
-          item.opportunity,
+          item.title ?? item.opportunity,
           item.productOrCrop,
-          item.justification,
-          item.suggestedClients,
+          item.reason ?? item.justification,
+          item.suggestedClients ?? "Clientes a definir",
           item.recommendedAction,
           <Badge tone={priorityTone(item.priority)}>{item.priority}</Badge>,
           <div className="flex gap-2">

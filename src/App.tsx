@@ -8,8 +8,12 @@ import Cockpit from "./pages/Cockpit";
 import MarketIntelligence from "./pages/MarketIntelligence";
 import WeeklyTable from "./pages/WeeklyTable";
 import BroadcastList from "./pages/BroadcastList";
+import Purchases, { PurchasesIndexRedirect } from "./pages/Purchases";
 import Proposals from "./pages/Proposals";
 import Packages from "./pages/Packages";
+import Stock from "./pages/Stock";
+import Planner from "./pages/Planner";
+import Campaigns from "./pages/Campaigns";
 import Approvals from "./pages/Approvals";
 import Clients from "./pages/Clients";
 import Consultants from "./pages/Consultants";
@@ -35,9 +39,20 @@ export default function App() {
       <Route element={<ProtectedRoute><AppShell /></ProtectedRoute>}>
         <Route index element={<Cockpit />} />
         <Route path="/mercado" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Visualizador"]}><MarketIntelligence /></RoleOnly>} />
-        <Route path="/tabela" element={<RoleOnly allowed={["Administrador Geral", "Compras / Precificação"]}><WeeklyTable /></RoleOnly>} />
-        <Route path="/propostas" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Consultor"]}><Proposals /></RoleOnly>} />
-        <Route path="/pacotes" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Packages /></RoleOnly>} />
+        <Route path="/compras" element={<Purchases />}>
+          <Route index element={<PurchasesIndexRedirect />} />
+          <Route path="tabela-da-semana" element={<RoleOnly allowed={["Administrador Geral", "Compras / Precificação"]}><WeeklyTable /></RoleOnly>} />
+          <Route path="propostas" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Consultor"]}><Proposals /></RoleOnly>} />
+          <Route path="pacotes" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Packages /></RoleOnly>} />
+          <Route path="estoque" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Stock /></RoleOnly>} />
+          <Route path="planner" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Planner /></RoleOnly>} />
+          <Route path="campanhas" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Campaigns /></RoleOnly>} />
+        </Route>
+        <Route path="/tabela" element={<Navigate to="/compras/tabela-da-semana" replace />} />
+        <Route path="/tabela-da-semana" element={<Navigate to="/compras/tabela-da-semana" replace />} />
+        <Route path="/propostas" element={<Navigate to="/compras/propostas" replace />} />
+        <Route path="/pacotes" element={<Navigate to="/compras/pacotes" replace />} />
+        <Route path="/estoque" element={<Navigate to="/compras/estoque" replace />} />
         <Route path="/aprovacoes" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Approvals /></RoleOnly>} />
         <Route path="/clientes" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Consultor"]}><Clients /></RoleOnly>} />
         <Route path="/consultores" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Consultants /></RoleOnly>} />

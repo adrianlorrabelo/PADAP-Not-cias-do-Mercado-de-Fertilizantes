@@ -19,7 +19,7 @@ export default function Reports() {
         <div className="mt-4 flex flex-wrap gap-2"><Button><FileSpreadsheet size={16} />Exportar Excel</Button><Button variant="ghost">Gerar PDF</Button><Button variant="ghost">Copiar resumo</Button><Button variant="ghost"><Send size={16} />Enviar resumo</Button></div>
       </Card>
       <div className="mt-6 grid gap-4 sm:grid-cols-3"><Metric label="Relatório de propostas" value={formatarMoedaBRL(total)} /><Metric label="Relatório de pacotes" value={formatarMoedaBRL(318000)} /><Metric label="Relatório de aprovações" value="1 pendente" /></div>
-      <div className="mt-6 grid gap-4 lg:grid-cols-2"><BarChartCard title="Margem por cultura" data={[{ label: "Café", value: 10.8 }, { label: "Milho", value: 11.4 }, { label: "Soja", value: 9.9 }, { label: "Alho", value: 27.5 }]} /><DonutChartCard title="Status de propostas" data={[{ label: "Aprovadas", value: 38, color: "#39d353" }, { label: "Aprovação", value: 12, color: "#f6b73c" }, { label: "Vencidas", value: 8, color: "#64748b" }]} /></div>
+      <div className="mt-6 grid gap-4 lg:grid-cols-2"><BarChartCard title="Margem por cultura" data={[{ label: "Café", value: 10.8 }, { label: "Milho", value: 11.4 }, { label: "Soja", value: 9.9 }, { label: "Alho", value: 27.5 }]} /><DonutChartCard title="Status de propostas" data={[{ label: "Aprovadas", value: 38, color: "#1dba2c" }, { label: "Aprovação", value: 12, color: "#f6b73c" }, { label: "Vencidas", value: 8, color: "#64748b" }]} /></div>
     </div>
   );
 }

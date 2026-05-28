@@ -8,10 +8,10 @@ export function QuotationTrafficLight({ value, onChange, recommendation }: { val
   const color = value.status === "Pode negociar" ? "bg-padap-green" : value.status === "Em análise" ? "bg-padap-amber" : value.status === "Requer aprovação" ? "bg-orange-400" : value.status === "Bloqueada" ? "bg-red-500" : "bg-slate-500";
 
   return (
-    <section className="rounded-xl border border-white/[0.08] bg-[#071918]/80 p-4">
+    <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-4 flex items-center gap-3">
         <span className={`h-3 w-3 rounded-full ${color}`} />
-        <h2 className="text-base font-semibold text-white">Semáforo da cotação</h2>
+        <h2 className="text-base font-bold text-padap-ink">Semáforo da cotação</h2>
       </div>
       <div className="grid gap-3">
         <Select value={value.status} onChange={(event) => onChange({ ...value, status: event.target.value as QuotationStatus, updatedAt: new Date().toISOString() })}>
@@ -24,7 +24,7 @@ export function QuotationTrafficLight({ value, onChange, recommendation }: { val
           <Input value={value.expectedReturn} onChange={(event) => onChange({ ...value, expectedReturn: event.target.value, updatedAt: new Date().toISOString() })} placeholder="Previsão" />
         </div>
       </div>
-      <p className="mt-3 text-xs leading-5 text-slate-400">Recomendação: {recommendation}</p>
+      <p className="mt-3 text-xs font-medium leading-5 text-padap-muted">Recomendação: {recommendation}</p>
     </section>
   );
 }

@@ -48,13 +48,26 @@ export interface Product {
   supplier: string;
   producerPrice: number;
   resellerPrice: number;
+  discount?: number;
+  desvioPrecificacao: number;
   finalPrice: number;
+  calculatedFinalPrice?: number | null;
+  finalPriceDifference?: number | null;
+  calculationStatus?: "ok" | "incomplete" | "divergent";
+  importWarnings?: ImportWarning[];
   available: boolean;
 }
 
 export interface WeeklyTable {
   id: string;
   supplier: string;
+  fileName?: string;
+  sourceSheetName?: string;
+  listCode?: string;
+  listName?: string;
+  lineDeviations?: WeeklyTableLineDeviation[];
+  weeklyAvailableDeviations?: WeeklyTableLineDeviation[];
+  importWarnings?: ImportWarning[];
   expiresAt: string;
   ptax: number;
   freight: number;
@@ -62,12 +75,24 @@ export interface WeeklyTable {
   marginIcms: number;
   products: Product[];
   importedAt: string;
+  updatedAt?: string;
   importedBy: string;
   active: boolean;
 }
 
 export interface WeeklyTableImport {
   supplier: string;
+  fileName?: string;
+  sourceSheetName?: string;
+  listCode?: string;
+  listName?: string;
+  lineDeviations?: WeeklyTableLineDeviation[];
+  weeklyAvailableDeviations?: WeeklyTableLineDeviation[];
+  importWarnings?: ImportWarning[];
+  deviationStats?: {
+    found: number;
+    missing: number;
+  };
   expiresAt?: string;
   ptax?: number;
   freight?: number;
@@ -83,6 +108,46 @@ export interface WeeklyTableImport {
     duplicated: number;
     zeroPrice: number;
   };
+}
+
+export interface WeeklyTableLineDeviation {
+  line: string;
+  deviation: number;
+  foundInSpreadsheet?: boolean;
+}
+
+export interface ImportWarning {
+  type: string;
+  message: string;
+  row?: number;
+  productCode?: string;
+  severity: "info" | "warning" | "error";
+}
+
+export interface YaraPriceHistoryEntry {
+  id: string;
+  tableId: string;
+  fileName?: string;
+  importedAt: string;
+  updatedAt?: string;
+  importedBy?: string;
+  status?: string;
+  productCount?: number;
+  expiresAt: string;
+  productCode: string;
+  productDescription: string;
+  group: string;
+  packaging: string;
+  ptax: number;
+  freight: number;
+  icms: number;
+  marginIcms: number;
+  resellerPrice: number;
+  discount: number;
+  desvioPrecificacao: number;
+  calculatedFinalPrice?: number | null;
+  finalPriceDifference?: number | null;
+  finalPrice: number;
 }
 
 export interface Proposal {
@@ -204,14 +269,17 @@ export interface QuotationTrafficLight {
 
 export interface QuotationHistoryEntry {
   id: string;
+  quotationId?: string;
   date: string;
   client: string;
   consultant: string;
+  products?: string[];
   itemCount: number;
   totalValue: number;
   averageMargin: number;
   status: QuotationStatus;
   action: string;
+  quotation?: Quotation;
 }
 
 export interface Quotation {
@@ -319,7 +387,7 @@ export interface MarketNews {
 }
 
 export type MarketStatus = "Altista" | "Baixista" | "Neutro" | "Volátil" | "Oportunidade" | "Atenção";
-export type MarketUpdateState = "atualizado" | "monitorando" | "atenção" | "erro";
+export type MarketUpdateState = "atualizado" | "monitorando" | "atenção" | "erro" | "parcial" | "com falhas" | "pendente";
 export type MarketNewsCategory = "Fertilizantes" | "Matérias-primas" | "Câmbio" | "Logística" | "Culturas" | "Geopolítica" | "Importações" | "Oferta e demanda";
 export type Priority = "Baixa" | "Média" | "Alta" | "Crítica";
 
@@ -332,7 +400,7 @@ export interface MarketUpdateStatus {
   status: MarketUpdateState;
 }
 
-export interface MarketSource {
+export interface MarketConfidenceSource {
   id: string;
   name: string;
   tier: "Nível 1" | "Nível 2" | "Nível 3";
@@ -343,6 +411,92 @@ export interface MarketSource {
   link: string;
   status: "ativa" | "monitorando" | "atenção";
   note: string;
+}
+
+export type MarketSourceCategory = "Câmbio" | "Fertilizantes" | "Oferta e demanda" | "Café" | "Grãos" | "Institucional" | "Interna" | "Outra";
+export type MarketSourceType = "API" | "Link monitorado" | "Entrada manual" | "Fonte interna";
+export type MarketSourceConfidence = "Alta" | "Média" | "Baixa";
+export type MarketSourceStatus = "Pendente" | "Ativa" | "Inativa" | "Erro" | "Manual" | "Atualizada" | "Indisponível";
+
+export interface MarketUpdateResult {
+  id: string;
+  updatedAt: string;
+  status: "Completa" | "Parcial" | "Com falhas";
+  sourcesChecked: number;
+  sourcesSucceeded: number;
+  sourcesFailed: number;
+  internalSourcesUsed: number;
+  externalSourcesAvailable: number;
+  confidence: string;
+  message: string;
+}
+
+export type MarketUpdateTrigger = "Manual" | "Automática";
+
+export interface MarketSourceResult {
+  sourceId: string;
+  sourceName: string;
+  category: string;
+  status: "Atualizada" | "Indisponível" | "Erro" | "Manual" | "Pendente";
+  message?: string;
+  checkedAt: string;
+}
+
+export interface MarketUpdateHistory {
+  id: string;
+  updatedAt: string;
+  trigger?: MarketUpdateTrigger;
+  status: "Completa" | "Parcial" | "Com falhas";
+  sourcesChecked: number;
+  sourcesSucceeded: number;
+  sourcesFailed: number;
+  internalSourcesUsed: number;
+  externalSourcesAvailable: number;
+  confidence: string;
+  summary: string;
+  sourceResults: MarketSourceResult[];
+  analysisId?: string;
+  analysisSummary?: string;
+  analysisScore?: number;
+}
+
+export interface MarketAutoUpdateSettings {
+  enabled: boolean;
+  times: string[];
+  lastAutoUpdateAt?: string;
+  nextAutoUpdateAt?: string;
+  runOnlyWhenPageOpen: boolean;
+  updatedAt: string;
+}
+
+export interface MarketIntelligenceIndicator {
+  id: string;
+  name: string;
+  value: string;
+  unit?: string;
+  dailyChange?: string;
+  weeklyChange?: string;
+  trend: string;
+  source: string;
+  sourceType: "Interna" | "Externa" | "Manual";
+  impactPadap: string;
+  lastUpdatedAt: string;
+}
+
+export interface MarketSource {
+  id: string;
+  name: string;
+  category: MarketSourceCategory;
+  url?: string;
+  sourceType: MarketSourceType;
+  confidence: MarketSourceConfidence;
+  isActive: boolean;
+  useInBriefing: boolean;
+  observation?: string;
+  lastCheckedAt?: string;
+  lastStatus?: MarketSourceStatus;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface MarketAlert {
@@ -369,13 +523,15 @@ export interface ImpactedProposal {
 }
 
 export interface ProductAttention {
+  id?: string;
   product: string;
   movement: string;
   dailyVariation: number;
   weeklyVariation: number;
-  impact: "Baixo" | "Médio" | "Alto";
+  impact: "Baixo" | "Médio" | "Alto" | "Oportunidade";
   reason: string;
   recommendedAction: string;
+  source?: string;
   score: number;
 }
 
@@ -412,12 +568,48 @@ export interface ExchangeRatioItem {
 
 export interface CommercialOpportunity {
   id: string;
+  title?: string;
+  reason?: string;
   opportunity: string;
   productOrCrop: string;
   justification: string;
-  suggestedClients: string;
+  suggestedClients?: string;
   recommendedAction: string;
   priority: Priority;
+}
+
+export interface MarketThermometer {
+  score: number;
+  risk: "Baixo" | "Médio" | "Alto";
+  opportunity: "Baixa" | "Média" | "Alta";
+  trend: string;
+  horizon: string;
+  confidence: string;
+}
+
+export interface MarketBriefing {
+  summary: string;
+  impactPadap: string;
+  affectedProducts: string[];
+  recommendedAction: string;
+  sourcesUsed: string[];
+  confidence: string;
+  whatsappText: string;
+}
+
+export interface MarketAnalysis {
+  id: string;
+  generatedAt: string;
+  summaryTitle: string;
+  whatChanged: string;
+  impactPadap: string;
+  whatToWatch: string;
+  horizon: string;
+  confidence: string;
+  thermometer: MarketThermometer;
+  productsInAttention: ProductAttention[];
+  opportunities: CommercialOpportunity[];
+  briefing: MarketBriefing;
 }
 
 export interface MarketAnalystInsight {
@@ -469,6 +661,22 @@ export interface MarketVsPadapItem {
   estimatedVariation: number;
   status: string;
   recommendedAction: string;
+}
+
+export type MarketCommercialProductFamily = "nitrogenado" | "fosfatado" | "potássico" | "NPK" | "foliar";
+export type MarketCommercialStatus = "liberado" | "revisar" | "vencido" | "aprovação necessária";
+
+export interface MarketCommercialIndicator {
+  id: string;
+  ptaxCurrent: number;
+  dollarVariationSinceLastUpdate: number;
+  product: string;
+  productFamily: MarketCommercialProductFamily;
+  baseCost: number;
+  padapFinalPrice: number;
+  minimumMargin: number;
+  currentMargin: number;
+  proposalValidity: string;
 }
 
 export interface MarketTimelineEvent {
@@ -618,6 +826,199 @@ export interface AnalystPrediction {
   hitTrend: boolean;
   precision: number;
   note: string;
+}
+
+export type StockUnit = "São Gotardo" | "Santa Juliana" | "Campos Altos";
+export type StockItemType = "group" | "product";
+export type StockStatus = "Disponível" | "Baixo estoque" | "Zerado" | "Crítico / Negativo" | "Sem regra mínima";
+
+export interface StockImportWarning {
+  id: string;
+  line: string;
+  message: string;
+  severity: "info" | "warning" | "error";
+}
+
+export interface StockItem {
+  id: string;
+  unit: StockUnit;
+  group: string;
+  productName: string;
+  physicalStock: number;
+  pvRetiraLoja: number;
+  purchaseOrder: number;
+  consignedBalance: number;
+  availableStock: number;
+  type: StockItemType;
+  sourceFileName: string;
+  importedAt: string;
+}
+
+export interface StockImportDraft {
+  id: string;
+  unit: StockUnit;
+  fileName: string;
+  readAt: string;
+  items: StockItem[];
+  warnings: StockImportWarning[];
+  mode: "import" | "replace";
+}
+
+export interface MinimumStockRule {
+  id: string;
+  productName: string;
+  group?: string;
+  unitOfMeasure?: string;
+  minimumStock: number;
+  observation?: string;
+}
+
+export interface StockImportHistory {
+  id: string;
+  unit: StockUnit;
+  fileName: string;
+  importedAt: string;
+  productCount: number;
+  warningCount: number;
+}
+
+export interface ConsolidatedStockItem {
+  productName: string;
+  group: string;
+  byUnit: Record<StockUnit, number>;
+  totalAvailable: number;
+  minimumRule?: MinimumStockRule;
+  status: StockStatus;
+  purchaseSuggestion: number | null;
+  reason: string;
+}
+
+export type StockPricingProductStatus = "completo" | "incompleto" | "sem_estoque" | "sem_preco" | "pronto_para_cotacao" | "vencido" | "revisar_margem";
+
+export interface StockPricingImportWarning {
+  type: string;
+  message: string;
+  row?: number;
+  productName?: string;
+  severity: "info" | "warning" | "error";
+}
+
+export interface StockPricingProduct {
+  id: string;
+  produto: string;
+  linha: string;
+  fornecedor: string;
+  embalagem: string;
+  codigo?: string;
+  precoCusto: number | null;
+  custo?: number | null;
+  vencimento: string | null;
+  antecipacao: number | null;
+  juros: number | null;
+  margem: number | null;
+  margemFator?: number | null;
+  divisorAjuste?: number | null;
+  precoVenda: number | null;
+  monthlyPrices: Record<string, number | null>;
+  prazoPrices?: StockPricingTermPrice[];
+  extraValues?: Record<string, string | number | null>;
+  pricingFormulas?: Record<string, string>;
+  observation?: string;
+  observacao?: string;
+  sourceFileName?: string;
+  importedAt?: string;
+  status: StockPricingProductStatus;
+  updatedAt: string;
+}
+
+export interface StockPricingTermPrice {
+  key: string;
+  label: string;
+  dateSerial?: number;
+  date?: string;
+  price: number | null;
+  formula?: string;
+  formulaType?: "calculated" | "manual" | "extraPercent";
+  manuallyEdited?: boolean;
+}
+
+export interface StockPricingImportedColumn {
+  key: string;
+  label: string;
+  index: number;
+  role: "input" | "calculated" | "term" | "extra";
+  formula?: string;
+}
+
+export interface StockPricingTable {
+  id: string;
+  fileName: string;
+  importedAt: string;
+  monthReference?: string;
+  termColumns?: StockPricingTermPrice[];
+  importedColumns?: StockPricingImportedColumn[];
+  extraColumns?: StockPricingImportedColumn[];
+  active: boolean;
+  products: StockPricingProduct[];
+  importWarnings: StockPricingImportWarning[];
+}
+
+export interface StockPricingHistory {
+  id: string;
+  fileName: string;
+  importedAt: string;
+  productCount: number;
+  warningCount: number;
+  changedCount?: number;
+  lastEditedAt?: string;
+  user?: string;
+}
+
+export interface StockPricingImportDraft {
+  id: string;
+  fileName: string;
+  sourceSheetName: string;
+  readAt: string;
+  monthReference?: string;
+  termColumns?: StockPricingTermPrice[];
+  importedColumns?: StockPricingImportedColumn[];
+  extraColumns?: StockPricingImportedColumn[];
+  products: StockPricingProduct[];
+  importWarnings: StockPricingImportWarning[];
+}
+
+export type PlannerPriority = "Baixa" | "Média" | "Alta" | "Urgente";
+export type PlannerTaskStatus = "Não iniciada" | "Em andamento" | "Concluída";
+export type PlannerRecurrence = "Nenhuma" | "Diária" | "Semanal" | "Quinzenal" | "Mensal";
+
+export interface PlannerTask {
+  id: string;
+  title: string;
+  description?: string;
+  category: string;
+  responsible?: string;
+  dueDate: string;
+  priority: PlannerPriority;
+  status: PlannerTaskStatus;
+  recurrence: PlannerRecurrence;
+  recurrenceAnchor?: string;
+  createdAt: string;
+  updatedAt: string;
+  completedAt?: string;
+  isRecurring?: boolean;
+  originTemplateId?: string;
+}
+
+export interface PlannerTaskTemplate {
+  id: string;
+  title: string;
+  description?: string;
+  category: string;
+  priority: PlannerPriority;
+  recurrence: PlannerRecurrence;
+  suggestedResponsible?: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Settings {

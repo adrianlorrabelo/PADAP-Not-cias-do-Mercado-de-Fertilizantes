@@ -1,6 +1,6 @@
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 
-export function Sparkline({ data, color = "#39d353" }: { data: { value: number }[]; color?: string }) {
+export function Sparkline({ data, color = "#1dba2c" }: { data: { value: number }[]; color?: string }) {
   return (
     <div className="h-10 w-24">
       <ResponsiveContainer>

@@ -1,4 +1,4 @@
-import { Clock, MoreHorizontal, Plus, RefreshCw, RotateCcw } from "lucide-react";
+import { Clock, MoreHorizontal, Plus, RefreshCw, RotateCcw, Save } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { ProductAvailability, ProductClassification, Quotation, QuotationAssistantInput, QuotationHistoryEntry, QuotationItem } from "../../types";
 import { mockClients, mockConsultants } from "../../data/mockClients";
@@ -83,16 +83,21 @@ function createInitialQuotation(): Quotation {
 
 function historyFromQuotation(quotation: Quotation, action: string): QuotationHistoryEntry {
   const summary = quotationSummary(quotation);
+  const savedAt = new Date().toISOString();
+  const savedQuotation = { ...quotation, updatedAt: savedAt };
   return {
-    id: `hist-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
-    date: new Date().toISOString(),
+    id: `hist-${quotation.id}`,
+    quotationId: quotation.id,
+    date: savedAt,
     client: quotation.client,
     consultant: quotation.consultant,
+    products: quotation.items.map((item) => item.product).filter(Boolean),
     itemCount: quotation.items.length,
     totalValue: summary.revenueTotal,
     averageMargin: summary.averageMargin,
     status: quotation.trafficLight.status,
-    action
+    action,
+    quotation: savedQuotation
   };
 }
 
@@ -111,7 +116,7 @@ export function PricingPage() {
       return [];
     }
   });
-  const [showHistory, setShowHistory] = useState(false);
+  const [showHistory, setShowHistory] = useState(true);
 
   const assistantInput = useMemo<QuotationAssistantInput>(() => ({
     client: quotation.client,
@@ -140,14 +145,22 @@ export function PricingPage() {
     const withDate = { ...next, updatedAt: new Date().toISOString() };
     setQuotation(withDate);
     localStorage.setItem("padap.currentQuotation", JSON.stringify(withDate));
-    if (action) registerHistory(withDate, action);
+    void action;
   }
 
   function registerHistory(next: Quotation, action: string) {
     const entry = historyFromQuotation(next, action);
-    const updated = [entry, ...history].slice(0, 40);
+    const withoutCurrent = history.filter((item) => item.quotationId !== next.id && item.id !== entry.id);
+    const updated = [entry, ...withoutCurrent].slice(0, 80);
     setHistory(updated);
     localStorage.setItem("padap.quotationHistory", JSON.stringify(updated));
+  }
+
+  function loadSavedQuotation(entry: QuotationHistoryEntry) {
+    if (!entry.quotation) return;
+    persist(entry.quotation);
+    setShowHistory(false);
+    simulatedAction("Cotacao carregada para edicao.");
   }
 
   function applyAssistant(input: QuotationAssistantInput) {
@@ -189,6 +202,10 @@ export function PricingPage() {
 
   function updateField<K extends keyof Quotation>(key: K, value: Quotation[K]) {
     persist({ ...quotation, [key]: value });
+  }
+
+  function updateQuotationPatch(patch: Partial<Quotation>, action?: string) {
+    persist({ ...quotation, ...patch }, action);
   }
 
   function newQuotation() {
@@ -240,8 +257,8 @@ export function PricingPage() {
   }
 
   function saveQuotation(message?: string) {
-    registerHistory(quotation, message ? "mensagem gerada / cotação salva" : "cotação salva");
-    simulatedAction("Cotação salva no histórico.");
+    registerHistory(quotation, message ? "mensagem gerada / cotacao salva" : "cotacao salva");
+    simulatedAction("Cotacao salva no historico.");
   }
 
   return (
@@ -253,6 +270,7 @@ export function PricingPage() {
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={newQuotation}><Plus size={16} />Nova cotação</Button>
+          <Button variant="ghost" onClick={() => saveQuotation()}><Save size={16} />Salvar cotação</Button>
           <Button variant="ghost" onClick={() => setShowHistory((value) => !value)}><Clock size={16} />Histórico</Button>
           <Button variant="ghost" onClick={clearFields}><RotateCcw size={16} />Limpar campos</Button>
           <Button variant="ghost" onClick={duplicateAndUpdate}><RefreshCw size={16} />Duplicar e atualizar</Button>
@@ -260,10 +278,10 @@ export function PricingPage() {
         </div>
       </header>
 
-      <div className="mb-6 grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
-        <div className="space-y-4">
-          <QuotationAssistant onApply={applyAssistant} />
-          <section className="rounded-xl border border-white/[0.08] bg-[#071918]/80 p-4">
+      <div className="grid min-w-0 gap-5 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_340px]">
+        <div className="min-w-0 space-y-5">
+          <QuotationAssistant quotation={quotation} onApply={applyAssistant} onQuotationPatch={updateQuotationPatch} onItemsChange={updateItems} />
+          <section className="hidden rounded-xl border border-white/[0.08] bg-[#071918]/80 p-4">
             <div className="grid gap-3 md:grid-cols-4">
               <Input value={quotation.client} onChange={(event) => updateField("client", event.target.value)} placeholder="Cliente" />
               <Input value={quotation.consultant} onChange={(event) => updateField("consultant", event.target.value)} placeholder="Consultor" />
@@ -285,21 +303,21 @@ export function PricingPage() {
               <Input value={quotation.suggestedMinimumMargin} type="number" onChange={(event) => updateField("suggestedMinimumMargin", Number(event.target.value))} placeholder="Margem mín." />
             </div>
           </section>
+          <QuotationItemsTable items={quotation.items} onChange={updateItems} />
+          <div className="grid min-w-0 gap-5 2xl:grid-cols-[minmax(0,1fr)_380px]">
+            <ConsultantMessageCard quotation={quotation} onSave={saveQuotation} />
+            <QuotationChecklist value={quotation.checklist} onChange={(checklist) => persist({ ...quotation, checklist }, "checklist atualizado")} />
+          </div>
+          {showHistory && <QuotationHistoryTable entries={history} onEdit={loadSavedQuotation} />}
         </div>
-        <aside className="space-y-4">
-          <QuotationSummaryCard quotation={quotation} onPackageModeChange={(enabled, target) => persist({ ...quotation, packageMode: enabled, packageTargetMargin: target }, enabled ? "modo pacote ativado" : "modo pacote desativado")} />
-          <CompactSecurity score={securityScore.percentage} classification={securityScore.classification} pending={pending} recommendation={recommendation} />
-          <QuotationTrafficLight value={quotation.trafficLight} recommendation={recommendation} onChange={(trafficLight) => persist({ ...quotation, trafficLight }, "status alterado")} />
-        </aside>
-      </div>
 
-      <div className="space-y-6">
-        <QuotationItemsTable items={quotation.items} onChange={updateItems} />
-        <div className="grid gap-6 xl:grid-cols-[1fr_420px]">
-          <ConsultantMessageCard quotation={quotation} onSave={saveQuotation} />
-          <QuotationChecklist value={quotation.checklist} onChange={(checklist) => persist({ ...quotation, checklist }, "checklist atualizado")} />
-        </div>
-        {showHistory && <QuotationHistoryTable entries={history} />}
+        <aside className="min-w-0">
+          <div className="space-y-4 xl:sticky xl:top-24">
+            <QuotationSummaryCard quotation={quotation} onPackageModeChange={(enabled, target) => persist({ ...quotation, packageMode: enabled, packageTargetMargin: target }, enabled ? "modo pacote ativado" : "modo pacote desativado")} />
+            <CompactSecurity score={securityScore.percentage} classification={securityScore.classification} pending={pending} recommendation={recommendation} />
+            <QuotationTrafficLight value={quotation.trafficLight} recommendation={recommendation} onChange={(trafficLight) => persist({ ...quotation, trafficLight }, "status alterado")} />
+          </div>
+        </aside>
       </div>
     </div>
   );
@@ -307,19 +325,19 @@ export function PricingPage() {
 
 function CompactSecurity({ score, classification, pending, recommendation }: { score: number; classification: string; pending: string[]; recommendation: string }) {
   return (
-    <section className="rounded-xl border border-white/[0.08] bg-[#071918]/80 p-4">
+    <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="text-base font-semibold text-white">Segurança</h2>
-        <strong className="text-2xl text-white">{score}%</strong>
+        <h2 className="text-base font-bold text-padap-ink">Segurança</h2>
+        <strong className="text-2xl font-bold text-padap-ink">{score}%</strong>
       </div>
-      <div className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full bg-padap-green" style={{ width: `${score}%` }} /></div>
-      <p className="mt-2 text-sm text-slate-300">{classification}</p>
+      <div className="h-2 overflow-hidden rounded-full bg-padap-line"><div className="h-full bg-padap-green" style={{ width: `${score}%` }} /></div>
+      <p className="mt-2 text-sm font-semibold text-padap-ink">{classification}</p>
       {pending.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {pending.slice(0, 4).map((item) => <span key={item} className="rounded-full border border-padap-amber/25 bg-padap-amber/10 px-2 py-1 text-[11px] text-amber-100">{item}</span>)}
         </div>
       )}
-      <p className="mt-3 text-xs leading-5 text-slate-400">{recommendation}</p>
+      <p className="mt-3 text-xs font-medium leading-5 text-padap-muted">{recommendation}</p>
     </section>
   );
 }

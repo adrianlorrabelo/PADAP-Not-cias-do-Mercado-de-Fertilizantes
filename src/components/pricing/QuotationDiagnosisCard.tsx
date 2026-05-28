@@ -3,9 +3,9 @@ import type { QuotationDiagnosis } from "../../types";
 
 export function QuotationDiagnosisCard({ diagnosis }: { diagnosis: QuotationDiagnosis }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-4">
+    <div className="rounded-lg border border-padap-line bg-white p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h3 className="text-sm font-semibold text-white">Diagnóstico da cotação</h3>
+        <h3 className="text-sm font-bold text-padap-ink">Diagnóstico da cotação</h3>
         <Badge tone={diagnosis.needsSupplierQuote ? "amber" : "green"}>{diagnosis.needsSupplierQuote ? "Cotar fornecedor" : "Fornecedor ok"}</Badge>
       </div>
       <dl className="grid gap-3 text-sm">
@@ -24,9 +24,9 @@ export function QuotationDiagnosisCard({ diagnosis }: { diagnosis: QuotationDiag
 
 function Info({ label, value }: { label: string; value: string }) {
   return (
-    <div className="grid gap-1 border-b border-white/[0.06] pb-2 last:border-0 last:pb-0">
-      <dt className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">{label}</dt>
-      <dd className="text-slate-100">{value || "-"}</dd>
+    <div className="grid gap-1 border-b border-padap-line pb-2 last:border-0 last:pb-0">
+      <dt className="text-xs font-bold uppercase tracking-[0.12em] text-padap-muted">{label}</dt>
+      <dd className="font-medium text-padap-ink">{value || "-"}</dd>
     </div>
   );
 }

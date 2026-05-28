@@ -1,10 +1,10 @@
-import type { ExchangeRatioItem, ImpactedProposal, ProductAttention } from "../../types";
+import type { CommercialOpportunity, ExchangeRatioItem, ImpactedProposal, ProductAttention } from "../../types";
 import { formatCurrency } from "../../utils/marketFormatting";
 import { Button } from "../ui/Button";
 import { Modal } from "../ui/Modal";
 import { MetricTile } from "./MarketPrimitives";
 
-export function MeetingMode({ open, onClose, score, products, proposals, mainRatio, onPdf, onCopy }: { open: boolean; onClose: () => void; score: number; products: ProductAttention[]; proposals: ImpactedProposal[]; mainRatio: ExchangeRatioItem; onPdf: () => void; onCopy: () => void }) {
+export function MeetingMode({ open, onClose, score, products, proposals, mainRatio, opportunities, onPdf, onCopy }: { open: boolean; onClose: () => void; score: number; products: ProductAttention[]; proposals: ImpactedProposal[]; mainRatio: ExchangeRatioItem; opportunities: CommercialOpportunity[]; onPdf: () => void; onCopy: () => void }) {
   return (
     <Modal title="Modo reunião" open={open} onClose={onClose}>
       <div className="space-y-5">
@@ -16,10 +16,12 @@ export function MeetingMode({ open, onClose, score, products, proposals, mainRat
         </div>
 
         <div className="grid gap-4 md:grid-cols-2">
-          <Panel title="Resumo executivo" items={["Mercado volátil, com pressão em nitrogenados e oportunidade em potássicos."]} />
-          <Panel title="O que fazer agora" items={["Recalcular nitrogenados", "Ativar clientes de KCl", "Usar validade curta", "Enviar briefing aos consultores"]} />
-          <Panel title="Produtos em atenção" items={products.slice(0, 5).map((item) => `${item.product} - ${item.movement}`)} />
-          <Panel title="Relação de troca" items={[`${mainRatio.pair}: ${mainRatio.interpretation}`]} />
+          <Panel title="Resumo de decisão" items={["Mercado volátil exige validade curta, revisão de propostas antigas e foco comercial em KCl."]} />
+          <Panel title="Termômetro do mercado" items={[`Score ${score}/100`, "Risco médio, oportunidade alta e confiança alta para os próximos 7 dias."]} />
+          <Panel title="Produtos em atenção" items={products.slice(0, 5).map((item) => `${item.product} - ${item.movement}: ${item.recommendedAction}`)} />
+          <Panel title="Propostas impactadas" items={proposals.slice(0, 4).map((item) => `${item.id} - ${item.client}: ${item.impactReason}`)} />
+          <Panel title="Oportunidades comerciais" items={opportunities.slice(0, 3).map((item) => `${item.opportunity}: ${item.recommendedAction}`)} />
+          <Panel title="Briefing final" items={[`${mainRatio.pair}: ${mainRatio.interpretation}`, "Confirmar validade, disponibilidade e condição atualizada com compras antes de prometer preço ao produtor."]} />
         </div>
 
         <div className="rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4 text-sm leading-6 text-slate-200">

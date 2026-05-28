@@ -1,13 +1,13 @@
 import type { Quotation, QuotationItem, QuotationItemStatus } from "../types";
 
 export function quotationItemTotals(item: QuotationItem) {
-  const unitCostTotal = item.baseCost + item.freight + item.taxes + item.commission + item.interest;
+  const unitCostTotal = item.baseCost;
   const costTotal = unitCostTotal * item.quantity;
   const revenueTotal = item.finalPrice * item.quantity;
   const profit = revenueTotal - costTotal;
   const marginPercent = revenueTotal ? (profit / revenueTotal) * 100 : 0;
-  const minimumPriceForTarget = unitCostTotal / (1 - item.minimumMargin / 100);
-  const desiredPriceForTarget = unitCostTotal / (1 - item.desiredMargin / 100);
+  const minimumPriceForTarget = item.minimumMargin < 100 ? unitCostTotal / (1 - item.minimumMargin / 100) : 0;
+  const desiredPriceForTarget = item.desiredMargin < 100 ? unitCostTotal / (1 - item.desiredMargin / 100) : 0;
   const status = getQuotationItemStatus(item, marginPercent, revenueTotal, costTotal);
 
   return { unitCostTotal, costTotal, revenueTotal, profit, marginPercent, minimumPriceForTarget, desiredPriceForTarget, status };
@@ -27,7 +27,7 @@ export function quotationSummary(quotation: Quotation) {
   const grossProfit = revenueTotal - costTotal;
   const averageMargin = revenueTotal ? (grossProfit / revenueTotal) * 100 : 0;
   const requiredMargin = quotation.packageMode ? quotation.packageTargetMargin : Math.max(...quotation.items.map((item) => item.minimumMargin), 0);
-  const requiredRevenue = costTotal / (1 - requiredMargin / 100);
+  const requiredRevenue = requiredMargin < 100 ? costTotal / (1 - requiredMargin / 100) : 0;
   const missingToTarget = Math.max(0, requiredRevenue - revenueTotal);
   const differenceToTarget = averageMargin - requiredMargin;
   const worstStatus = itemTotals.some((item) => item.status === "Bloqueado")
@@ -58,7 +58,7 @@ export function createQuotationItem(partial: Partial<QuotationItem> = {}): Quota
   const commission = partial.commission ?? 0;
   const interest = partial.interest ?? 0;
   const minimumMargin = partial.minimumMargin ?? 10;
-  const unitCostTotal = baseCost + freight + taxes + commission + interest;
+  const suggestedFinalPrice = minimumMargin < 100 ? Math.round(baseCost / (1 - minimumMargin / 100)) : 0;
 
   return {
     id: partial.id || `item-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
@@ -73,6 +73,6 @@ export function createQuotationItem(partial: Partial<QuotationItem> = {}): Quota
     interest,
     desiredMargin: partial.desiredMargin ?? minimumMargin,
     minimumMargin,
-    finalPrice: partial.finalPrice ?? (unitCostTotal ? Math.round(unitCostTotal / (1 - minimumMargin / 100)) : 0)
+    finalPrice: partial.finalPrice ?? (baseCost ? suggestedFinalPrice : 0)
   };
 }

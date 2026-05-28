@@ -15,7 +15,7 @@ export function Toast() {
   if (!message) return null;
 
   return (
-    <div className="fixed bottom-5 right-5 z-[60] max-w-sm rounded-lg border border-padap-green/30 bg-[#071414] px-4 py-3 text-sm text-white shadow-glow">
+    <div className="fixed bottom-5 right-5 z-[60] max-w-sm rounded-lg border border-padap-green/30 bg-white px-4 py-3 text-sm font-semibold text-padap-ink shadow-glow">
       {message}
     </div>
   );

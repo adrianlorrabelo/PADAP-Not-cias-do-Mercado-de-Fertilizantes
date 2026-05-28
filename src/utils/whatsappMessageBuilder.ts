@@ -10,7 +10,7 @@ export function buildConsultantQuotationMessage(quotation: Quotation): string {
   }
 
   if (status === "Requer aprovação") {
-    return `Olá, ${quotation.consultant || "consultor"}.\n\nCotação depende de aprovação interna antes do envio. Motivo: ${quotation.trafficLight.reason || "margem/condição comercial"}.`;
+    return `Olá, ${quotation.consultant || "consultor"}.\n\nCotação depende de aprovação interna antes do envio. Motivo: ${quotation.trafficLight.reason || "condição comercial"}.`;
   }
 
   if (status === "Bloqueada") {
@@ -23,9 +23,9 @@ export function buildConsultantQuotationMessage(quotation: Quotation): string {
 
   const items = quotation.items.map((item, index) => {
     const totals = quotationItemTotals(item);
-    return `${index + 1}. ${item.product || "Produto"} - ${item.quantity} ${item.unit} - ${formatarMoedaBRL(item.finalPrice)}/${item.unit} - Total ${formatarMoedaBRL(totals.revenueTotal)}`;
-  }).join("\n");
+    return `${index + 1}. ${item.product || "Produto"}\nQuantidade: ${item.quantity} ${item.unit}\nPreço final: ${formatarMoedaBRL(item.finalPrice)}/${item.unit}\nValor total: ${formatarMoedaBRL(totals.revenueTotal)}`;
+  }).join("\n\n");
   const summary = quotationSummary(quotation);
 
-  return `Olá, ${quotation.consultant || "consultor"}.\n\nSegue cotação para o cliente ${quotation.client || "cliente"}${quotation.farm ? ` - ${quotation.farm}` : ""}:\n\n${items}\n\nValor total: ${formatarMoedaBRL(summary.revenueTotal)}\nPrazo: ${quotation.term || "a confirmar"}\nFrete: ${quotation.freightMode || "a confirmar"} ${quotation.deliveryCity ? `- ${quotation.deliveryCity}` : ""}\nValidade: ${quotation.validity || "a confirmar"}\n\nObservação:\nPreço sujeito à disponibilidade e confirmação no momento do pedido.`;
+  return `Olá, ${quotation.consultant || "consultor"}.\n\nSegue condição para negociação:\n\nCliente: ${quotation.client || "cliente"}\n\nItens cotados:\n${items}\n\nCondição de pagamento: ${quotation.term || "a confirmar"}\nFrete: ${quotation.freightMode || "a confirmar"}\nValor total da cotação: ${formatarMoedaBRL(summary.revenueTotal)}\n\nObservação:\nValores sujeitos à confirmação de disponibilidade, fornecedor e validade da condição.`;
 }

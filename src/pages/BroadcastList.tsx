@@ -600,7 +600,7 @@ function LightSelect(props: SelectHTMLAttributes<HTMLSelectElement>) {
 
 function LightButton({ children, icon, variant = "primary", className = "", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { icon?: ReactNode; variant?: "primary" | "secondary" | "danger" }) {
   const styles = {
-    primary: "border-padap-emerald bg-padap-emerald text-white hover:bg-[#12843d]",
+    primary: "border-padap-emerald bg-padap-emerald text-white hover:bg-[#0b3e41]",
     secondary: "border-slate-200 bg-white text-slate-700 hover:border-padap-emerald/40 hover:bg-padap-green/10 hover:text-slate-950",
     danger: "border-red-200 bg-red-50 text-red-700 hover:bg-red-100"
   };
