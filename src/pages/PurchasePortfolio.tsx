@@ -204,12 +204,12 @@ export default function PurchasePortfolio() {
       "Valor Total": item.qtdTon * item.valorTon,
     }));
     rows.push({
-      "Sem. Aprovação": "",
+      "Sem. Aprovação": "verde" as Semaforo,
       "Pedido Compra": "TOTAL",
       "Fornecedor": "",
       "Emissão": "",
       "Vencimento": "",
-      "Sem. Vencimento": "" as Semaforo,
+      "Sem. Vencimento": "verde" as Semaforo,
       "Pedido Fornecedor": "",
       "Produto": "",
       "QTD Ton": filtered.reduce((s, i) => s + i.qtdTon, 0),

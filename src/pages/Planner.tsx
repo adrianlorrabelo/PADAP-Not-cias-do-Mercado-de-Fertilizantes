@@ -105,7 +105,7 @@ export default function Planner() {
   const [editingTemplate, setEditingTemplate] = useState<PlannerTaskTemplate | null>(null);
   const [templateForm, setTemplateForm] = useState<TemplateForm>(() => defaultTemplateForm());
   const [month, setMonth] = useState(() => new Date());
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState<Record<string, string>>({
     search: "",
     category: "Todas",
     status: "Todos",
