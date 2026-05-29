@@ -227,12 +227,7 @@ export default function PurchasePortfolio() {
   const totalValorTotal = filtered.reduce((s, i) => s + i.qtdTon * i.valorTon, 0);
 
   return (
-    <div className="space-y-6 p-6">
-      <div>
-        <h1 className="text-2xl font-bold text-padap-ink">Controle de Carteira</h1>
-        <p className="mt-1 text-sm text-padap-muted">Pedidos de compra, vencimentos e semáforos</p>
-      </div>
-
+    <div className="space-y-6">
       {/* KPI Cards */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
         <Card className="flex flex-col items-center justify-center gap-1 text-center">

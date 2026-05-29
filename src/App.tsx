@@ -48,6 +48,7 @@ export default function App() {
           <Route path="estoque" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Stock /></RoleOnly>} />
           <Route path="planner" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Planner /></RoleOnly>} />
           <Route path="campanhas" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação"]}><Campaigns /></RoleOnly>} />
+          <Route path="carteira" element={<RoleOnly allowed={["Administrador Geral", "Compras / Precificação"]}><PurchasePortfolio /></RoleOnly>} />
         </Route>
         <Route path="/tabela" element={<Navigate to="/compras/tabela-da-semana" replace />} />
         <Route path="/tabela-da-semana" element={<Navigate to="/compras/tabela-da-semana" replace />} />
@@ -60,7 +61,7 @@ export default function App() {
         <Route path="/relatorios" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Visualizador"]}><Reports /></RoleOnly>} />
         <Route path="/usuarios" element={<AdminOnly><Users /></AdminOnly>} />
         <Route path="/lista-transmissao" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Visualizador"]}><BroadcastList /></RoleOnly>} />
-        <Route path="/carteira-compras" element={<RoleOnly allowed={["Administrador Geral", "Compras / Precificação"]}><PurchasePortfolio /></RoleOnly>} />
+        <Route path="/carteira-compras" element={<Navigate to="/compras/carteira" replace />} />
         <Route path="/configuracoes" element={<Settings />} />
       </Route>
     </Routes>

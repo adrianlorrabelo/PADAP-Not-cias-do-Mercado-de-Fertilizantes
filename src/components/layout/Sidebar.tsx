@@ -1,4 +1,4 @@
-import { BarChart3, Brain, ChevronLeft, ChevronRight, Home, MessageCircle, PackageOpen, Settings, ShoppingCart, Users, UserCog, UserRoundCheck, Wallet } from "lucide-react";
+import { BarChart3, Brain, ChevronLeft, ChevronRight, Home, MessageCircle, PackageOpen, Settings, ShoppingCart, Users, UserCog, UserRoundCheck } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useLocalStorage } from "../../hooks/useLocalStorage";
@@ -27,7 +27,6 @@ const items: SidebarItem[] = [
   { to: "/mercado", label: "Mercado", icon: Brain, section: "principal", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Visualizador"] },
   { to: "/compras", label: "Compras", icon: ShoppingCart, section: "principal", roles: purchaseRoles },
   { to: "/aprovacoes", label: "Aprovações", icon: UserRoundCheck, section: "operacao", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/carteira-compras", label: "Controle de Carteira", icon: Wallet, section: "operacao", roles: ["Administrador Geral", pricingRole] },
   { to: "/lista-transmissao", label: "Transmissão", icon: MessageCircle, section: "operacao", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Visualizador"] },
   { to: "/clientes", label: "Clientes", icon: Users, section: "operacao", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Consultor"] },
   { to: "/consultores", label: "Consultores", icon: UserCog, section: "gestao", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },

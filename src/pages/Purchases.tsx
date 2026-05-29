@@ -17,7 +17,8 @@ export const purchaseTabs: PurchaseTab[] = [
   { to: "/compras/pacotes", label: "Pacotes", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
   { to: "/compras/estoque", label: "Estoque", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
   { to: "/compras/planner", label: "Planner", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/compras/campanhas", label: "Campanhas", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] }
+  { to: "/compras/campanhas", label: "Campanhas", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
+  { to: "/compras/carteira", label: "Carteira", roles: ["Administrador Geral", pricingRole] }
 ];
 
 export function canAccessPurchaseTab(tab: PurchaseTab, role?: Role) {
