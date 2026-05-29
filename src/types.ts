@@ -390,7 +390,7 @@ export interface MarketNews {
 
 export type MarketStatus = "Altista" | "Baixista" | "Neutro" | "Volátil" | "Oportunidade" | "Atenção";
 export type MarketUpdateState = "atualizado" | "monitorando" | "atenção" | "erro" | "parcial" | "com falhas" | "pendente";
-export type MarketNewsCategory = "Fertilizantes" | "Matérias-primas" | "Câmbio" | "Logística" | "Culturas" | "Geopolítica" | "Importações" | "Oferta e demanda";
+export type MarketNewsCategory = "Fertilizantes" | "Matérias-primas" | "Câmbio" | "Logística" | "Culturas" | "Geopolítica" | "Importações" | "Oferta e demanda" | "Mercado";
 export type Priority = "Baixa" | "Média" | "Alta" | "Crítica";
 
 export interface MarketUpdateStatus {
