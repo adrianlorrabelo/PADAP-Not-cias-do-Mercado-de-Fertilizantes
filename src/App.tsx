@@ -20,6 +20,7 @@ import Consultants from "./pages/Consultants";
 import Reports from "./pages/Reports";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
+import PurchasePortfolio from "./pages/PurchasePortfolio";
 import type { Role } from "./types";
 
 function AdminOnly({ children }: { children: ReactNode }) {
@@ -59,6 +60,7 @@ export default function App() {
         <Route path="/relatorios" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Visualizador"]}><Reports /></RoleOnly>} />
         <Route path="/usuarios" element={<AdminOnly><Users /></AdminOnly>} />
         <Route path="/lista-transmissao" element={<RoleOnly allowed={["Administrador Geral", "Gestor / Gerente", "Compras / Precificação", "Visualizador"]}><BroadcastList /></RoleOnly>} />
+        <Route path="/carteira-compras" element={<RoleOnly allowed={["Administrador Geral", "Compras / Precificação"]}><PurchasePortfolio /></RoleOnly>} />
         <Route path="/configuracoes" element={<Settings />} />
       </Route>
     </Routes>
