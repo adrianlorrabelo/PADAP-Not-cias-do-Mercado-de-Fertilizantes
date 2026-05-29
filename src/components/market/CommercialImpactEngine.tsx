@@ -1,4 +1,4 @@
-import { AlertTriangle, CheckCircle2, DollarSign, Target, Users } from "lucide-react";
+import { AlertTriangle, CheckCircle2, DollarSign, Users } from "lucide-react";
 import { formatCurrency } from "../../utils/marketFormatting";
 import { Card } from "../ui/Card";
 import { MetricTile, SectionHeader } from "./MarketPrimitives";

@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, type ReactNode } from "react";
 import { defaultSettings } from "../data/mockMarket";
 import { useLocalStorage } from "../hooks/useLocalStorage";

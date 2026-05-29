@@ -15,15 +15,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 button, a, input, select { -webkit-tap-highlight-color: transparent; }
-::selection { background: rgba(29, 186, 44, 0.22); }
+::selection { background: rgba(15, 76, 79, 0.18); }
 ::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #f4f7fa; }
-::-webkit-scrollbar-thumb { background: #b4c8c0; border-radius: 999px; border: 2px solid #f4f7fa; }
-::-webkit-scrollbar-thumb:hover { background: #7fa995; }
+::-webkit-scrollbar-track { background: #f2f8f8; }
+::-webkit-scrollbar-thumb { background: #9bbdbd; border-radius: 999px; border: 2px solid #f2f8f8; }
+::-webkit-scrollbar-thumb:hover { background: #6a9fa0; }
 
 .page-title {
   @apply mb-7 flex flex-col gap-1.5;
-  border-left: 4px solid #1dba2c;
+  border-left: 4px solid #0f4c4f;
   padding-left: 0.875rem;
   border-radius: 0 0 0 2px;
 }
@@ -41,6 +41,16 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
   color: #0b1f1e !important;
 }
 
+/* Exceção: botões e badges com fundo escuro devem manter texto branco */
+button.bg-padap-green,
+a.bg-padap-green,
+.padap-green-sidebar .text-white,
+.padap-green-sidebar .text-slate-100,
+.padap-green-sidebar .text-slate-200,
+.campaign-preview .text-white {
+  color: #ffffff !important;
+}
+
 .text-slate-300,
 .text-slate-400 {
   color: #4f655d !important;
@@ -54,12 +64,12 @@ button, a, input, select { -webkit-tap-highlight-color: transparent; }
 }
 
 .text-padap-mint {
-  color: #0f7a1e !important;
+  color: #1dba2c !important;
   font-weight: 650;
 }
 
 .text-cyan-100 {
-  color: #0f4c4f !important;
+  color: #0a3538 !important;
   font-weight: 650;
 }
 

@@ -88,7 +88,7 @@ export function Sidebar() {
   const [collapsed, setCollapsed] = useLocalStorage("padap.ui.sidebarCollapsed", typeof window !== "undefined" ? window.innerWidth < 900 : false);
 
   return (
-    <aside className={`padap-green-sidebar sticky top-0 hidden h-screen shrink-0 border-r border-[#0b3e41] bg-[linear-gradient(180deg,#1dba2c_0%,#0f7774_42%,#0f4c4f_100%)] p-3 shadow-[14px_0_34px_rgba(15,76,79,.22)] transition-all duration-300 md:block ${collapsed ? "w-[76px]" : "w-[256px]"}`}>
+    <aside className={`padap-green-sidebar sticky top-0 hidden h-screen shrink-0 border-r border-[#0b3e41] bg-[linear-gradient(180deg,#0f4c4f_0%,#0a3c3f_55%,#072a2c_100%)] p-3 shadow-[14px_0_34px_rgba(15,76,79,.22)] transition-all duration-300 md:block ${collapsed ? "w-[76px]" : "w-[256px]"}`}>
       <div className="flex h-full flex-col">
         <div className={`mb-5 border-b border-white/22 ${collapsed ? "flex flex-col items-center gap-4 px-0 pb-5 pt-2" : "px-2 pb-5 pt-2"}`}>
           <div className={collapsed ? "flex justify-center" : "p-1"}>

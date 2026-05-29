@@ -9,7 +9,7 @@ import { CustomerOpportunityRadar } from "../components/market/CustomerOpportuni
 import { ExchangeRatioAdvanced } from "../components/market/ExchangeRatioAdvanced";
 import { ImpactedProposalsTable } from "../components/market/ImpactedProposalsTable";
 import { InternalMarketAlerts } from "../components/market/InternalMarketAlerts";
-import { MarketAnalystCard } from "../components/market/MarketAnalystCard";
+import { MarketAnalystCard as _MarketAnalystCard } from "../components/market/MarketAnalystCard";
 import { MarketReportModal } from "../components/market/MarketReportModal";
 import { MarketSourcesManagerModal } from "../components/market/MarketSourcesManagerModal";
 import { MarketThermometer } from "../components/market/MarketThermometer";
@@ -143,7 +143,7 @@ export default function MarketIntelligence() {
   const nextAutomatic = autoSettings.enabled && autoSettings.nextAutoUpdateAt ? autoSettings.nextAutoUpdateAt : getNextAutomaticUpdate();
   const mainRatio = getMainExchangeRatio(mockExchangeRatios);
   const latestHistory = updateHistory[0] ?? null;
-  const stockSummary = useMemo(() => {
+  const _stockSummary = useMemo(() => {
     const consolidated = consolidateStock(loadStockItems(), loadMinimumRules());
     return {
       items: consolidated,
@@ -158,6 +158,7 @@ export default function MarketIntelligence() {
 
   useEffect(() => {
     const controller = new AbortController();
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- setLoading(true) triggers fetch spinner before async call
     setLoading(true);
     loadMarketRealitySnapshot(controller.signal)
       .then((snapshot) => {
@@ -171,33 +172,6 @@ export default function MarketIntelligence() {
       .finally(() => setLoading(false));
     return () => controller.abort();
   }, []);
-
-  useEffect(() => {
-    const interval = window.setInterval(() => {
-      const currentSettings = getMarketAutoUpdateSettings();
-      if (currentSettings.nextAutoUpdateAt !== autoSettings.nextAutoUpdateAt || currentSettings.updatedAt !== autoSettings.updatedAt) {
-        setAutoSettings(currentSettings);
-      }
-
-      if (loadingRef.current || autoRunningRef.current) return;
-      if (!shouldRunMarketAutoUpdate(currentSettings)) return;
-
-      void runMarketAutoUpdate();
-    }, 15000);
-
-    return () => window.clearInterval(interval);
-  }, [autoSettings.nextAutoUpdateAt, autoSettings.updatedAt]);
-
-  const openBriefingWhatsApp = () => {
-    setWhatsAppMode("briefing");
-    setShowWhatsApp(true);
-  };
-  const openReportWhatsApp = () => {
-    setWhatsAppMode("report");
-    setShowWhatsApp(true);
-  };
-
-  const action = (message: string) => notify(message);
 
   async function runMarketAutoUpdate() {
     if (loadingRef.current || autoRunningRef.current) return;
@@ -228,6 +202,33 @@ export default function MarketIntelligence() {
     }
   }
 
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      const currentSettings = getMarketAutoUpdateSettings();
+      if (currentSettings.nextAutoUpdateAt !== autoSettings.nextAutoUpdateAt || currentSettings.updatedAt !== autoSettings.updatedAt) {
+        setAutoSettings(currentSettings);
+      }
+
+      if (loadingRef.current || autoRunningRef.current) return;
+      if (!shouldRunMarketAutoUpdate(currentSettings)) return;
+
+      void runMarketAutoUpdate();
+    }, 15000);
+
+    return () => window.clearInterval(interval);
+  }, [autoSettings.nextAutoUpdateAt, autoSettings.updatedAt]);
+
+  const openBriefingWhatsApp = () => {
+    setWhatsAppMode("briefing");
+    setShowWhatsApp(true);
+  };
+  const openReportWhatsApp = () => {
+    setWhatsAppMode("report");
+    setShowWhatsApp(true);
+  };
+
+  const action = (message: string) => notify(message);
+
   const refreshMarket = async () => {
     if (loading || autoRunningRef.current) return;
     const controller = new AbortController();
@@ -256,7 +257,7 @@ export default function MarketIntelligence() {
     setShowSourcesManager(false);
   };
 
-  const copySourceLink = (url?: string) => {
+  const _copySourceLink = (url?: string) => {
     if (!url) {
       notify("Esta fonte não possui link cadastrado.");
       return;
@@ -309,7 +310,7 @@ export default function MarketIntelligence() {
         onAlertConfig={() => { setShowAlertConfig(true); setShowMenu(false); }}
         onAutoUpdateConfig={() => { setShowAutoUpdateConfig(true); setShowMenu(false); }}
         onUpdateHistory={() => { setShowUpdateHistory(true); setShowMenu(false); }}
-        onRecipients={() => { canManageRecipients ? setShowRecipients(true) : notify("Você não tem permissão para gerenciar destinatários."); setShowMenu(false); }}
+        onRecipients={() => { if (canManageRecipients) { setShowRecipients(true); } else { notify("Você não tem permissão para gerenciar destinatários."); } setShowMenu(false); }}
         canManageRecipients={canManageRecipients}
       />
 
@@ -733,7 +734,7 @@ function UpdateStrip({ statuses, lastUpdate, nextManual, nextAutomatic, sources,
   );
 }
 
-function RealityWarnings({ snapshot }: { snapshot: MarketRealitySnapshot | null }) {
+function _RealityWarnings({ snapshot }: { snapshot: MarketRealitySnapshot | null }) {
   if (!snapshot?.warnings.length) return null;
   return (
     <div className="rounded-xl border border-amber-300/20 bg-amber-300/[0.06] px-4 py-3 text-sm leading-6 text-amber-50">
@@ -966,7 +967,7 @@ function ExchangeDecisionCard({ ratios }: { ratios: ExchangeRatioItem[] }) {
   );
 }
 
-function InternalStockCard({ summary, onOpen }: { summary: { items: ConsolidatedStockItem[]; suggestions: ConsolidatedStockItem[] }; onOpen: () => void }) {
+function _InternalStockCard({ summary, onOpen }: { summary: { items: ConsolidatedStockItem[]; suggestions: ConsolidatedStockItem[] }; onOpen: () => void }) {
   const critical = summary.items.filter((item) => item.status === "Crítico / Negativo" || item.status === "Zerado").length;
   const low = summary.items.filter((item) => item.status === "Baixo estoque").length;
   const visibleItems = summary.suggestions.length ? summary.suggestions.slice(0, 4) : summary.items.slice(0, 4);
@@ -1185,7 +1186,7 @@ function sourceTypeTone(type: SourceHealthType): "green" | "amber" | "red" | "cy
   return "neutral";
 }
 
-function MainIndicators({ indicators }: { indicators: MarketRealityIndicator[] }) {
+function _MainIndicators({ indicators }: { indicators: MarketRealityIndicator[] }) {
   return (
     <Card>
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
@@ -1326,7 +1327,7 @@ function IndicatorMini({ label, value, tone }: { label: string; value: string; t
   );
 }
 
-function CompactProducts({ products, onAll }: { products: ProductAttention[]; onAll: () => void }) {
+function _CompactProducts({ products, onAll }: { products: ProductAttention[]; onAll: () => void }) {
   return (
     <Card>
       <SectionTop title="Produtos em atenção" action={<Button variant="ghost" onClick={onAll}>Ver todos</Button>} />
@@ -1354,7 +1355,7 @@ function CompactProducts({ products, onAll }: { products: ProductAttention[]; on
   );
 }
 
-function CompactProposals({ proposals, total, value, urgent, onDetails }: { proposals: ImpactedProposal[]; total: number; value: number; urgent: number; onDetails: () => void }) {
+function _CompactProposals({ proposals, total, value, urgent, onDetails }: { proposals: ImpactedProposal[]; total: number; value: number; urgent: number; onDetails: () => void }) {
   return (
     <div id="propostas-impactadas">
       <Card>
@@ -1388,7 +1389,7 @@ function CompactProposals({ proposals, total, value, urgent, onDetails }: { prop
   );
 }
 
-function CompactExchangeRatios({ ratios }: { ratios: ExchangeRatioItem[] }) {
+function _CompactExchangeRatios({ ratios }: { ratios: ExchangeRatioItem[] }) {
   return (
     <Card>
       <SectionTop title="Relação de troca" />
@@ -1414,7 +1415,7 @@ function CompactExchangeRatios({ ratios }: { ratios: ExchangeRatioItem[] }) {
   );
 }
 
-function CompactOpportunities({ opportunities, onAction }: { opportunities: CommercialOpportunity[]; onAction: (message: string) => void }) {
+function _CompactOpportunities({ opportunities, onAction }: { opportunities: CommercialOpportunity[]; onAction: (message: string) => void }) {
   return (
     <div id="oportunidades-comerciais">
       <Card>
@@ -1444,7 +1445,7 @@ function CompactOpportunities({ opportunities, onAction }: { opportunities: Comm
   );
 }
 
-function CompactSourcesRadar({ sources, onCopy }: { sources: MarketSource[]; onCopy: (url?: string) => void }) {
+function _CompactSourcesRadar({ sources, onCopy }: { sources: MarketSource[]; onCopy: (url?: string) => void }) {
   return (
     <Card>
       <SectionTop title="Radar de fontes confiáveis" />
@@ -1507,7 +1508,7 @@ function toConfidenceSources(sources: MarketSource[]): MarketConfidenceSource[] 
   }));
 }
 
-function CompactNews({ news, onCopy }: { news: MarketNews[]; onCopy: (url: string) => void }) {
+function _CompactNews({ news, onCopy }: { news: MarketNews[]; onCopy: (url: string) => void }) {
   return (
     <Card>
       <SectionTop title="Radar de fontes confiáveis" />
@@ -1533,7 +1534,7 @@ function CompactNews({ news, onCopy }: { news: MarketNews[]; onCopy: (url: strin
   );
 }
 
-function CompactAnalyst({ analysis, onAnalysis, onBriefing, onCopy }: { analysis: MarketAnalysis | null; onAnalysis: () => void; onBriefing: () => void; onCopy: () => void }) {
+function _CompactAnalyst({ analysis, onAnalysis, onBriefing, onCopy }: { analysis: MarketAnalysis | null; onAnalysis: () => void; onBriefing: () => void; onCopy: () => void }) {
   const insight = mockMarketAnalystInsight;
   const confidenceLabel = analysis?.confidence ?? `Alta - ${insight.confidence}%`;
   const confidenceWidth = analysis?.confidence.includes("85") ? 85 : analysis?.confidence.includes("65") ? 65 : analysis?.confidence.includes("45") ? 45 : insight.confidence;

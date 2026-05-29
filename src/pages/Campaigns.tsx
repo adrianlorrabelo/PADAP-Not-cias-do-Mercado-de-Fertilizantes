@@ -1,4 +1,4 @@
-import { CalendarPlus, Clipboard, Copy, Download, Eye, FilePlus2, GripVertical, Plus, Printer, Rows3, Save, Trash2 } from "lucide-react";
+import { CalendarPlus, Clipboard, Copy, Download, FilePlus2, GripVertical, Plus, Printer, Rows3, Save, Trash2 } from "lucide-react";
 import { useMemo, useState, type ReactNode } from "react";
 import { Badge } from "../components/ui/Badge";
 import { Button } from "../components/ui/Button";

@@ -1,10 +1,12 @@
 import { PencilLine, Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { usePagination } from "../../hooks/usePagination";
 import type { QuotationHistoryEntry } from "../../types";
 import { formatarMoedaBRL } from "../../utils/currency";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
+import { Pagination } from "../ui/Pagination";
 import { Select } from "../ui/Select";
 
 type Props = {
@@ -31,6 +33,9 @@ export function QuotationHistoryTable({ entries, onEdit }: Props) {
       return matchesClient && matchesConsultant && matchesProduct && matchesStatus;
     });
   }, [entries, filters]);
+
+  const PAGE_SIZE = 20;
+  const { page, setPage, totalPages, paged: pagedEntries } = usePagination(filteredEntries, PAGE_SIZE);
 
   const selectedClient = filters.client.trim();
   const clientEntries = useMemo(() => {
@@ -89,7 +94,7 @@ export function QuotationHistoryTable({ entries, onEdit }: Props) {
             <tr>{["Data", "Cliente", "Consultor", "Produtos", "Itens", "Valor", "Margem", "Status", "Acao"].map((header) => <th key={header} className="px-3 py-2">{header}</th>)}</tr>
           </thead>
           <tbody className="divide-y divide-padap-line">
-            {filteredEntries.map((entry) => {
+            {pagedEntries.map((entry) => {
               const products = entry.products || entry.quotation?.items.map((item) => item.product) || [];
               return (
                 <tr key={entry.id}>
@@ -114,6 +119,7 @@ export function QuotationHistoryTable({ entries, onEdit }: Props) {
             )}
           </tbody>
         </table>
+        <Pagination page={page} totalPages={totalPages} total={filteredEntries.length} pageSize={PAGE_SIZE} onPageChange={setPage} />
       </div>
     </section>
   );

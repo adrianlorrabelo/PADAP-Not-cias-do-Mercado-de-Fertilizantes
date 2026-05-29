@@ -1,5 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useMemo, useState, type ReactNode } from "react";
-import { mockUsers } from "../data/mockUsers";
+import { mockCredentials, mockUsers } from "../data/mockUsers";
 import type { User } from "../types";
 
 interface AuthContextValue {
@@ -24,8 +25,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = useMemo<AuthContextValue>(() => ({
     user,
     login(email, password) {
-      const found = mockUsers.find((item) => item.email.toLowerCase() === email.toLowerCase() && item.password === password);
-      if (!found) return { ok: false, message: "E-mail ou senha inválidos." };
+      const normalizedEmail = email.toLowerCase();
+      const storedPassword = mockCredentials[normalizedEmail];
+      const found = mockUsers.find((item) => item.email.toLowerCase() === normalizedEmail);
+      if (!found || !storedPassword || storedPassword !== password) return { ok: false, message: "E-mail ou senha inválidos." };
       if (found.status === "Desativado") return { ok: false, message: "Usuário desativado. Procure o administrador." };
       const session = { ...found, lastAccess: new Date().toISOString() };
       setUser(session);

@@ -1,6 +1,6 @@
 import { Document, Font, Page, StyleSheet, Text, View, pdf } from "@react-pdf/renderer";
 import { createElement } from "react";
-import { BookOpen, ChevronDown, ChevronUp, CloudRain, Download, ExternalLink, Flame, Snowflake, Sun, Thermometer, Zap } from "lucide-react";
+import { BookOpen, ChevronUp, CloudRain, Download, ExternalLink, Flame, Snowflake, Sun, Thermometer, Zap } from "lucide-react";
 import { useMemo, useState } from "react";
 import type { ClimateEvent, ClimateSeverity, ClimateEventType } from "../../data/mockClimateNews";
 import type { MarketNews, MarketNewsCategory } from "../../types";
@@ -300,9 +300,7 @@ export function JornalPadap({ news, climateEvents }: { news: MarketNews[]; clima
 
   const toggleReading = (id: string) => setReadingId((prev) => (prev === id ? null : id));
 
-  const edition = useMemo(() => {
-    return Math.floor((Date.now() - new Date("2025-01-01").getTime()) / 86400000) + 1;
-  }, []);
+  const [edition] = useState(() => Math.floor((Date.now() - new Date("2025-01-01").getTime()) / 86400000) + 1);
 
   const formattedDate = useMemo(() =>
     new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long", year: "numeric" }), []);

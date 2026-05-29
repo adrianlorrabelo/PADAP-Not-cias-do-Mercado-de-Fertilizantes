@@ -9,8 +9,8 @@ import { BrandLogo } from "../components/layout/BrandLogo";
 
 export default function Login() {
   const { user, login } = useAuth();
-  const [email, setEmail] = useState("admin@padap.com.br");
-  const [password, setPassword] = useState("admin123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   if (user) return <Navigate to="/" replace />;
 

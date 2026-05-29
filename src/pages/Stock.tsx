@@ -784,7 +784,7 @@ function HistoryView({ history }: { history: ReturnType<typeof loadImportHistory
   );
 }
 
-function StockPricingView({ table, history, consolidated, loading, dirty, search, lineFilter, supplierFilter, statusFilter, dueFilter, stockFilter, autoRecalculate, onImport, onReplace, onRemoveTable, onAdd, onSaveChanges, onDiscardChanges, onSearch, onLineFilter, onSupplierFilter, onStatusFilter, onDueFilter, onStockFilter, onAutoRecalculate, onEdit, onUpdate, onDuplicate, onRemove, onCreateFromStock }: {
+function StockPricingView({ table, history, consolidated, loading, dirty, search, lineFilter, supplierFilter, statusFilter, dueFilter, stockFilter, autoRecalculate, onImport, onReplace, onRemoveTable, onAdd, onSaveChanges, onDiscardChanges, onSearch, onLineFilter, onSupplierFilter, onStatusFilter, onDueFilter, onStockFilter, onAutoRecalculate, onEdit, onUpdate, onDuplicate, onRemove, onCreateFromStock: _onCreateFromStock }: {
   table: StockPricingTable | null;
   history: StockPricingHistory[];
   consolidated: ConsolidatedStockItem[];
@@ -1091,7 +1091,7 @@ function CommercialStatusChips({ product, stock }: { product: StockPricingProduc
   return <>{chips.map((chip) => <Badge key={chip.label} tone={chip.tone}>{chip.label}</Badge>)}</>;
 }
 
-function UnpricedStockView({ items, onCreate }: { items: ConsolidatedStockItem[]; onCreate: (item: ConsolidatedStockItem) => void }) {
+function _UnpricedStockView({ items, onCreate }: { items: ConsolidatedStockItem[]; onCreate: (item: ConsolidatedStockItem) => void }) {
   return (
     <div>
       <SectionHeader title="Em estoque sem preço" subtitle="Produtos que aparecem no estoque físico consolidado, mas não aparecem na tabela de precificação." />
@@ -1192,6 +1192,7 @@ function StockPricingProductModal({ product, onClose, onSave, onRemove }: {
   const [form, setForm] = useState<StockPricingProduct | null>(product);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncs product prop into local form state when product changes
     setForm(product);
   }, [product]);
 

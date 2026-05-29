@@ -32,6 +32,7 @@ export default function Cockpit() {
   const navigate = useNavigate();
   const [updatedAt, setUpdatedAt] = useState(() => new Date());
   const [refreshKey, setRefreshKey] = useState(0);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- refreshKey is intentionally used to force re-read from storage
   const snapshot = useMemo(() => getCockpitSnapshot(), [refreshKey]);
   const userName = user?.name?.trim();
   const greeting = userName

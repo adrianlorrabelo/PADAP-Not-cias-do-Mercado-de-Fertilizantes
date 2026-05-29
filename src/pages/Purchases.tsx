@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { NavLink, Navigate, Outlet } from "react-router-dom";
 import { usePermissions } from "../hooks/usePermissions";
 import type { Role } from "../types";

@@ -186,6 +186,6 @@ export async function readStockPdf(file: File, unit: StockUnit, mode: StockImpor
     };
   } catch (error) {
     if (error instanceof Error && error.message.startsWith("Formato inválido")) throw error;
-    throw new Error("Não foi possível ler o PDF. Confirme se o arquivo está no formato correto e tente novamente.");
+    throw new Error("Não foi possível ler o PDF. Confirme se o arquivo está no formato correto e tente novamente.", { cause: error });
   }
 }

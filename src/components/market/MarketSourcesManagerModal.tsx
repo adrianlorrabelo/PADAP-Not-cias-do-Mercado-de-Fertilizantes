@@ -29,12 +29,11 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
   const [editingId, setEditingId] = useState<string | null>(null);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    if (open) {
-      setSources(getMarketSources());
-      resetForm();
-    }
-  }, [open]);
+  const resetForm = () => {
+    setForm(emptyForm);
+    setEditingId(null);
+    setError("");
+  };
 
   const totals = useMemo(() => ({
     active: sources.filter((source) => source.isActive).length,
@@ -42,11 +41,13 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
     high: sources.filter((source) => source.confidence === "Alta").length
   }), [sources]);
 
-  const resetForm = () => {
-    setForm(emptyForm);
-    setEditingId(null);
-    setError("");
-  };
+  useEffect(() => {
+    if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing external storage into state when modal opens
+      setSources(getMarketSources());
+      resetForm();
+    }
+  }, [open]);
 
   const upsertSource = () => {
     if (!form.name.trim()) {

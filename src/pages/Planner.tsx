@@ -470,7 +470,7 @@ function TasksView({ tasks, filters, responsibleOptions, onFilters, onClear, onN
   tasks: PlannerTask[];
   filters: Record<string, string>;
   responsibleOptions: string[];
-  onFilters: (filters: any) => void;
+  onFilters: (filters: Record<string, string>) => void;
   onClear: () => void;
   onNewTask: () => void;
   onEdit: (task: PlannerTask) => void;

@@ -1,4 +1,6 @@
 import { useMemo, useRef, useState, type ButtonHTMLAttributes, type ChangeEvent, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
+import { usePagination } from "../hooks/usePagination";
+import { Pagination } from "../components/ui/Pagination";
 import { CheckCircle2, Copy, Download, Edit2, Eye, FileText, Filter, MessageCircle, Plus, Save, Search, Send, Trash2, Upload, UserPlus, Users } from "lucide-react";
 import type { BroadcastHistory, BroadcastManualStatus, ProducerContact, ReportAudience } from "../types";
 import {
@@ -86,6 +88,9 @@ export default function BroadcastList() {
       return matchesQuery && matchesCrop && matchesCity && matchesGroup && matchesStatus;
     });
   }, [filters, producers, query]);
+
+  const PRODUCERS_PAGE_SIZE = 25;
+  const { page: producersPage, setPage: setProducersPage, totalPages: producersTotalPages, paged: pagedProducers } = usePagination(filteredProducers, PRODUCERS_PAGE_SIZE);
 
   const reportDate = generatedReport ? new Date(generatedReport.generatedAt).toLocaleDateString("pt-BR") : new Date().toLocaleDateString("pt-BR");
 
@@ -449,7 +454,7 @@ export default function BroadcastList() {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {filteredProducers.length === 0 && <tr><td colSpan={9} className="px-3 py-6 text-center text-slate-500">Nenhum produtor encontrado.</td></tr>}
-                  {filteredProducers.map((producer) => (
+                  {pagedProducers.map((producer) => (
                     <tr key={producer.id} className="align-top hover:bg-slate-50/70">
                       <td className="px-3 py-3"><input type="checkbox" checked={selectedIds.includes(producer.id)} onChange={(event) => toggleSelection(producer.id, event.target.checked)} /></td>
                       <td className="px-3 py-3 font-semibold text-slate-950">{producer.name}</td>
@@ -472,6 +477,7 @@ export default function BroadcastList() {
                   ))}
                 </tbody>
               </table>
+              <Pagination page={producersPage} totalPages={producersTotalPages} total={filteredProducers.length} pageSize={PRODUCERS_PAGE_SIZE} onPageChange={setProducersPage} />
             </div>
           </section>
 

@@ -925,7 +925,7 @@ export function RecommendationBlock({ recommendation, title, compact = false }: 
   );
 }
 
-export function ReportFooter({ data }: { data: MarketReportData }) {
+export function ReportFooter({ data: _data }: { data: MarketReportData }) {
   return (
     <View style={styles.footer} fixed>
       <View style={styles.footerLeft}>

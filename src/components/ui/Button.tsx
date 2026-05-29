@@ -3,8 +3,8 @@ import { simulatedAction } from "../../utils/uiActions";
 
 export function Button({ className = "", variant = "primary", ...props }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "danger" | "amber" }) {
   const variants = {
-    primary: "border border-padap-green bg-padap-green text-white shadow-glow hover:bg-[#169d25] active:translate-y-px",
-    ghost: "border border-padap-line bg-white text-padap-ink hover:border-padap-emerald/35 hover:bg-padap-mint",
+    primary: "border border-padap-green bg-padap-green text-white shadow-glow hover:bg-[#1a6b70] active:translate-y-px",
+    ghost: "border border-padap-line bg-white text-padap-ink hover:border-padap-green/40 hover:bg-padap-mint",
     danger: "bg-red-50 text-red-700 border border-red-200 hover:bg-red-100",
     amber: "bg-amber-50 text-amber-800 border border-amber-200 hover:bg-amber-100"
   };

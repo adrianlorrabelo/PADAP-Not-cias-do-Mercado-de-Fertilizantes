@@ -17,7 +17,10 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
   const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
-    if (open) setSelectedIds(eligibleRecipients.map((recipient) => recipient.id));
+    if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing eligible recipients into selection state when modal opens
+      setSelectedIds(eligibleRecipients.map((recipient) => recipient.id));
+    }
   }, [eligibleRecipients, open]);
 
   const selectedRecipients = useMemo(() => eligibleRecipients.filter((recipient) => selectedIds.includes(recipient.id)), [eligibleRecipients, selectedIds]);
@@ -33,6 +36,7 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
 
   useEffect(() => {
     if (!open) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- recomputes message whenever recipients/report/briefing change while modal is open
     setMessage(prepareWhatsAppMessage(report, briefing, selectedRecipients.map((recipient) => ({
       id: recipient.id,
       name: recipient.name,

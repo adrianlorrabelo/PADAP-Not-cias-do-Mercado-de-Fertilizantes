@@ -1,5 +1,4 @@
 import type {
-  ProductAvailability,
   ProductClassification,
   PricingStrategySuggestion,
   QuotationAssistantInput,

@@ -45,6 +45,7 @@ export function QuotationAssistant({ onApply, quotation, onQuotationPatch, onIte
 
   useEffect(() => {
     const first = quotation.items[0];
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing quotation prop changes into local input state
     setInput((current) => ({
       ...current,
       client: quotation.client,
@@ -64,7 +65,7 @@ export function QuotationAssistant({ onApply, quotation, onQuotationPatch, onIte
       suggestedSupplier: quotation.suggestedSupplier,
       suggestedMinimumMargin: String(quotation.suggestedMinimumMargin || "")
     }));
-  }, [quotation.client, quotation.consultant, quotation.deliveryCity, quotation.freightMode, quotation.availability, quotation.items, quotation.priceOrigin, quotation.productType, quotation.strategy, quotation.suggestedMinimumMargin, quotation.term, quotation.validity]);
+  }, [quotation.client, quotation.consultant, quotation.deliveryCity, quotation.freightMode, quotation.availability, quotation.items, quotation.priceOrigin, quotation.productType, quotation.strategy, quotation.suggestedMinimumMargin, quotation.suggestedSupplier, quotation.term, quotation.validity]);
 
   const enrichedInput = useMemo(() => {
     const productType = input.productType && input.productType !== "Não identificado" ? input.productType : classifyProductType(input.product);
