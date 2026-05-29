@@ -162,7 +162,10 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
 
         <div className="rounded-lg border border-padap-line bg-padap-field p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.14em] text-padap-muted">{editingId ? "Editar fonte" : "Adicionar fonte"}</h3>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+              <h3 className="text-sm font-bold text-padap-ink">{editingId ? "Editar fonte" : "Adicionar fonte"}</h3>
+            </div>
             {editingId && <Button variant="ghost" className="min-h-8 px-3 py-1.5 text-xs" onClick={resetForm}>Cancelar edição</Button>}
           </div>
           <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -202,7 +205,7 @@ export function MarketSourcesManagerModal({ open, onClose, onAction }: { open: b
 
         <div className="overflow-x-auto rounded-lg border border-padap-line">
           <table className="w-full min-w-[1080px] text-left text-sm">
-            <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
+            <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
               <tr>
                 <th className="px-4 py-3">Fonte</th>
                 <th className="px-4 py-3">Categoria</th>

@@ -12,7 +12,10 @@ export function QuotationSummaryCard({ quotation, onPackageModeChange }: { quota
       <div className="mb-3 flex items-start justify-between gap-3">
         <div>
           <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-padap-emerald">Resumo comercial</p>
-          <h2 className="mt-1 text-base font-bold text-padap-ink">Status geral</h2>
+          <div className="mt-1 flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Status geral</h2>
+          </div>
         </div>
         <Badge tone={tone}>{summary.status}</Badge>
       </div>

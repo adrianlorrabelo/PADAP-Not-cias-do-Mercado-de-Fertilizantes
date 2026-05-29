@@ -3,12 +3,17 @@ import { Badge } from "../ui/Badge";
 
 export function SectionHeader({ title, subtitle, action }: { title: string; subtitle?: string; action?: ReactNode }) {
   return (
-    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-      <div>
-        <h2 className="text-lg font-semibold text-padap-ink">{title}</h2>
-        {subtitle && <p className="mt-1 max-w-3xl text-sm leading-6 text-padap-muted">{subtitle}</p>}
+    <div className="mb-5 -mx-5 -mt-5 border-b border-padap-green/20 bg-padap-green/[0.07] px-5 py-4">
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+        <div>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">{title}</h2>
+          </div>
+          {subtitle && <p className="mt-1 max-w-3xl pl-3 text-xs leading-5 text-padap-muted">{subtitle}</p>}
+        </div>
+        {action && <div className="shrink-0">{action}</div>}
       </div>
-      {action}
     </div>
   );
 }

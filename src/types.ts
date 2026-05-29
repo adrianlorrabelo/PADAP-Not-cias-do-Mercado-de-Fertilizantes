@@ -384,6 +384,8 @@ export interface MarketNews {
   confidence?: number;
   url?: string;
   sourceStatus?: "ativa" | "monitorando" | "atenção";
+  fullContent?: string;
+  author?: string;
 }
 
 export type MarketStatus = "Altista" | "Baixista" | "Neutro" | "Volátil" | "Oportunidade" | "Atenção";

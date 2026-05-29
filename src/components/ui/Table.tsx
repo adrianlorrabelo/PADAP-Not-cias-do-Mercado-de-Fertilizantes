@@ -4,7 +4,7 @@ export function Table({ headers, rows }: { headers: string[]; rows: ReactNode[][
   return (
     <div className="overflow-x-auto rounded-xl border border-padap-line bg-white shadow-panel">
       <table className="min-w-[960px] divide-y divide-padap-line text-left text-sm font-medium">
-        <thead className="bg-padap-field text-[11px] uppercase tracking-[0.12em] text-padap-ink">
+        <thead className="bg-padap-green/[0.08] text-[11px] uppercase tracking-[0.12em] text-padap-emerald">
           <tr>{headers.map((header) => <th key={header} className="whitespace-nowrap px-4 py-3.5 align-middle font-bold">{header}</th>)}</tr>
         </thead>
         <tbody className="divide-y divide-padap-line">

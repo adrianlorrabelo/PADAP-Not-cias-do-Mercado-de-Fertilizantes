@@ -18,7 +18,10 @@ export default function Settings() {
       <div className="page-title"><h1>Configurações</h1><p>Parâmetros comerciais e alertas inteligentes persistidos no LocalStorage para a primeira versão.</p></div>
       <div className="grid gap-6 lg:grid-cols-2">
         <Card>
-          <h2 className="mb-4 text-lg font-semibold">Configurações comerciais</h2>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Configurações comerciais</h2>
+          </div>
           <div className="grid gap-3 sm:grid-cols-2">
             <Field disabled={!isAdmin} label="Margem mínima fertilizantes (%)" value={settings.minFertilizerMargin} onChange={(v) => update("minFertilizerMargin", v)} />
             <Field disabled={!isAdmin} label="Margem desejada foliares (%)" value={settings.desiredFoliarMargin} onChange={(v) => update("desiredFoliarMargin", v)} />
@@ -31,7 +34,10 @@ export default function Settings() {
           </div>
         </Card>
         <Card>
-          <h2 className="mb-4 text-lg font-semibold">Prazos e alertas</h2>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Prazos e alertas</h2>
+          </div>
           <Select><option>À vista</option><option>30 dias</option><option>60 dias</option><option>90 dias</option><option>120 dias</option><option>Mês 04</option><option>Mês 11</option><option>Safra</option><option>Personalizado</option></Select>
           <div className="mt-4 grid gap-3">
             {Object.entries(settings.alerts).map(([key, active]) => <label key={key} className="flex items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] p-3 text-sm"><span>{key}</span><input type="checkbox" checked={active} disabled={!isAdmin} onChange={(event) => isAdmin ? setSettings((current) => ({ ...current, alerts: { ...current.alerts, [key]: event.target.checked } })) : simulatedAction("Este perfil não pode alterar alertas críticos.")} /></label>)}

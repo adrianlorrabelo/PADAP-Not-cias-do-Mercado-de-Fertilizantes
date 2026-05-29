@@ -7,7 +7,15 @@ import { Card } from "../ui/Card";
 export function MarketAnalystCard({ insight, onAnalysis, onBriefing }: { insight: MarketAnalystInsight; onAnalysis: () => void; onBriefing: () => void }) {
   return (
     <Card>
-      <div className="mb-4 flex items-center justify-between gap-3"><div className="flex items-center gap-2"><Bot className="text-padap-cyan" size={20} /><h2 className="text-lg font-semibold text-padap-ink">Analista de Mercado</h2><Badge tone="cyan">IA</Badge></div><Badge tone="green">Alta - {insight.confidence}%</Badge></div>
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+          <Bot className="text-padap-cyan" size={18} />
+          <h2 className="text-base font-bold text-padap-ink">Analista de Mercado</h2>
+          <Badge tone="cyan">IA</Badge>
+        </div>
+        <Badge tone="green">Alta - {insight.confidence}%</Badge>
+      </div>
       <div className="space-y-3 text-sm leading-6 text-padap-muted">
         <Block label="Resumo" value={insight.summary} />
         <Block label="Impacto na PADAP" value={insight.padapImpact} />

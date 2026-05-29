@@ -32,7 +32,11 @@ import { mockAnalystPredictions } from "../data/mockAnalystPredictions";
 import { mockCommercialArguments } from "../data/mockCommercialArguments";
 import { mockImpactedProposals } from "../data/mockImpactedProposals";
 import { mockMarketCommercialIndicators, mockProductsAttention, mockMarketUpdateStatuses, mockMarketVsPadap, mockProductScores, mockRiskOpportunityItems } from "../data/mockMarketIndicators";
-import { mockInternalMarketAlerts } from "../data/mockMarketNews";
+import { mockInternalMarketAlerts, mockTrustedMarketNews } from "../data/mockMarketNews";
+import { mockClimateEvents } from "../data/mockClimateNews";
+import { ClimateNewsCard } from "../components/market/ClimateNewsCard";
+import { TrustedNewsFeed } from "../components/market/TrustedNewsFeed";
+import { JornalPadap } from "../components/market/JornalPadap";
 import { mockClosingSummary, mockCommercialOpportunities, mockCustomerOpportunities, mockExchangeRatios, mockMarketAnalystInsight, mockMarketTimeline } from "../data/mockMarketOpportunities";
 import { generateBriefingWhatsApp, getExecutiveMarketStatus, getLatestMarketAnalysis } from "../services/marketAnalysisService";
 import { summarizeCommercialImpact } from "../services/commercialImpactService";
@@ -72,12 +76,22 @@ interface SourceHealthRow {
   observation: string;
 }
 
+function marketTabClass(isActive: boolean) {
+  return `inline-flex min-h-9 shrink-0 items-center justify-center rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+    isActive
+      ? "border-padap-green/35 bg-padap-green/10 text-padap-emerald shadow-[0_4px_16px_rgba(29,186,44,.12)]"
+      : "border-padap-line bg-white text-padap-muted hover:border-padap-green/35 hover:bg-padap-green/10 hover:text-padap-ink"
+  }`;
+}
+
 function SectionDivider({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3">
-      <div className="h-px flex-1 bg-padap-line" />
-      <span className="text-xs font-bold uppercase tracking-[0.2em] text-padap-muted">{label}</span>
-      <div className="h-px flex-1 bg-padap-line" />
+      <div className="h-px flex-1 bg-padap-green/25" />
+      <span className="rounded-full border border-padap-green/30 bg-padap-green/[0.08] px-4 py-1 text-[11px] font-bold uppercase tracking-[0.2em] text-padap-emerald">
+        {label}
+      </span>
+      <div className="h-px flex-1 bg-padap-green/25" />
     </div>
   );
 }
@@ -102,6 +116,7 @@ export default function MarketIntelligence() {
   const [showSourcesManager, setShowSourcesManager] = useState(false);
   const [showAnalysis, setShowAnalysis] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [activeTab, setActiveTab] = useState<"mercado" | "decisoes" | "jornal">("mercado");
   const [showMenu, setShowMenu] = useState(false);
   const [showAlertConfig, setShowAlertConfig] = useState(false);
   const [showUpdateHistory, setShowUpdateHistory] = useState(false);
@@ -300,75 +315,102 @@ export default function MarketIntelligence() {
 
       <UpdateStrip statuses={statuses} lastUpdate={lastUpdate} nextManual={nextManual} nextAutomatic={nextAutomatic} sources={marketSources} result={lastUpdateResult} latestHistory={latestHistory} autoSettings={autoSettings} latestAutoHistory={latestAutoHistory} onAutoUpdateConfig={() => setShowAutoUpdateConfig(true)} />
 
-      <RealityWarnings snapshot={marketSnapshot} />
-
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_380px]">
-        <DecisionSummary analysis={marketAnalysis} status={marketStatus} confidence={mockMarketAnalystInsight.confidence} onOpen={() => setShowAnalysis(true)} />
-        <MarketThermometer score={score} thermometer={marketAnalysis?.thermometer} />
+      {/* Tab navigation */}
+      <div className="rounded-xl border border-padap-line bg-padap-field p-1.5 shadow-panel">
+        <div className="flex flex-wrap gap-1.5">
+          <button className={marketTabClass(activeTab === "mercado")} onClick={() => setActiveTab("mercado")}>Inteligência de Mercado</button>
+          <button className={marketTabClass(activeTab === "decisoes")} onClick={() => setActiveTab("decisoes")}>Decisões Comerciais PADAP</button>
+          <button className={marketTabClass(activeTab === "jornal")} onClick={() => setActiveTab("jornal")}>Jornal PADAP</button>
+        </div>
       </div>
 
-      <SectionDivider label="Leitura do mercado" />
+      {/* Tab: Inteligência de Mercado */}
+      {activeTab === "mercado" && (
+        <div className="space-y-5">
+          <SectionDivider label="Câmbio e PTAX" />
 
-      <CurrencyPtaxCard indicators={decisionIndicators} proposals={mockImpactedProposals} onDetails={() => setShowAdvanced(true)} />
+          <CurrencyPtaxCard indicators={decisionIndicators} proposals={mockImpactedProposals} onDetails={() => setShowAdvanced(true)} />
 
-      <CommercialIndicatorsPanel indicators={mockMarketCommercialIndicators} />
+          <SectionDivider label="Leitura do mercado" />
 
-      <div className="grid gap-5 xl:grid-cols-4">
-        <FertilizerFamilyCard family="Nitrogenados" productKeys={["ureia", "yarabela", "nitrato", "sulfato"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="red" />
-        <FertilizerFamilyCard family="Fosfatados" productKeys={["map", "fosfat"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="amber" />
-        <FertilizerFamilyCard family="Potássicos" productKeys={["kcl", "potass"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="green" />
-        <FertilizerFamilyCard family="Foliares" productKeys={["foliar", "especial", "yaravita", "yara especialidades"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="cyan" />
-      </div>
+          <CommercialIndicatorsPanel indicators={mockMarketCommercialIndicators} />
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-        <ExchangeDecisionCard ratios={mockExchangeRatios.slice(0, 4)} />
-        <InternalStockCard summary={stockSummary} onOpen={() => action("Abra Compras > Estoque para importar ou revisar o estoque interno.")} />
-      </div>
+          <ClimateNewsCard events={mockClimateEvents} />
 
-      <SectionDivider label="Decisão comercial" />
+          <TrustedNewsFeed news={mockTrustedMarketNews} onCopy={(url) => copyText(url, "Link copiado.")} />
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
-        <CommercialAlertsCard alerts={mockInternalMarketAlerts} proposals={mockImpactedProposals.slice(0, 4)} opportunities={analysisOpportunities} onAction={action} onDetails={() => setShowAdvanced(true)} />
-        <SourcesHealthCard sources={marketSources.filter((source) => source.isActive)} latestHistory={latestHistory} onOpen={() => setShowSources(true)} onManage={() => setShowSourcesManager(true)} />
-      </div>
+          <div className="grid gap-5 xl:grid-cols-4">
+            <FertilizerFamilyCard family="Nitrogenados" productKeys={["ureia", "yarabela", "nitrato", "sulfato"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="red" />
+            <FertilizerFamilyCard family="Fosfatados" productKeys={["map", "fosfat"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="amber" />
+            <FertilizerFamilyCard family="Potássicos" productKeys={["kcl", "potass"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="green" />
+            <FertilizerFamilyCard family="Foliares" productKeys={["foliar", "especial", "yaravita", "yara especialidades"]} indicators={decisionIndicators} products={analysisProducts} marketVsPadap={mockMarketVsPadap} tone="cyan" />
+          </div>
 
-      <SectionDivider label="Ação e transmissão" />
+          <ExchangeDecisionCard ratios={mockExchangeRatios.slice(0, 4)} />
+        </div>
+      )}
 
-      <ReportBriefingPanel onReport={() => setShowReport(true)} onBriefing={openBriefingWhatsApp} onWhatsApp={openReportWhatsApp} onRecipients={() => setShowRecipients(true)} canManageRecipients={canManageRecipients} />
+      {/* Tab: Decisões Comerciais PADAP */}
+      {activeTab === "decisoes" && (
+        <div className="space-y-5">
+          <SectionDivider label="Resumo executivo" />
 
-      <AdvancedArea open={showAdvanced} onToggle={() => setShowAdvanced((current) => !current)}>
-        <div className="grid gap-5 xl:grid-cols-2">
-          <CommercialImpactEngine summary={impactSummary} />
-          <CustomerOpportunityRadar customers={mockCustomerOpportunities} />
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1.35fr)_380px]">
+            <DecisionSummary analysis={marketAnalysis} status={marketStatus} confidence={mockMarketAnalystInsight.confidence} onOpen={() => setShowAnalysis(true)} />
+            <MarketThermometer score={score} thermometer={marketAnalysis?.thermometer} />
+          </div>
+
+          <SectionDivider label="Decisão comercial" />
+
+          <div className="grid gap-5 xl:grid-cols-[minmax(0,1.05fr)_minmax(360px,0.95fr)]">
+            <CommercialAlertsCard alerts={mockInternalMarketAlerts} proposals={mockImpactedProposals.slice(0, 4)} opportunities={analysisOpportunities} onAction={action} onDetails={() => setShowAdvanced(true)} />
+            <SourcesHealthCard sources={marketSources.filter((source) => source.isActive)} latestHistory={latestHistory} onOpen={() => setShowSources(true)} onManage={() => setShowSourcesManager(true)} />
+          </div>
+
+          <SectionDivider label="Ação e transmissão" />
+
+          <ReportBriefingPanel onReport={() => setShowReport(true)} onBriefing={openBriefingWhatsApp} onWhatsApp={openReportWhatsApp} onRecipients={() => setShowRecipients(true)} canManageRecipients={canManageRecipients} />
+
+          <AdvancedArea open={showAdvanced} onToggle={() => setShowAdvanced((current) => !current)}>
+            <div className="grid gap-5 xl:grid-cols-2">
+              <CommercialImpactEngine summary={impactSummary} />
+              <CustomerOpportunityRadar customers={mockCustomerOpportunities} />
+            </div>
+            <div id="propostas-impactadas" className="mt-5">
+              <ImpactedProposalsTable proposals={mockImpactedProposals} onAction={action} />
+            </div>
+            <div className="mt-5 grid gap-5 xl:grid-cols-2">
+              <ProductMarketScore scores={mockProductScores} />
+              <MarketVsPadapTable items={mockMarketVsPadap} />
+            </div>
+            <div className="mt-5">
+              <ExchangeRatioAdvanced ratios={mockExchangeRatios} />
+            </div>
+            <div className="mt-5">
+              <CommercialOpportunities opportunities={analysisOpportunities} onAction={action} />
+            </div>
+            <div className="mt-5 grid gap-5 xl:grid-cols-2">
+              <RiskOpportunityMatrix items={mockRiskOpportunityItems} />
+              <InternalMarketAlerts alerts={mockInternalMarketAlerts} onAction={action} />
+            </div>
+            <div className="mt-5 grid gap-5 xl:grid-cols-2">
+              <MarketTimeline events={mockMarketTimeline} />
+              <ClosingSummary summary={mockClosingSummary} onAction={action} />
+            </div>
+            <div className="mt-5">
+              <CommercialArgumentsLibrary argumentsList={mockCommercialArguments} onAction={action} />
+            </div>
+            <div className="mt-5">
+              <AnalystPrecisionHistory predictions={mockAnalystPredictions} />
+            </div>
+          </AdvancedArea>
         </div>
-        <div id="propostas-impactadas" className="mt-5">
-          <ImpactedProposalsTable proposals={mockImpactedProposals} onAction={action} />
-        </div>
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          <ProductMarketScore scores={mockProductScores} />
-          <MarketVsPadapTable items={mockMarketVsPadap} />
-        </div>
-        <div className="mt-5">
-          <ExchangeRatioAdvanced ratios={mockExchangeRatios} />
-        </div>
-        <div className="mt-5">
-          <CommercialOpportunities opportunities={analysisOpportunities} onAction={action} />
-        </div>
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          <RiskOpportunityMatrix items={mockRiskOpportunityItems} />
-          <InternalMarketAlerts alerts={mockInternalMarketAlerts} onAction={action} />
-        </div>
-        <div className="mt-5 grid gap-5 xl:grid-cols-2">
-          <MarketTimeline events={mockMarketTimeline} />
-          <ClosingSummary summary={mockClosingSummary} onAction={action} />
-        </div>
-        <div className="mt-5">
-          <CommercialArgumentsLibrary argumentsList={mockCommercialArguments} onAction={action} />
-        </div>
-        <div className="mt-5">
-          <AnalystPrecisionHistory predictions={mockAnalystPredictions} />
-        </div>
-      </AdvancedArea>
+      )}
+
+      {/* Tab: Jornal PADAP */}
+      {activeTab === "jornal" && (
+        <JornalPadap news={mockTrustedMarketNews} climateEvents={mockClimateEvents} />
+      )}
 
       <ScenarioSimulatorModal open={showScenario} onClose={() => setShowScenario(false)} />
       <MeetingMode open={showMeeting} onClose={() => setShowMeeting(false)} score={score} products={analysisProducts} proposals={mockImpactedProposals} mainRatio={mainRatio} opportunities={analysisOpportunities} onPdf={() => setShowReport(true)} onCopy={() => copyText(briefing, "Resumo de reunião copiado.")} />
@@ -481,7 +523,7 @@ function MarketUpdateHistoryModal({ open, history, selected, onClose, onSelect, 
 
             <div className="overflow-x-auto rounded-lg border border-padap-line">
               <table className="w-full min-w-[780px] text-left text-sm">
-                <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
+                <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
                   <tr>
                     <th className="px-4 py-3">Fonte</th>
                     <th className="px-4 py-3">Categoria</th>
@@ -870,8 +912,11 @@ function FertilizerFamilyCard({ family, productKeys, indicators, products, marke
       <div className="flex min-h-[270px] flex-col">
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h2 className="text-lg font-semibold text-padap-ink">{family}</h2>
-            <p className="mt-1 text-sm leading-6 text-padap-muted">{product?.movement ?? indicator?.trend ?? "Monitoramento comercial"}</p>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+              <h2 className="text-base font-bold text-padap-ink">{family}</h2>
+            </div>
+            <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">{product?.movement ?? indicator?.trend ?? "Monitoramento comercial"}</p>
           </div>
           <Badge tone={tone}>{product?.impact ?? padap?.status ?? "Radar"}</Badge>
         </div>
@@ -1145,8 +1190,11 @@ function MainIndicators({ indicators }: { indicators: MarketRealityIndicator[] }
     <Card>
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-padap-ink">Indicadores principais</h2>
-          <p className="mt-1 text-sm leading-6 text-padap-muted">Valor, tendência e impacto comercial com origem do dado explícita.</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Indicadores principais</h2>
+          </div>
+          <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">Valor, tendência e impacto comercial com origem do dado explícita.</p>
         </div>
         <Badge tone="cyan">fontes identificadas</Badge>
       </div>
@@ -1492,7 +1540,11 @@ function CompactAnalyst({ analysis, onAnalysis, onBriefing, onCopy }: { analysis
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2"><Bot className="text-padap-cyan" size={20} /><h2 className="text-lg font-semibold text-padap-ink">Analista de Mercado / Briefing final</h2></div>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+          <Bot className="text-padap-cyan" size={18} />
+          <h2 className="text-base font-bold text-padap-ink">Analista de Mercado / Briefing final</h2>
+        </div>
         <Badge tone="green">{confidenceLabel}</Badge>
       </div>
       <div className="space-y-3 text-sm leading-6 text-padap-muted">
@@ -1513,8 +1565,11 @@ function ReportBriefingPanel({ onReport, onBriefing, onWhatsApp, onRecipients, c
     <Card>
       <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-padap-ink">Relatório PDF e Briefing WhatsApp</h2>
-          <p className="mt-1 text-sm leading-6 text-padap-muted">Gere materiais curtos para orientar consultores sem sobrecarregar a leitura.</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Relatório PDF e Briefing WhatsApp</h2>
+          </div>
+          <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">Gere materiais curtos para orientar consultores sem sobrecarregar a leitura.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button onClick={onReport}><FileText size={16} />Gerar relatório PDF</Button>
@@ -1532,8 +1587,11 @@ function AdvancedArea({ open, onToggle, children }: { open: boolean; onToggle: (
     <Card>
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h2 className="text-lg font-semibold text-padap-ink">Recursos avançados</h2>
-          <p className="mt-1 text-sm leading-6 text-padap-muted">Simulador, mapa de risco, fontes, histórico e análises completas ficam em segundo nível.</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Recursos avançados</h2>
+          </div>
+          <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">Simulador, mapa de risco, fontes, histórico e análises completas ficam em segundo nível.</p>
         </div>
         <Button variant="ghost" onClick={onToggle}>{open ? "Ocultar recursos" : "Ver detalhes"}</Button>
       </div>
@@ -1551,7 +1609,15 @@ function SummaryPill({ label, value, tone }: { label: string; value: string; ton
 }
 
 function SectionTop({ title, action }: { title: string; action?: ReactNode }) {
-  return <div className="mb-4 flex items-center justify-between gap-3"><h2 className="text-lg font-semibold text-padap-ink">{title}</h2>{action}</div>;
+  return (
+    <div className="mb-4 -mx-5 -mt-5 flex items-center justify-between gap-3 border-b border-padap-green/20 bg-padap-green/[0.07] px-5 py-4">
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h2 className="text-base font-bold text-padap-ink">{title}</h2>
+      </div>
+      {action}
+    </div>
+  );
 }
 
 function MiniMetric({ value, label }: { value: ReactNode; label: string }) {

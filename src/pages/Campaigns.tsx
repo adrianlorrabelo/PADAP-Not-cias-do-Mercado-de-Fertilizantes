@@ -270,7 +270,10 @@ export default function Campaigns() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-padap-green/80">Compras &gt; Campanhas</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Modelo Visual PADAP</h2>
+          <div className="mt-2 flex items-center gap-3">
+            <span className="inline-block h-6 w-1.5 rounded-full bg-padap-green" />
+            <h2 className="text-2xl font-bold text-padap-ink">Modelo Visual PADAP</h2>
+          </div>
           <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-400">Crie campanhas comerciais reutilizaveis, edite a tabela e acompanhe a previa oficial em tempo real.</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -413,7 +416,10 @@ function CampaignList({ campaigns, activeId, onOpen, onDuplicate, onDelete, onCl
 }) {
   return (
     <Card>
-      <h3 className="text-lg font-semibold text-white">Campanhas salvas</h3>
+      <div className="mb-4 flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-base font-bold text-padap-ink">Campanhas salvas</h3>
+      </div>
       <div className="mt-4 grid gap-3 xl:grid-cols-2">
         {campaigns.map((campaign) => (
           <div key={campaign.id} className={`rounded-lg border p-3 ${campaign.id === activeId ? "border-padap-green/35 bg-padap-green/[0.08]" : "border-white/[0.08] bg-white/[0.03]"}`}>
@@ -584,7 +590,15 @@ function CampaignPreview({ campaign, print = false }: { campaign: Campaign; prin
 }
 
 function SectionHeader({ title, action }: { title: string; action?: ReactNode }) {
-  return <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"><h3 className="text-lg font-semibold text-white">{title}</h3>{action}</div>;
+  return (
+    <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-base font-bold text-padap-ink">{title}</h3>
+      </div>
+      {action}
+    </div>
+  );
 }
 
 function Summary({ label, value }: { label: string; value: number }) {

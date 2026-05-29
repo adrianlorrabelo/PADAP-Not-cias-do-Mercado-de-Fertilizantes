@@ -674,7 +674,10 @@ export default function WeeklyTable() {
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-base font-semibold text-white">Desvios semanais</h2>
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                <h2 className="text-base font-bold text-padap-ink">Desvios semanais</h2>
+              </div>
               <Badge tone="cyan">{lineDeviations.length} linhas</Badge>
             </div>
             <p className="mt-1 text-xs leading-5 text-slate-500">Referência visual da semana. Não altera o preço final dos produtos.</p>
@@ -704,7 +707,10 @@ export default function WeeklyTable() {
         <div className="flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h2 className="text-lg font-semibold text-white">Parâmetros comerciais</h2>
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                <h2 className="text-base font-bold text-padap-ink">Parâmetros comerciais</h2>
+              </div>
               <Badge tone={listStatus.tone}>{listStatus.label}</Badge>
             </div>
             <p className="mt-1 max-w-3xl text-xs leading-5 text-slate-500">Base usada no cálculo do preço final da lista semanal.</p>
@@ -744,7 +750,10 @@ export default function WeeklyTable() {
         <div className="border-b border-white/[0.08] p-4">
           <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
             <div>
-              <h2 className="text-base font-semibold text-white">Produtos da semana</h2>
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                <h2 className="text-base font-bold text-padap-ink">Produtos da semana</h2>
+              </div>
               <p className="mt-1 text-xs text-slate-400">Lista compacta para consulta diaria. Os campos completos ficam em Editar detalhes.</p>
             </div>
             <Button onClick={addProduct} className="shrink-0"><Plus size={16} />Adicionar produto</Button>
@@ -1018,8 +1027,11 @@ export default function WeeklyTable() {
         <section className="mt-6 rounded-xl border border-white/[0.08] bg-[#071918]/80 p-4">
           <div className="mb-4 flex items-center justify-between gap-3">
             <div>
-              <h2 className="text-base font-semibold text-white">Historico de precos Yara</h2>
-              <p className="mt-1 text-xs text-slate-400">Base anual para acompanhar evolucao por produto, importacao e vencimento.</p>
+              <div className="flex items-center gap-2">
+                <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                <h2 className="text-base font-bold text-padap-ink">Historico de precos Yara</h2>
+              </div>
+              <p className="mt-1 pl-3 text-xs text-padap-muted">Base anual para acompanhar evolucao por produto, importacao e vencimento.</p>
             </div>
             <Badge tone="cyan">{history.length} registros</Badge>
           </div>
@@ -1177,8 +1189,8 @@ function EmptyProductsState({ onImport }: { onImport: () => void }) {
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl border border-padap-green/20 bg-padap-green/[0.08] text-padap-mint">
           <Upload size={20} />
         </div>
-        <h3 className="mt-4 text-base font-semibold text-white">Nenhuma lista importada</h3>
-        <p className="mt-2 text-sm leading-6 text-slate-400">Importe uma planilha para carregar os produtos da semana.</p>
+        <h3 className="mt-4 text-base font-bold text-padap-ink">Nenhuma lista importada</h3>
+        <p className="mt-2 text-sm leading-6 text-padap-muted">Importe uma planilha para carregar os produtos da semana.</p>
         <div className="mt-5 flex justify-center">
           <Button onClick={onImport}><Upload size={16} />Importar planilha</Button>
         </div>

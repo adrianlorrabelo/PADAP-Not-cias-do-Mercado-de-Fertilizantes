@@ -151,7 +151,10 @@ export default function Cockpit() {
         </Card>
       </div>
 
-      <h2 className="mb-4 mt-8 text-lg font-bold text-padap-ink">Ações recomendadas</h2>
+      <div className="mb-4 mt-8 flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h2 className="text-base font-bold text-padap-ink">Ações recomendadas</h2>
+      </div>
       <div className="grid gap-4 lg:grid-cols-3">
         {snapshot.recommendedActions.map((action) => (
           <ActionCard key={action.id} action={action} onClick={() => goTo(action.targetPath)} />
@@ -162,7 +165,12 @@ export default function Cockpit() {
 }
 
 function SectionHeader({ title }: { title: string }) {
-  return <h2 className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-padap-muted">{title}</h2>;
+  return (
+    <div className="mb-4 flex items-center gap-2">
+      <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+      <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-padap-emerald">{title}</h2>
+    </div>
+  );
 }
 
 function MetricCard({ metric, icon, onClick }: { metric: CockpitMetric; icon: ReactNode; onClick: () => void }) {

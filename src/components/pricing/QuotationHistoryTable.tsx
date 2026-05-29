@@ -44,7 +44,10 @@ export function QuotationHistoryTable({ entries, onEdit }: Props) {
     <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h2 className="text-base font-bold text-padap-ink">Historico de cotacoes</h2>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Historico de cotacoes</h2>
+          </div>
           <p className="mt-1 text-xs font-medium text-padap-muted">Filtre por cliente, consultor ou produto e abra qualquer cotacao salva para editar.</p>
         </div>
         <Badge tone="cyan">{filteredEntries.length} registros</Badge>
@@ -82,7 +85,7 @@ export function QuotationHistoryTable({ entries, onEdit }: Props) {
 
       <div className="overflow-x-auto">
         <table className="min-w-[980px] text-left text-sm">
-          <thead className="border-b border-padap-line bg-padap-field text-xs uppercase tracking-[0.1em] text-padap-muted">
+          <thead className="border-b border-padap-line bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
             <tr>{["Data", "Cliente", "Consultor", "Produtos", "Itens", "Valor", "Margem", "Status", "Acao"].map((header) => <th key={header} className="px-3 py-2">{header}</th>)}</tr>
           </thead>
           <tbody className="divide-y divide-padap-line">

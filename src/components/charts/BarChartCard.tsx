@@ -4,7 +4,10 @@ import { Card } from "../ui/Card";
 export function BarChartCard({ title, data, color = "#0f4c4f" }: { title: string; data: { label: string; value: number }[]; color?: string }) {
   return (
     <Card>
-      <h3 className="mb-4 text-sm font-semibold text-white">{title}</h3>
+      <div className="mb-4 flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-sm font-bold text-padap-ink">{title}</h3>
+      </div>
       <div className="h-56">
         <ResponsiveContainer>
           <BarChart data={data} margin={{ top: 8, right: 10, bottom: 0, left: -10 }}>

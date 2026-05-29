@@ -12,8 +12,11 @@ export function MarketThermometer({ score, thermometer }: { score: number; therm
     <Card>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-semibold text-padap-ink">Termômetro do mercado</h2>
-          <p className="mt-1 text-sm leading-6 text-padap-muted">Leitura rápida de risco e oportunidade comercial.</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Termômetro do mercado</h2>
+          </div>
+          <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">Leitura rápida de risco e oportunidade comercial.</p>
         </div>
         <Badge tone={activeScore > 78 ? "amber" : "green"}>{status}</Badge>
       </div>

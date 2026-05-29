@@ -14,7 +14,10 @@ export function ConsultantMessageCard({ quotation, onSave }: { quotation: Quotat
   return (
     <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h2 className="text-base font-bold text-padap-ink">Mensagem para consultor</h2>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+          <h2 className="text-base font-bold text-padap-ink">Mensagem para consultor</h2>
+        </div>
         <Button variant="ghost" onClick={() => setMessage(generated)}>Gerar mensagem</Button>
       </div>
       <textarea

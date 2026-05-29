@@ -5,7 +5,10 @@ export function QuotationDiagnosisCard({ diagnosis }: { diagnosis: QuotationDiag
   return (
     <div className="rounded-lg border border-padap-line bg-white p-4">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h3 className="text-sm font-bold text-padap-ink">Diagnóstico da cotação</h3>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+          <h3 className="text-sm font-bold text-padap-ink">Diagnóstico da cotação</h3>
+        </div>
         <Badge tone={diagnosis.needsSupplierQuote ? "amber" : "green"}>{diagnosis.needsSupplierQuote ? "Cotar fornecedor" : "Fornecedor ok"}</Badge>
       </div>
       <dl className="grid gap-3 text-sm">

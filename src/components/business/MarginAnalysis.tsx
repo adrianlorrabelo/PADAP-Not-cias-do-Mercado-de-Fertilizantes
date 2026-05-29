@@ -13,7 +13,10 @@ export function MarginAnalysis({ proposal, currentPtax, showSensitive = true }: 
   return (
     <Card>
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-white">Análise de Margem</h3>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+          <h3 className="text-sm font-bold text-padap-ink">Análise de Margem</h3>
+        </div>
         <Badge tone={tone}>{status}</Badge>
       </div>
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">

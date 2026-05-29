@@ -16,7 +16,10 @@ export default function Approvals() {
       <div className="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
         <Table headers={["ID", "Cliente", "Consultor", "Valor", "Margem", "Motivo", "Decisão"]} rows={mockApprovals.map((a) => [a.id, mockClients.find((c) => c.id === a.clientId)?.name, mockConsultants.find((c) => c.id === a.consultantId)?.name, formatarMoedaBRL(a.totalValue), formatarPercentual(a.expectedMargin), a.reason, <Badge tone="amber">{a.decision}</Badge>])} />
         <Card>
-          <h2 className="mb-4 text-lg font-semibold">{approval.id}</h2>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">{approval.id}</h2>
+          </div>
           <div className="space-y-3 text-sm text-slate-300">
             <p><strong className="text-white">Solicitado por:</strong> {approval.requestedBy}</p>
             <p><strong className="text-white">Aprovador:</strong> {approval.approver}</p>

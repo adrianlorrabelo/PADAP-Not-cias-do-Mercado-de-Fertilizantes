@@ -48,7 +48,10 @@ export function QuotationItemsTable({ items, onChange }: Props) {
     <section className="min-w-0 rounded-xl border border-padap-line bg-white shadow-panel">
       <div className="flex flex-col gap-3 border-b border-padap-line p-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h2 className="text-base font-bold text-padap-ink">Itens da cotação</h2>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">Itens da cotação</h2>
+          </div>
           <p className="mt-1 text-xs font-medium text-padap-muted">Informe custo e venda final. Frete, impostos, comissão e prazo devem estar embutidos na venda.</p>
         </div>
         <Button onClick={addItem} className="shrink-0"><Plus size={16} />Adicionar produto</Button>
@@ -66,7 +69,7 @@ export function QuotationItemsTable({ items, onChange }: Props) {
             <col className="w-[11%]" />
             <col className="w-[8%]" />
           </colgroup>
-          <thead className="border-b border-padap-line bg-padap-field uppercase tracking-[0.08em] text-padap-muted">
+          <thead className="border-b border-padap-green/20 bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
             <tr>
               {["Produto", "Qtd", "Un.", "Custo", "Venda", "Margem", "Status", "Ações"].map((header) => (
                 <th key={header} className="px-2 py-2.5 font-bold">{header}</th>

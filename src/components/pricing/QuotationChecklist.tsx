@@ -16,7 +16,10 @@ export function QuotationChecklist({ value, onChange }: { value: Checklist; onCh
   return (
     <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-3 flex items-center justify-between">
-        <h2 className="text-base font-bold text-padap-ink">Checklist de envio</h2>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+          <h2 className="text-base font-bold text-padap-ink">Checklist de envio</h2>
+        </div>
         {pending > 0 && <span className="text-xs text-padap-amber">Não é recomendado enviar ainda.</span>}
       </div>
       <div className="grid gap-2 sm:grid-cols-2">

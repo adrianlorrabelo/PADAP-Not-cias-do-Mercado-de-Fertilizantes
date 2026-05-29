@@ -41,7 +41,10 @@ export function MeetingMode({ open, onClose, score, products, proposals, mainRat
 function Panel({ title, items }: { title: string; items: string[] }) {
   return (
     <div className="rounded-lg border border-padap-line bg-padap-field p-5">
-      <h3 className="text-base font-semibold text-padap-ink">{title}</h3>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-base font-bold text-padap-ink">{title}</h3>
+      </div>
       <ul className="mt-3 space-y-2 text-sm leading-6 text-padap-muted">{items.map((item) => <li key={item}>{item}</li>)}</ul>
     </div>
   );

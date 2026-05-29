@@ -314,8 +314,11 @@ export default function Planner() {
       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-padap-green/80">Compras &gt; Planner</p>
-          <h2 className="mt-2 text-2xl font-semibold text-white">Planner</h2>
-          <p className="mt-1 max-w-3xl text-sm leading-6 text-slate-400">Organize suas atividades e rotina do setor de compras.</p>
+          <div className="mt-2 flex items-center gap-3">
+            <span className="inline-block h-6 w-1.5 rounded-full bg-padap-green" />
+            <h2 className="text-2xl font-bold text-padap-ink">Planner</h2>
+          </div>
+          <p className="mt-1 pl-3 max-w-3xl text-sm leading-6 text-padap-muted">Organize suas atividades e rotina do setor de compras.</p>
         </div>
         <Button onClick={() => openNewTask()} className="shrink-0">
           <Plus size={16} /> Nova tarefa
@@ -537,7 +540,10 @@ function BoardView({ tasks, onEdit, onStatus }: { tasks: PlannerTask[]; onEdit: 
       {columns.map((column) => (
         <Card key={column.title} className="min-h-[260px]">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-base font-semibold text-white">{column.title}</h3>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+              <h3 className="text-base font-bold text-padap-ink">{column.title}</h3>
+            </div>
             <Badge tone={column.title === "Atrasada" ? "red" : "neutral"}>{column.tasks.length}</Badge>
           </div>
           <div className="space-y-3">
@@ -574,8 +580,11 @@ function CalendarView({ month, tasks, onMonth, onNewTask, onEdit }: { month: Dat
     <Card>
       <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <h3 className="text-lg font-semibold capitalize text-white">{monthTitle(month)}</h3>
-          <p className="mt-1 text-sm text-slate-400">Veja vencimentos da semana e do mês.</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h3 className="text-base font-bold capitalize text-padap-ink">{monthTitle(month)}</h3>
+          </div>
+          <p className="mt-1 pl-3 text-sm text-padap-muted">Veja vencimentos da semana e do mês.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Button variant="ghost" className="h-10 w-10 p-0" onClick={() => moveMonth(-1)} aria-label="Mês anterior"><ChevronLeft size={16} /></Button>
@@ -759,7 +768,15 @@ function SummaryCard({ label, value, tone }: { label: string; value: number; ton
 }
 
 function SectionTitle({ title, action }: { title: string; action?: ReactNode }) {
-  return <div className="mb-4 flex items-center justify-between gap-3"><h3 className="text-lg font-semibold text-white">{title}</h3>{action}</div>;
+  return (
+    <div className="mb-4 flex items-center justify-between gap-3">
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-base font-bold text-padap-ink">{title}</h3>
+      </div>
+      {action}
+    </div>
+  );
 }
 
 function TaskTitle({ task }: { task: PlannerTask }) {

@@ -56,7 +56,10 @@ export function ScenarioSimulatorModal({ open, onClose }: { open: boolean; onClo
       </div>
 
       <div className="mt-5 rounded-lg border border-padap-green/20 bg-padap-green/[0.06] p-4">
-        <h3 className="font-semibold text-padap-ink">Resultado da simulação</h3>
+        <div className="mb-3 flex items-center gap-2">
+          <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+          <h3 className="font-bold text-padap-ink">Resultado da simulação</h3>
+        </div>
         <div className="mt-3 grid gap-3 text-sm leading-6 text-padap-ink md:grid-cols-2">
           <p>Propostas impactadas: <strong>{result.affectedProposals}</strong></p>
           <p>Valor impactado: <strong>{formatCurrency(result.impactedValue)}</strong></p>

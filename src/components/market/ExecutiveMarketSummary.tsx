@@ -9,7 +9,10 @@ export function ExecutiveMarketSummary({ status, lastUpdate, confidence, onOpenA
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.16em] text-padap-cyan">Resumo executivo do mercado</p>
-          <h2 className="mt-3 text-3xl font-semibold text-padap-ink">Hoje o mercado esta: <span className="text-padap-emerald">{status.toUpperCase()}</span></h2>
+          <div className="mt-3 flex items-center gap-3">
+            <span className="inline-block h-6 w-1.5 rounded-full bg-padap-green" />
+            <h2 className="text-2xl font-bold text-padap-ink">Hoje o mercado esta: <span className="text-padap-emerald">{status.toUpperCase()}</span></h2>
+          </div>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {impacts.map((impact, index) => <div key={impact} className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm text-padap-ink"><span className="mr-2 text-padap-green">{index + 1}.</span>{impact}</div>)}
           </div>

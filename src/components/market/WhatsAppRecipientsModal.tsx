@@ -100,7 +100,7 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
 
           <div className="overflow-x-auto rounded-xl border border-padap-line bg-white">
             <table className="min-w-[980px] w-full text-left text-sm">
-              <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
+              <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
                 <tr>
                   <th className="px-4 py-3">Nome</th>
                   <th className="px-4 py-3">Cargo/Função</th>
@@ -138,7 +138,10 @@ export function WhatsAppRecipientsModal({ open, onClose, recipients, canManage, 
         </div>
 
         <div className="rounded-xl border border-padap-line bg-padap-field p-4">
-          <h3 className="font-semibold text-padap-ink">{editingId ? "Editar destinatário" : "Novo destinatário"}</h3>
+          <div className="mb-4 flex items-center gap-2">
+            <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+            <h3 className="font-bold text-padap-ink">{editingId ? "Editar destinatário" : "Novo destinatário"}</h3>
+          </div>
           <div className="mt-4 space-y-3">
             <Field label="Nome *"><Input disabled={!canManage} value={form.name} onChange={(event) => setForm((current) => ({ ...current, name: event.target.value }))} /></Field>
             <Field label="Cargo/Função"><Input disabled={!canManage} value={form.role} onChange={(event) => setForm((current) => ({ ...current, role: event.target.value }))} /></Field>

@@ -31,7 +31,10 @@ export function ImportValidation({ imported, previousParameters, onParameterChan
     <Card>
       <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h3 className="text-base font-semibold text-white">Conferir importacao da Lista Yara</h3>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h3 className="text-base font-bold text-padap-ink">Conferir importacao da Lista Yara</h3>
+          </div>
           <p className="mt-1 text-sm text-slate-400">
             {imported.fileName || "Arquivo selecionado"} {imported.sourceSheetName ? `| Aba: ${imported.sourceSheetName}` : ""}
           </p>

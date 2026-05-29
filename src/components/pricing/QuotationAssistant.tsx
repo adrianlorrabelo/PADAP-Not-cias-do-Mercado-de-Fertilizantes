@@ -200,8 +200,11 @@ export function QuotationAssistant({ onApply, quotation, onQuotationPatch, onIte
             <Sparkles size={14} />
           </span>
           <div>
-            <h2 className="text-base font-bold text-padap-ink">Assistente da Cotação</h2>
-            <p className="text-xs font-medium text-padap-muted">Entrada à esquerda · Diagnóstico e segurança à direita.</p>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+              <h2 className="text-base font-bold text-padap-ink">Assistente da Cotação</h2>
+            </div>
+            <p className="mt-0.5 pl-3 text-xs font-medium text-padap-muted">Entrada à esquerda · Diagnóstico e segurança à direita.</p>
           </div>
         </div>
         <Badge tone={pending.length ? "amber" : "green"}>{pending.length ? `${pending.length} pendências` : "Completa"}</Badge>
@@ -259,7 +262,10 @@ export function QuotationAssistant({ onApply, quotation, onQuotationPatch, onIte
 function FlowSection({ title, children }: { title: string; children: ReactNode }) {
   return (
     <section className="rounded-xl border border-padap-line bg-white p-3">
-      <h3 className="mb-3 text-sm font-bold text-padap-ink">{title}</h3>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-sm font-bold text-padap-ink">{title}</h3>
+      </div>
       {children}
     </section>
   );
@@ -283,7 +289,7 @@ function MiniItemsTable({ items, onAdd, onDuplicate, onRemove, onUpdate }: { ite
       </div>
       <div className="overflow-x-auto rounded-lg border border-padap-line bg-white">
         <table className="min-w-[980px] text-left text-xs">
-          <thead className="bg-padap-field text-[10px] uppercase tracking-[0.1em] text-padap-muted">
+          <thead className="bg-padap-green/[0.08] text-[10px] uppercase tracking-[0.12em] text-padap-emerald">
             <tr>{["Produto", "Qtd", "Unidade", "Custo", "Venda", "Margem", "Total", "Ações"].map((header) => <th key={header} className="px-2 py-2 font-bold">{header}</th>)}</tr>
           </thead>
           <tbody className="divide-y divide-padap-line">

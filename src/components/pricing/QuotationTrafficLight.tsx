@@ -9,9 +9,10 @@ export function QuotationTrafficLight({ value, onChange, recommendation }: { val
 
   return (
     <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
-      <div className="mb-4 flex items-center gap-3">
-        <span className={`h-3 w-3 rounded-full ${color}`} />
+      <div className="mb-4 flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
         <h2 className="text-base font-bold text-padap-ink">Semáforo da cotação</h2>
+        <span className={`ml-1 h-2.5 w-2.5 rounded-full ${color}`} />
       </div>
       <div className="grid gap-3">
         <Select value={value.status} onChange={(event) => onChange({ ...value, status: event.target.value as QuotationStatus, updatedAt: new Date().toISOString() })}>

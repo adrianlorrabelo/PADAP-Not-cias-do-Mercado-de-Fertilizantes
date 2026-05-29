@@ -345,7 +345,10 @@ export default function BroadcastList() {
       <div className="mb-5 flex flex-col gap-4 rounded-xl border border-slate-200 bg-white p-5 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-padap-emerald">PADAP Intelligence</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight text-slate-950 md:text-3xl">Lista de Transmissao</h1>
+          <div className="mt-2 flex items-center gap-3">
+            <span className="inline-block h-6 w-1.5 rounded-full bg-padap-green" />
+            <h1 className="text-2xl font-bold tracking-tight text-padap-ink md:text-3xl">Lista de Transmissao</h1>
+          </div>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">Cadastre produtores e prepare o envio dos relatorios de mercado pelo WhatsApp de forma semi-manual e segura.</p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -359,7 +362,10 @@ export default function BroadcastList() {
       <div className="grid gap-5 xl:grid-cols-[380px_minmax(0,1fr)]">
         <section className="rounded-xl border border-slate-200 bg-white p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-slate-950">{editingId ? "Editar produtor" : "Cadastro de produtor"}</h2>
+            <div className="flex items-center gap-2">
+              <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+              <h2 className="text-base font-bold text-padap-ink">{editingId ? "Editar produtor" : "Cadastro de produtor"}</h2>
+            </div>
             <span className="rounded-full bg-padap-green/10 px-3 py-1 text-xs font-semibold text-padap-emerald">Editavel</span>
           </div>
           <div className="space-y-3">
@@ -403,7 +409,10 @@ export default function BroadcastList() {
           <section className="rounded-xl border border-slate-200 bg-white p-5">
             <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-slate-950">Produtores cadastrados</h2>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                  <h2 className="text-base font-bold text-padap-ink">Produtores cadastrados</h2>
+                </div>
                 <p className="mt-1 text-sm text-slate-500">{filteredProducers.length} visivel(is) | {selectedProducers.length} selecionado(s)</p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -425,7 +434,7 @@ export default function BroadcastList() {
 
             <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200">
               <table className="min-w-[1120px] w-full text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+                <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
                   <tr>
                     <th className="px-3 py-3"><input type="checkbox" checked={filteredProducers.length > 0 && filteredProducers.every((producer) => selectedIds.includes(producer.id))} onChange={(event) => event.target.checked ? selectFiltered() : setSelectedIds((current) => current.filter((id) => !filteredProducers.some((producer) => producer.id === id)))} /></th>
                     <th className="px-3 py-3">Produtor</th>
@@ -468,7 +477,10 @@ export default function BroadcastList() {
 
           <section className="grid gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
             <div className="rounded-xl border border-slate-200 bg-white p-5">
-              <h2 className="text-lg font-semibold text-slate-950">Relatorio para envio</h2>
+              <div className="mb-4 flex items-center gap-2">
+                <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                <h2 className="text-base font-bold text-padap-ink">Relatorio para envio</h2>
+              </div>
               <div className="mt-4 space-y-3">
                 <Field label="Tipo de PDF">
                   <LightSelect value={reportType} onChange={(event) => changeReportType(event.target.value as ReportAudience)}>
@@ -500,7 +512,10 @@ export default function BroadcastList() {
             <div className="rounded-xl border border-slate-200 bg-white p-5">
               <div className="mb-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-950">Fila de envio</h2>
+                  <div className="flex items-center gap-2">
+                    <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                    <h2 className="text-base font-bold text-padap-ink">Fila de envio</h2>
+                  </div>
                   <p className="mt-1 text-sm text-slate-500">{selectedProducers.length} produtor(es) selecionado(s)</p>
                 </div>
                 <div className="flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-700"><Users size={15} />{selectedProducers.length}</div>
@@ -539,10 +554,13 @@ export default function BroadcastList() {
           </section>
 
           <section className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="text-lg font-semibold text-slate-950">Historico de envios</h2>
+            <div className="mb-4 flex items-center gap-2">
+              <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+              <h2 className="text-base font-bold text-padap-ink">Historico de envios</h2>
+            </div>
             <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200">
               <table className="min-w-[980px] w-full text-left text-sm">
-                <thead className="bg-slate-50 text-xs uppercase tracking-[0.12em] text-slate-500">
+                <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
                   <tr>
                     <th className="px-3 py-3">Data/hora</th>
                     <th className="px-3 py-3">Produtor</th>

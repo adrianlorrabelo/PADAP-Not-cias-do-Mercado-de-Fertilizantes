@@ -327,7 +327,10 @@ function CompactSecurity({ score, classification, pending, recommendation }: { s
   return (
     <section className="rounded-xl border border-padap-line bg-white p-4 shadow-panel">
       <div className="mb-3 flex items-center justify-between gap-3">
-        <h2 className="text-base font-bold text-padap-ink">Segurança</h2>
+        <div className="flex items-center gap-2">
+          <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+          <h2 className="text-base font-bold text-padap-ink">Segurança</h2>
+        </div>
         <strong className="text-2xl font-bold text-padap-ink">{score}%</strong>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-padap-line"><div className="h-full bg-padap-green" style={{ width: `${score}%` }} /></div>

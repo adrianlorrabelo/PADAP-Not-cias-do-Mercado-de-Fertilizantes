@@ -532,8 +532,11 @@ function UnitCard({ unit, items, history, rules, loading, onImport, onReplace, o
     <Card>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-base font-semibold text-white">{unit}</h2>
-          <p className="mt-1 text-xs text-slate-500">Unidade PADAP</p>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+            <h2 className="text-base font-bold text-padap-ink">{unit}</h2>
+          </div>
+          <p className="mt-1 pl-3 text-xs text-padap-muted">Unidade PADAP</p>
         </div>
         <Badge tone={summary.hasPdf ? "green" : "neutral"}>{summary.hasPdf ? "PDF importado" : "Sem PDF"}</Badge>
       </div>
@@ -643,8 +646,11 @@ function UnitSummaryPanel({ unitFilter, items, history, rules }: { unitFilter: U
           <div key={unit} className="rounded-lg border border-white/[0.08] bg-black/15 p-3">
             <div className="mb-3 flex items-start justify-between gap-3">
               <div>
-                <h3 className="text-base font-semibold text-white">{summary.unit}</h3>
-                <p className="mt-1 text-xs text-slate-500">PDF: {summary.fileName}</p>
+                <div className="flex items-center gap-2">
+                  <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+                  <h3 className="text-base font-bold text-padap-ink">{summary.unit}</h3>
+                </div>
+                <p className="mt-1 pl-3 text-xs text-padap-muted">PDF: {summary.fileName}</p>
               </div>
               <Badge tone={summary.hasPdf ? "green" : "neutral"}>{summary.hasPdf ? "Atualizado" : "Sem PDF"}</Badge>
             </div>
@@ -844,8 +850,8 @@ function StockPricingView({ table, history, consolidated, loading, dirty, search
       <PricingHeader table={table} loading={loading} dirty={dirty} autoRecalculate={autoRecalculate} onAutoRecalculate={onAutoRecalculate} onImport={onImport} onReplace={onReplace} onRemoveTable={onRemoveTable} onAdd={onAdd} onSaveChanges={onSaveChanges} onDiscardChanges={onDiscardChanges} />
       {!table && (
         <div className="rounded-lg border border-dashed border-white/[0.12] bg-white/[0.025] p-6 text-center">
-          <h3 className="text-base font-semibold text-white">Nenhuma tabela de precificação importada.</h3>
-          <p className="mt-2 text-sm text-slate-400">Importe uma planilha Excel para carregar os preços dos produtos em estoque.</p>
+          <h3 className="text-base font-bold text-padap-ink">Nenhuma tabela de precificação importada.</h3>
+          <p className="mt-2 text-sm text-padap-muted">Importe uma planilha Excel para carregar os preços dos produtos em estoque.</p>
           <Button className="mt-4" onClick={onImport}><FileUp size={15} />Importar tabela de precificação</Button>
         </div>
       )}
@@ -1361,7 +1367,15 @@ function SummaryCard({ label, value, tone = "neutral" }: { label: string; value:
 }
 
 function SectionHeader({ title, subtitle, compact = false }: { title: string; subtitle: string; compact?: boolean }) {
-  return <div className={compact ? "" : "mb-4"}><h2 className="text-base font-semibold text-white">{title}</h2><p className="mt-1 text-sm leading-6 text-slate-400">{subtitle}</p></div>;
+  return (
+    <div className={compact ? "" : "mb-4"}>
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h2 className="text-base font-bold text-padap-ink">{title}</h2>
+      </div>
+      <p className="mt-1 pl-3 text-sm leading-6 text-padap-muted">{subtitle}</p>
+    </div>
+  );
 }
 
 function TabButton({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {

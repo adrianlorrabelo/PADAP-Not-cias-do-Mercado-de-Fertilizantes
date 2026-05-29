@@ -7,7 +7,10 @@ import { simulatedAction } from "../../utils/uiActions";
 export function WhatsAppPreview({ message }: { message: string }) {
   return (
     <Card>
-      <h3 className="mb-3 text-sm font-semibold text-white">Mensagem para WhatsApp</h3>
+      <div className="mb-3 flex items-center gap-2">
+        <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+        <h3 className="text-sm font-bold text-padap-ink">Mensagem para WhatsApp</h3>
+      </div>
       <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-lg border border-white/[0.08] bg-black/30 p-4 text-sm leading-6 text-slate-200 shadow-[inset_0_1px_0_rgba(255,255,255,.03)]">{message}</pre>
       <div className="mt-4 flex flex-wrap gap-2">
         <Button onClick={() => copyToClipboard(message).then(() => simulatedAction("Mensagem copiada."))}><Copy size={16} />Copiar mensagem</Button>

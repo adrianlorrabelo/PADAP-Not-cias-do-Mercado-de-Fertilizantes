@@ -9,7 +9,10 @@ export function QuotationSecurityScore({ score }: { score: Score }) {
     <div className="rounded-lg border border-padap-line bg-white p-4">
       <div className="mb-4 flex items-start justify-between gap-4">
         <div>
-          <h3 className="text-sm font-bold text-padap-ink">Nota de segurança da cotação</h3>
+          <div className="flex items-center gap-2">
+            <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+            <h3 className="text-sm font-bold text-padap-ink">Nota de segurança da cotação</h3>
+          </div>
           <p className="mt-1 text-xs font-medium leading-5 text-padap-muted">Informativa. Não altera semáforo, envio ou status automaticamente.</p>
         </div>
         <Badge tone={tone}>{score.classification}</Badge>

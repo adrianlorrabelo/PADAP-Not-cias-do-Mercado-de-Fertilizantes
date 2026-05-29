@@ -382,8 +382,11 @@ export default function Packages() {
 function SectionHeader({ title, subtitle, compact = false }: { title: string; subtitle: string; compact?: boolean }) {
   return (
     <div className={compact ? "" : "mb-4"}>
-      <h2 className="text-base font-semibold text-white">{title}</h2>
-      <p className="mt-1 text-xs leading-5 text-slate-500">{subtitle}</p>
+      <div className="flex items-center gap-2">
+        <span className="inline-block h-4 w-1 rounded-full bg-padap-green" />
+        <h2 className="text-base font-bold text-padap-ink">{title}</h2>
+      </div>
+      <p className="mt-1 pl-3 text-xs leading-5 text-padap-muted">{subtitle}</p>
     </div>
   );
 }

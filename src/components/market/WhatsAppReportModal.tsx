@@ -164,7 +164,10 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
         </div>
 
         <div>
-          <h3 className="mb-2 font-semibold text-padap-ink">Mensagem</h3>
+          <div className="mb-2 flex items-center gap-2">
+            <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+            <h3 className="font-bold text-padap-ink">Mensagem</h3>
+          </div>
           <textarea className="min-h-64 w-full rounded-lg border border-padap-line bg-white p-3 text-sm leading-6 text-padap-ink outline-none focus:border-padap-green/70" value={message} onChange={(event) => setMessage(event.target.value)} />
           <p className="mt-2 text-sm leading-6 text-padap-muted">PDF anexado: {report?.fileName ?? "Nenhum relatório gerado ainda"} | Período: {report?.period ?? "Hoje"}</p>
           <div className="mt-3 rounded-lg border border-padap-line bg-padap-field p-3 text-xs leading-5 text-padap-muted">
@@ -181,10 +184,13 @@ export function WhatsAppReportModal({ open, onClose, report, recipients, mode = 
         </div>
       </div>
 
-      <h3 className="mt-6 font-semibold text-padap-ink">Histórico de envios WhatsApp</h3>
+      <div className="mt-6 mb-2 flex items-center gap-2">
+        <span className="inline-block h-3.5 w-1 rounded-full bg-padap-green" />
+        <h3 className="font-bold text-padap-ink">Histórico de envios WhatsApp</h3>
+      </div>
       <div className="mt-2 overflow-x-auto rounded-xl border border-padap-line bg-white">
         <table className="min-w-[860px] w-full text-left text-sm">
-          <thead className="bg-padap-field text-xs uppercase tracking-[0.12em] text-padap-muted">
+          <thead className="bg-padap-green/[0.08] text-xs uppercase tracking-[0.12em] text-padap-emerald">
             <tr><th className="px-4 py-3">Data/hora</th><th className="px-4 py-3">Tipo</th><th className="px-4 py-3">Destinatário</th><th className="px-4 py-3">WhatsApp</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Enviado por</th><th className="px-4 py-3">Ações</th></tr>
           </thead>
           <tbody className="divide-y divide-padap-line">
