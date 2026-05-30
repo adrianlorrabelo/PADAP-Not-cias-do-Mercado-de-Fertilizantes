@@ -97,30 +97,56 @@ export default function Cockpit() {
           </p>
         </div>
 
-        {/* Painel direito — composição de 3 culturas agrícolas */}
-        <div className="absolute inset-y-0 right-0 hidden w-[300px] overflow-hidden lg:block">
-          {/* Gradiente de fusão — protege leitura do texto à esquerda */}
-          <div className="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent" />
-          {/* Overlay de profundidade inferior */}
-          <div className="absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-white/60 to-transparent" />
-          {/* Composição: 3 fotos lado a lado */}
-          <div className="flex h-full">
-            <div
-              className="flex-1 bg-[#f5ede0]"
-              style={{ backgroundImage: "url(/images/banner-carrot.jpg)", backgroundSize: "cover", backgroundPosition: "center top" }}
-            />
-            <div
-              className="flex-1 bg-[#f8f4ef]"
-              style={{ backgroundImage: "url(/images/banner-garlic.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
-            />
-            <div
-              className="flex-1 bg-[#2a1a0e]"
-              style={{ backgroundImage: "url(/images/banner-coffee.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
-            />
-          </div>
+        {/* Painel direito — composição agrícola sobreposta */}
+        <div
+          className="absolute inset-y-0 right-0 hidden w-[300px] overflow-hidden lg:block"
+          style={{ background: "linear-gradient(135deg, #fdfaf4 0%, #f2f8f0 60%, #e8f4ec 100%)" }}
+        >
+          {/* Alho — fundo branco, blends via multiply, canto inferior esquerdo */}
+          <img
+            src="/images/banner-garlic.jpg" alt="" aria-hidden="true"
+            style={{
+              position: "absolute", bottom: "-18px", left: "-18px",
+              width: "175px", height: "175px",
+              objectFit: "cover", objectPosition: "center",
+              transform: "rotate(-10deg)",
+              mixBlendMode: "multiply",
+              opacity: 0.92,
+            }}
+          />
+          {/* Cenoura — centro, inclinada, com máscara suave */}
+          <img
+            src="/images/banner-carrot.jpg" alt="" aria-hidden="true"
+            style={{
+              position: "absolute", top: "-30px", left: "48px",
+              width: "210px", height: "295px",
+              objectFit: "cover", objectPosition: "center top",
+              transform: "rotate(7deg)",
+              WebkitMaskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 38%, transparent 78%)",
+              maskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 38%, transparent 78%)",
+              opacity: 0.93,
+            }}
+          />
+          {/* Café — canto superior direito, com máscara suave */}
+          <img
+            src="/images/banner-coffee.jpg" alt="" aria-hidden="true"
+            style={{
+              position: "absolute", top: "4px", right: "-14px",
+              width: "155px", height: "190px",
+              objectFit: "cover", objectPosition: "center",
+              transform: "rotate(-5deg)",
+              WebkitMaskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 34%, transparent 74%)",
+              maskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 34%, transparent 74%)",
+              opacity: 0.85,
+            }}
+          />
+          {/* Gradiente de fusão — borda esquerda */}
+          <div className="absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-white to-transparent" />
+          {/* Gradiente de fusão — base */}
+          <div className="absolute inset-x-0 bottom-0 z-10 h-16 bg-gradient-to-t from-white/70 to-transparent" />
           {/* Botões sobrepostos */}
           <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/90 px-3 py-2 text-xs font-semibold text-padap-muted backdrop-blur-sm shadow-sm">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/90 px-3 py-2 text-xs font-semibold text-padap-muted shadow-sm backdrop-blur-sm">
               <Clock size={13} className="text-padap-green" />
               Última atualização: {updatedAt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
             </div>
