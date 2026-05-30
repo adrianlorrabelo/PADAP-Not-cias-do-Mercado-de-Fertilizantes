@@ -97,24 +97,30 @@ export default function Cockpit() {
           </p>
         </div>
 
-        {/* Painel direito — visual agrícola */}
+        {/* Painel direito — composição de 3 culturas agrícolas */}
         <div className="absolute inset-y-0 right-0 hidden w-[300px] overflow-hidden lg:block">
           {/* Gradiente de fusão — protege leitura do texto à esquerda */}
-          <div className="absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-white to-transparent" />
-          {/* Imagem de culturas agrícolas — adicionar public/images/banner-crops.jpg */}
-          <div
-            className="h-full w-full bg-gradient-to-br from-padap-mint via-[#d4eeeb] to-[#c8e8df]"
-            style={{
-              backgroundImage: "url(/images/banner-crops.jpg)",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }}
-          />
-          {/* Overlay de profundidade */}
-          <div className="absolute inset-0 bg-gradient-to-t from-padap-green/15 via-transparent to-transparent" />
+          <div className="absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-white to-transparent" />
+          {/* Overlay de profundidade inferior */}
+          <div className="absolute inset-x-0 bottom-0 z-10 h-24 bg-gradient-to-t from-white/60 to-transparent" />
+          {/* Composição: 3 fotos lado a lado */}
+          <div className="flex h-full">
+            <div
+              className="flex-1 bg-[#f5ede0]"
+              style={{ backgroundImage: "url(/images/banner-carrot.jpg)", backgroundSize: "cover", backgroundPosition: "center top" }}
+            />
+            <div
+              className="flex-1 bg-[#f8f4ef]"
+              style={{ backgroundImage: "url(/images/banner-garlic.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
+            />
+            <div
+              className="flex-1 bg-[#2a1a0e]"
+              style={{ backgroundImage: "url(/images/banner-coffee.jpg)", backgroundSize: "cover", backgroundPosition: "center" }}
+            />
+          </div>
           {/* Botões sobrepostos */}
           <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/90 px-3 py-2 text-xs font-semibold text-padap-muted backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/90 px-3 py-2 text-xs font-semibold text-padap-muted backdrop-blur-sm shadow-sm">
               <Clock size={13} className="text-padap-green" />
               Última atualização: {updatedAt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
             </div>
