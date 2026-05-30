@@ -171,7 +171,7 @@ function getWeeklyListSummary(): CockpitSnapshot["yara"] {
     : `${Math.ceil(Math.abs(diffHours) / 24)} dias`;
 
   return {
-    label: status === "vencida" ? "Lista Yara vencida" : status === "vencendo" ? `Lista Yara vence em ${remaining}` : "Lista Yara valida",
+    label: status === "vencida" ? "Lista Yara vencida" : status === "vencendo" ? `Lista Yara vence em ${remaining}` : "Lista Yara válida",
     status,
     expiresAt: table.expiresAt,
     detail: `Vencimento: ${absoluteDate}.`,
@@ -234,22 +234,22 @@ export function getCommercialSemaphore(): CommercialSemaphoreItem[] {
 
   return [
     { id: "ready", label: "Prontas para enviar", count: groups.ready || 0, description: "Margem e validade sem bloqueios", tone: "green", targetPath: "/compras/propostas" },
-    { id: "review", label: "Precisam revisão", count: groups.review || 0, description: "Margem, preço ou validade pedem conferencia", tone: "amber", targetPath: "/compras/propostas" },
-    { id: "approval", label: "Requerem aprovação", count: groups.approval || 0, description: "Aguardando decisao comercial", tone: "orange", targetPath: "/compras/propostas" },
+    { id: "review", label: "Precisam revisão", count: groups.review || 0, description: "Margem, preço ou validade pedem conferência", tone: "amber", targetPath: "/compras/propostas" },
+    { id: "approval", label: "Requerem aprovação", count: groups.approval || 0, description: "Aguardando decisão comercial", tone: "orange", targetPath: "/compras/propostas" },
     { id: "blocked", label: "Bloqueadas", count: groups.blocked || 0, description: "Margem negativa ou indisponibilidade", tone: "red", targetPath: "/compras/propostas" },
-    { id: "supplier", label: "Aguardando fornecedor", count: groups.supplier || 0, description: "Disponibilidade ainda nao confirmada", tone: "cyan", targetPath: "/compras/propostas" },
+    { id: "supplier", label: "Aguardando fornecedor", count: groups.supplier || 0, description: "Disponibilidade ainda não confirmada", tone: "cyan", targetPath: "/compras/propostas" },
     { id: "expired", label: "Vencidas/inativas", count: groups.expired || 0, description: "Validade expirada ou fora de uso", tone: "neutral", targetPath: "/compras/propostas" }
   ];
 }
 
 export function getMarketPulse(): MarketPulseItem[] {
   return mockMarketIndicators.slice(0, 3).map((indicator) => {
-    const trend = indicator.variation > 1 ? "leve alta" : indicator.variation < -1 ? "queda" : "estavel";
+    const trend = indicator.variation > 1 ? "leve alta" : indicator.variation < -1 ? "queda" : "estável";
     const tone: CockpitTone = indicator.variation > 1 ? "amber" : indicator.variation < -1 ? "green" : "cyan";
     const impactByName: Record<string, string> = {
-      PTAX: "Revisar propostas abertas em dolar.",
-      Ureia: "Atencao em nitrogenados e validade curta.",
-      MAP: "Revisar relacao de troca e pacotes fosfatados."
+      PTAX: "Revisar propostas abertas em dólar.",
+      Ureia: "Atenção em nitrogenados e validade curta.",
+      MAP: "Revisar relação de troca e pacotes fosfatados."
     };
 
     return {
@@ -287,11 +287,11 @@ export function getCockpitMetrics(): CockpitSnapshot["summary"] & { metrics: Coc
     todayTasks: planner.today,
     actionsCount: expiringProposals + pendingApprovals + criticalStock + planner.today + planner.overdue,
     metrics: [
-      { id: "expiring-proposals", title: "Propostas vencendo hoje", value: String(expiringProposals), description: "Abrir propostas com validade critica", tone: "amber", targetPath: "/compras/propostas" },
-      { id: "pending-approvals", title: "Aprovações pendentes", value: String(pendingApprovals), description: "Decisoes comerciais aguardando aprovacao", tone: "cyan", targetPath: "/compras/propostas" },
-      { id: "open-volume", title: "Volume em propostas abertas", value: formatarMoedaBRL(openValue), description: "Valor total em negociacao ativa", tone: "green", targetPath: "/compras/propostas" },
-      { id: "average-margin", title: "Margem média das propostas", value: formatarPercentual(averageMargin), description: "Media das propostas abertas", tone: averageMargin < targetMargin ? "amber" : "green", targetPath: "/compras/propostas" },
-      { id: "critical-stock", title: "Estoque crítico", value: String(criticalStock), description: "Negativos, zerados ou abaixo do minimo", tone: criticalStock ? "red" : "green", targetPath: "/compras/estoque" },
+      { id: "expiring-proposals", title: "Propostas vencendo hoje", value: String(expiringProposals), description: "Abrir propostas com validade crítica", tone: "amber", targetPath: "/compras/propostas" },
+      { id: "pending-approvals", title: "Aprovações pendentes", value: String(pendingApprovals), description: "Decisões comerciais aguardando aprovação", tone: "cyan", targetPath: "/compras/propostas" },
+      { id: "open-volume", title: "Volume em propostas abertas", value: formatarMoedaBRL(openValue), description: "Valor total em negociação ativa", tone: "green", targetPath: "/compras/propostas" },
+      { id: "average-margin", title: "Margem média das propostas", value: formatarPercentual(averageMargin), description: "Média das propostas abertas", tone: averageMargin < targetMargin ? "amber" : "green", targetPath: "/compras/propostas" },
+      { id: "critical-stock", title: "Estoque crítico", value: String(criticalStock), description: "Negativos, zerados ou abaixo do mínimo", tone: criticalStock ? "red" : "green", targetPath: "/compras/estoque" },
       { id: "today-tasks", title: "Tarefas de hoje", value: String(planner.today), description: `${planner.overdue} atrasadas no Planner`, tone: planner.overdue ? "amber" : "cyan", targetPath: "/compras/planner" }
     ]
   };
@@ -305,12 +305,12 @@ export function getTodayPriorities(): CockpitPriority[] {
   const planner = getPlannerSummary();
   const priorities: CockpitPriority[] = [];
 
-  if (metrics.pendingApprovals) priorities.push({ id: "approvals", title: `Aprovar ${metrics.pendingApprovals} solicitações pendentes`, reason: "Ha propostas aguardando decisao comercial.", priority: "Alta", actionLabel: "Revisar propostas", targetPath: "/compras/propostas" });
-  if (metrics.expiringProposals) priorities.push({ id: "expiring", title: `Revisar ${metrics.expiringProposals} propostas vencendo`, reason: "Validade curta pode exigir recalculo ou reenvio.", priority: "Alta", actionLabel: "Revisar propostas", targetPath: "/compras/propostas" });
-  if (packages.belowTarget) priorities.push({ id: "packages", title: `Revisar pacote ${packages.mostCriticalId} abaixo da meta`, reason: packages.margin === null ? "Margem do pacote precisa de conferencia." : `Margem atual ${formatarPercentual(packages.margin)} contra meta de ${formatarPercentual(packages.targetMargin)}.`, priority: "Critica", actionLabel: "Abrir pacote", targetPath: "/compras/pacotes" });
+  if (metrics.pendingApprovals) priorities.push({ id: "approvals", title: `Aprovar ${metrics.pendingApprovals} ${metrics.pendingApprovals === 1 ? "solicitação pendente" : "solicitações pendentes"}`, reason: "Há propostas aguardando decisão comercial.", priority: "Alta", actionLabel: "Revisar propostas", targetPath: "/compras/propostas" });
+  if (metrics.expiringProposals) priorities.push({ id: "expiring", title: `Revisar ${metrics.expiringProposals} ${metrics.expiringProposals === 1 ? "proposta vencendo" : "propostas vencendo"}`, reason: "Validade curta pode exigir recálculo ou reenvio.", priority: "Alta", actionLabel: "Revisar propostas", targetPath: "/compras/propostas" });
+  if (packages.belowTarget) priorities.push({ id: "packages", title: `Revisar pacote ${packages.mostCriticalId} abaixo da meta`, reason: packages.margin === null ? "Margem do pacote precisa de conferência." : `Margem atual ${formatarPercentual(packages.margin)} contra meta de ${formatarPercentual(packages.targetMargin)}.`, priority: "Critica", actionLabel: "Abrir pacote", targetPath: "/compras/pacotes" });
   if (yara.status !== "valida") priorities.push({ id: "yara", title: yara.label, reason: yara.detail, priority: yara.status === "vencida" || yara.status === "sem-lista" ? "Critica" : "Alta", actionLabel: yara.actionLabel, targetPath: yara.targetPath });
-  if (stock.purchaseSuggestions) priorities.push({ id: "stock", title: `Conferir ${stock.purchaseSuggestions} sugestões de compra`, reason: `${stock.negative} negativos, ${stock.zero} zerados e ${stock.belowMinimum} abaixo do minimo.`, priority: stock.negative || stock.zero ? "Critica" : "Alta", actionLabel: "Conferir estoque", targetPath: "/compras/estoque" });
-  if (planner.overdue || planner.today) priorities.push({ id: "planner", title: planner.overdue ? `Executar ${planner.overdue} tarefas atrasadas` : `Executar ${planner.today} tarefas de hoje`, reason: `Proxima tarefa: ${planner.nextTask}.`, priority: planner.overdue ? "Alta" : "Media", actionLabel: "Ver tarefas", targetPath: "/compras/planner" });
+  if (stock.purchaseSuggestions) priorities.push({ id: "stock", title: `Conferir ${stock.purchaseSuggestions} ${stock.purchaseSuggestions === 1 ? "sugestão de compra" : "sugestões de compra"}`, reason: `${stock.negative} negativos, ${stock.zero} zerados e ${stock.belowMinimum} abaixo do mínimo.`, priority: stock.negative || stock.zero ? "Critica" : "Alta", actionLabel: "Conferir estoque", targetPath: "/compras/estoque" });
+  if (planner.overdue || planner.today) priorities.push({ id: "planner", title: planner.overdue ? `Executar ${planner.overdue} ${planner.overdue === 1 ? "tarefa atrasada" : "tarefas atrasadas"}` : `Executar ${planner.today} ${planner.today === 1 ? "tarefa de hoje" : "tarefas de hoje"}`, reason: `Próxima tarefa: ${planner.nextTask}.`, priority: planner.overdue ? "Alta" : "Media", actionLabel: "Ver tarefas", targetPath: "/compras/planner" });
 
   return priorities.slice(0, 5);
 }
@@ -325,18 +325,18 @@ export function getRecommendedActions(): CockpitRecommendedAction[] {
   return [
     {
       id: "ptax",
-      problem: `PTAX ${ptax && ptax.variation >= 0 ? "subiu" : "variou"} ${ptax ? formatarPercentual(Math.abs(ptax.variation)) : "0,00%"} desde a ultima cotacao.`,
+      problem: `PTAX ${ptax && ptax.variation >= 0 ? "subiu" : "variou"} ${ptax ? formatarPercentual(Math.abs(ptax.variation)) : "0,00%"} desde a última cotação.`,
       why: "Pode reduzir margem em propostas abertas de adubos importados.",
-      action: "Recalcular propostas sensiveis ao dolar antes de reenviar ao consultor.",
+      action: "Recalcular propostas sensíveis ao dólar antes de reenviar ao consultor.",
       priority: "Alta",
       actionLabel: "Revisar propostas",
       targetPath: "/compras/propostas"
     },
     {
       id: "package",
-      problem: packages.belowTarget ? "Pacote estrategico abaixo da meta." : "Pacotes dentro da rotina de acompanhamento.",
+      problem: packages.belowTarget ? "Pacote estratégico abaixo da meta." : "Pacotes dentro da rotina de acompanhamento.",
       why: packages.margin === null ? "Nenhum pacote abaixo da meta neste momento." : `Pacote ${packages.mostCriticalId} com margem ${formatarPercentual(packages.margin)}.`,
-      action: packages.belowTarget ? "Solicitar aprovacao ou redistribuir margem entre itens." : "Manter acompanhamento dos pacotes comerciais ativos.",
+      action: packages.belowTarget ? "Solicitar aprovação ou redistribuir margem entre itens." : "Manter acompanhamento dos pacotes comerciais ativos.",
       priority: packages.belowTarget ? "Critica" : "Media",
       actionLabel: "Abrir pacote",
       targetPath: "/compras/pacotes"
@@ -345,15 +345,15 @@ export function getRecommendedActions(): CockpitRecommendedAction[] {
       id: "yara",
       problem: yara.label,
       why: yara.detail,
-      action: yara.status === "valida" ? "Usar lista ativa como base para novas cotacoes." : "Confirmar validade ou importar a proxima tabela Yara.",
+      action: yara.status === "valida" ? "Usar lista ativa como base para novas cotações." : "Confirmar validade ou importar a próxima tabela Yara.",
       priority: yara.status === "vencida" || yara.status === "sem-lista" ? "Critica" : yara.status === "vencendo" ? "Alta" : "Media",
       actionLabel: yara.actionLabel,
       targetPath: yara.targetPath
     },
     {
       id: "stock",
-      problem: stock.purchaseSuggestions ? "Estoque critico em produtos com demanda." : "Estoque sem sugestoes criticas no momento.",
-      why: `${stock.negative} negativos, ${stock.zero} zerados, ${stock.belowMinimum} abaixo do minimo.`,
+      problem: stock.purchaseSuggestions ? "Estoque crítico em produtos com demanda." : "Estoque sem sugestões críticas no momento.",
+      why: `${stock.negative} negativos, ${stock.zero} zerados, ${stock.belowMinimum} abaixo do mínimo.`,
       action: "Conferir disponibilidade antes de prometer produtos vendidos.",
       priority: stock.negative || stock.zero ? "Critica" : stock.belowMinimum ? "Alta" : "Media",
       actionLabel: "Conferir estoque",
@@ -362,8 +362,8 @@ export function getRecommendedActions(): CockpitRecommendedAction[] {
     {
       id: "planner",
       problem: planner.overdue ? "Tarefas atrasadas no Planner." : "Planner com rotina do dia.",
-      why: `${planner.today} tarefas de hoje, ${planner.overdue} atrasadas e ${planner.completedToday} concluidas hoje.`,
-      action: `Proxima tarefa importante: ${planner.nextTask}.`,
+      why: `${planner.today} tarefas de hoje, ${planner.overdue} atrasadas e ${planner.completedToday} concluídas hoje.`,
+      action: `Próxima tarefa importante: ${planner.nextTask}.`,
       priority: planner.overdue ? "Alta" : "Media",
       actionLabel: "Ver tarefas",
       targetPath: "/compras/planner"
