@@ -99,54 +99,55 @@ export default function Cockpit() {
 
         {/* Painel direito — composição agrícola sobreposta */}
         <div
-          className="absolute inset-y-0 right-0 hidden w-[300px] overflow-hidden lg:block"
-          style={{ background: "linear-gradient(135deg, #fdfaf4 0%, #f2f8f0 60%, #e8f4ec 100%)" }}
+          className="absolute inset-y-0 right-0 hidden w-[320px] overflow-hidden lg:block"
+          style={{ background: "linear-gradient(150deg, #fdfaf3 0%, #f4f9f0 55%, #eaf5ec 100%)" }}
         >
-          {/* Alho — fundo branco, blends via multiply, canto inferior esquerdo */}
-          <img
-            src="/images/banner-garlic.jpg" alt="" aria-hidden="true"
-            style={{
-              position: "absolute", bottom: "-18px", left: "-18px",
-              width: "175px", height: "175px",
-              objectFit: "cover", objectPosition: "center",
-              transform: "rotate(-10deg)",
-              mixBlendMode: "multiply",
-              opacity: 0.92,
-            }}
-          />
-          {/* Cenoura — centro, inclinada, com máscara suave */}
-          <img
-            src="/images/banner-carrot.jpg" alt="" aria-hidden="true"
-            style={{
-              position: "absolute", top: "-30px", left: "48px",
-              width: "210px", height: "295px",
-              objectFit: "cover", objectPosition: "center top",
-              transform: "rotate(7deg)",
-              WebkitMaskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 38%, transparent 78%)",
-              maskImage: "radial-gradient(ellipse 80% 85% at 50% 48%, black 38%, transparent 78%)",
-              opacity: 0.93,
-            }}
-          />
-          {/* Café — canto superior direito, com máscara suave */}
+          {/* Café — fundo, canto superior direito */}
           <img
             src="/images/banner-coffee.jpg" alt="" aria-hidden="true"
             style={{
-              position: "absolute", top: "4px", right: "-14px",
-              width: "155px", height: "190px",
+              position: "absolute", top: "-10px", right: "-20px",
+              width: "180px", height: "220px",
               objectFit: "cover", objectPosition: "center",
-              transform: "rotate(-5deg)",
-              WebkitMaskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 34%, transparent 74%)",
-              maskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 34%, transparent 74%)",
-              opacity: 0.85,
+              transform: "rotate(-4deg)",
+              WebkitMaskImage: "radial-gradient(ellipse 82% 80% at 52% 44%, black 36%, transparent 72%)",
+              maskImage: "radial-gradient(ellipse 82% 80% at 52% 44%, black 36%, transparent 72%)",
+              opacity: 0.88,
+            }}
+          />
+          {/* Alho — canto inferior esquerdo, visível com máscara */}
+          <img
+            src="/images/banner-garlic.jpg" alt="" aria-hidden="true"
+            style={{
+              position: "absolute", bottom: "-22px", left: "-12px",
+              width: "200px", height: "200px",
+              objectFit: "cover", objectPosition: "center 40%",
+              transform: "rotate(-8deg)",
+              WebkitMaskImage: "radial-gradient(ellipse 82% 78% at 48% 46%, black 40%, transparent 76%)",
+              maskImage: "radial-gradient(ellipse 82% 78% at 48% 46%, black 40%, transparent 76%)",
+              opacity: 0.95,
+            }}
+          />
+          {/* Cenoura — centro, elemento principal, inclinada */}
+          <img
+            src="/images/banner-carrot.jpg" alt="" aria-hidden="true"
+            style={{
+              position: "absolute", top: "-15px", left: "55px",
+              width: "215px", height: "300px",
+              objectFit: "cover", objectPosition: "center top",
+              transform: "rotate(6deg)",
+              WebkitMaskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 40%, transparent 76%)",
+              maskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 40%, transparent 76%)",
+              opacity: 0.96,
             }}
           />
           {/* Gradiente de fusão — borda esquerda */}
           <div className="absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-white to-transparent" />
           {/* Gradiente de fusão — base */}
-          <div className="absolute inset-x-0 bottom-0 z-10 h-16 bg-gradient-to-t from-white/70 to-transparent" />
+          <div className="absolute inset-x-0 bottom-0 z-10 h-14 bg-gradient-to-t from-white/65 to-transparent" />
           {/* Botões sobrepostos */}
           <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/90 px-3 py-2 text-xs font-semibold text-padap-muted shadow-sm backdrop-blur-sm">
+            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/92 px-3 py-2 text-xs font-semibold text-padap-muted shadow-sm backdrop-blur-sm">
               <Clock size={13} className="text-padap-green" />
               Última atualização: {updatedAt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
             </div>
