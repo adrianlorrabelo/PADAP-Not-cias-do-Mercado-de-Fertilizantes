@@ -79,6 +79,9 @@ function rowToTask(r: Record<string, unknown>): PlannerTask {
     priority: r.priority as PlannerTask["priority"],
     status: r.status as PlannerTask["status"],
     recurrence: r.recurrence as PlannerTask["recurrence"],
+    createdAt: (r.created_at as string) ?? new Date().toISOString(),
+    updatedAt: (r.updated_at as string) ?? new Date().toISOString(),
+    completedAt: (r.completed_at as string) ?? undefined,
   };
 }
 
@@ -104,5 +107,7 @@ function rowToTemplate(r: Record<string, unknown>): PlannerTaskTemplate {
     priority: r.priority as PlannerTaskTemplate["priority"],
     recurrence: r.recurrence as PlannerTaskTemplate["recurrence"],
     suggestedResponsible: (r.suggested_responsible as string) ?? undefined,
+    createdAt: (r.created_at as string) ?? new Date().toISOString(),
+    updatedAt: (r.updated_at as string) ?? new Date().toISOString(),
   };
 }
