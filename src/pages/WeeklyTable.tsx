@@ -14,6 +14,7 @@ import { Input } from "../components/ui/Input";
 import { Select } from "../components/ui/Select";
 import { mockWeeklyTable } from "../data/mockProducts";
 import { parseWeeklyTableFile } from "../services/excelImportService";
+import { saveWeeklyTable } from "../services/weeklyTableService";
 import type { Product, WeeklyTable, WeeklyTableImport, WeeklyTableLineDeviation, YaraPriceHistoryEntry } from "../types";
 import { formatarMoedaBRL } from "../utils/currency";
 import { formatDateTime } from "../utils/date";
@@ -147,13 +148,13 @@ export default function WeeklyTablePage() {
     const updatedAt = new Date().toISOString();
     const recalculated = { ...next, updatedAt, products: recalculateProducts(next) };
     setTable(recalculated);
-    localStorage.setItem(tableStorageKey, JSON.stringify(recalculated));
+    saveWeeklyTable(recalculated);
   }
 
   function persistDeviations(nextLineDeviations: WeeklyTableLineDeviation[], nextWeeklyDeviations = table.weeklyAvailableDeviations) {
     const next = { ...table, updatedAt: new Date().toISOString(), lineDeviations: nextLineDeviations, weeklyAvailableDeviations: nextWeeklyDeviations };
     setTable(next);
-    localStorage.setItem(tableStorageKey, JSON.stringify(next));
+    saveWeeklyTable(next);
   }
 
   function openFilePicker(mode: "normal" | "replace" = "normal") {
@@ -217,7 +218,7 @@ export default function WeeklyTablePage() {
     const nextHistory = mergeHistory(history, recalculated);
     setTable(recalculated);
     setHistory(nextHistory);
-    localStorage.setItem(tableStorageKey, JSON.stringify(recalculated));
+    saveWeeklyTable(recalculated);
     localStorage.setItem(historyStorageKey, JSON.stringify(nextHistory));
     setImported(null);
     setPendingImportMode("normal");

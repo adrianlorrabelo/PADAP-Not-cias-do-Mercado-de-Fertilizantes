@@ -1,3 +1,4 @@
+import { calcularMargemPercentual } from "./marginCalculations";
 import type { Quotation, QuotationItem, QuotationItemStatus } from "../types";
 
 export function quotationItemTotals(item: QuotationItem) {
@@ -5,7 +6,7 @@ export function quotationItemTotals(item: QuotationItem) {
   const costTotal = unitCostTotal * item.quantity;
   const revenueTotal = item.finalPrice * item.quantity;
   const profit = revenueTotal - costTotal;
-  const marginPercent = revenueTotal ? (profit / revenueTotal) * 100 : 0;
+  const marginPercent = calcularMargemPercentual(revenueTotal, costTotal);
   const minimumPriceForTarget = item.minimumMargin < 100 ? unitCostTotal / (1 - item.minimumMargin / 100) : 0;
   const desiredPriceForTarget = item.desiredMargin < 100 ? unitCostTotal / (1 - item.desiredMargin / 100) : 0;
   const status = getQuotationItemStatus(item, marginPercent, revenueTotal, costTotal);
@@ -25,7 +26,7 @@ export function quotationSummary(quotation: Quotation) {
   const costTotal = itemTotals.reduce((sum, item) => sum + item.costTotal, 0);
   const revenueTotal = itemTotals.reduce((sum, item) => sum + item.revenueTotal, 0);
   const grossProfit = revenueTotal - costTotal;
-  const averageMargin = revenueTotal ? (grossProfit / revenueTotal) * 100 : 0;
+  const averageMargin = calcularMargemPercentual(revenueTotal, costTotal);
   const requiredMargin = quotation.packageMode ? quotation.packageTargetMargin : Math.max(...quotation.items.map((item) => item.minimumMargin), 0);
   const requiredRevenue = requiredMargin < 100 ? costTotal / (1 - requiredMargin / 100) : 0;
   const missingToTarget = Math.max(0, requiredRevenue - revenueTotal);

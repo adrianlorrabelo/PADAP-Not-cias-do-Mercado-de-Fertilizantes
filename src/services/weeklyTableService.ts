@@ -1,4 +1,5 @@
 import type { Product, WeeklyTable } from "../types";
+import { fetchActiveWeeklyTable, upsertWeeklyTable } from "../lib/db/weeklyTable";
 
 const tableStorageKey = "padap.weeklyTable.active";
 
@@ -20,6 +21,16 @@ function getListStatus(expiresAt: string) {
   if (daysToExpire < 0) return "vencida";
   if (daysToExpire <= 3) return "vencendo";
   return "ativa";
+}
+
+export function saveWeeklyTable(table: WeeklyTable): void {
+  localStorage.setItem(tableStorageKey, JSON.stringify(table));
+  upsertWeeklyTable(table).catch(console.error);
+}
+
+export async function syncWeeklyTableFromSupabase(): Promise<void> {
+  const remote = await fetchActiveWeeklyTable();
+  if (remote) localStorage.setItem(tableStorageKey, JSON.stringify(remote));
 }
 
 export function getActiveWeeklyTable(): WeeklyTable | null {

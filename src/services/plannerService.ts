@@ -1,4 +1,5 @@
 import type { PlannerRecurrence, PlannerTask, PlannerTaskTemplate } from "../types";
+import { deletePlannerTask as dbDeleteTask, fetchPlannerTasks, fetchPlannerTemplates, upsertPlannerTasks, upsertPlannerTemplates } from "../lib/db/planner";
 
 const tasksKey = "padap.planner.tasks";
 const templatesKey = "padap.planner.templates";
@@ -117,6 +118,7 @@ export function loadPlannerTasks() {
 
 export function savePlannerTasks(tasks: PlannerTask[]) {
   writeStorage(tasksKey, tasks);
+  upsertPlannerTasks(tasks).catch(console.error);
 }
 
 export function loadPlannerTemplates() {
@@ -129,6 +131,20 @@ export function loadPlannerTemplates() {
 
 export function savePlannerTemplates(templates: PlannerTaskTemplate[]) {
   writeStorage(templatesKey, templates);
+  upsertPlannerTemplates(templates).catch(console.error);
+}
+
+export async function syncPlannerFromSupabase(): Promise<void> {
+  const [tasks, templates] = await Promise.all([fetchPlannerTasks(), fetchPlannerTemplates()]);
+  if (tasks.length) writeStorage(tasksKey, tasks);
+  if (templates.length) writeStorage(templatesKey, templates);
+}
+
+export async function removePlannerTask(id: string, currentTasks: PlannerTask[]): Promise<PlannerTask[]> {
+  const next = currentTasks.filter((t) => t.id !== id);
+  writeStorage(tasksKey, next);
+  await dbDeleteTask(id).catch(console.error);
+  return next;
 }
 
 export function isPlannerTaskOverdue(task: PlannerTask, referenceDate = today()) {

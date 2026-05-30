@@ -1,4 +1,4 @@
-import type { Client, CommercialPackage, CommercialStatus, PackageItem, Proposal } from "../types";
+import { CommercialStatuses, type Client, type CommercialPackage, type CommercialStatus, type PackageItem, type Proposal } from "../types";
 
 export function calcularCustoFinal(productCost: number, freight = 0, taxes = 0, commission = 0, otherExpenses = 0): number {
   return productCost + freight + taxes + commission + otherExpenses;
@@ -24,19 +24,19 @@ export function calcularMargemPercentual(precoVenda: number, custoFinal: number)
 export function calcularStatusProposta(proposal: Proposal, currentPtax: number, minMargin = 10): CommercialStatus {
   const cost = calcularCustoFinal(proposal.productCost, proposal.freight, proposal.taxes, proposal.commission, proposal.otherExpenses);
   const margin = calcularMargemPercentual(proposal.salePrice, cost);
-  if (proposal.salePrice < cost) return "Bloqueado";
-  if (Math.abs(currentPtax - proposal.ptaxUsed) >= 0.01) return "Reconfirmar por alteração cambial";
-  if (new Date(proposal.validity).getTime() < Date.now()) return "Reconfirmar por alteração cambial";
-  if (margin < minMargin) return "Requer aprovação";
-  if (margin < minMargin + 1.5) return "Atenção";
-  return "Aprovado";
+  if (proposal.salePrice < cost) return CommercialStatuses.Blocked;
+  if (Math.abs(currentPtax - proposal.ptaxUsed) >= 0.01) return CommercialStatuses.ReconfirmExchangeRate;
+  if (new Date(proposal.validity).getTime() < Date.now()) return CommercialStatuses.ReconfirmExchangeRate;
+  if (margin < minMargin) return CommercialStatuses.RequiresApproval;
+  if (margin < minMargin + 1.5) return CommercialStatuses.Warning;
+  return CommercialStatuses.Approved;
 }
 
 export function packageItemTotals(item: PackageItem) {
   const costTotal = item.quantity * item.unitCost;
   const saleTotal = item.quantity * item.unitSale;
-  const marginValue = saleTotal - costTotal;
-  const marginPercent = saleTotal ? (marginValue / saleTotal) * 100 : 0;
+  const marginValue = calcularMargemValor(saleTotal, costTotal);
+  const marginPercent = calcularMargemPercentual(saleTotal, costTotal);
   return { costTotal, saleTotal, marginValue, marginPercent };
 }
 

@@ -1,4 +1,5 @@
 import type { MarketSource, MarketSourceCategory, MarketSourceConfidence, MarketSourceType } from "../types";
+import { deleteMarketSource as dbDelete, fetchMarketSources, upsertMarketSources } from "../lib/db/marketSources";
 
 export const marketSourcesStorageKey = "padap_market_sources";
 
@@ -44,6 +45,7 @@ function safeRead(): MarketSource[] | null {
 export function saveMarketSources(sources: MarketSource[]) {
   if (typeof window === "undefined") return sources;
   localStorage.setItem(marketSourcesStorageKey, JSON.stringify(sources));
+  upsertMarketSources(sources).catch(console.error);
   return sources;
 }
 
@@ -73,7 +75,13 @@ export function updateMarketSource(id: string, updates: Partial<MarketSource>) {
 }
 
 export function deleteMarketSource(id: string) {
+  dbDelete(id).catch(console.error);
   return saveMarketSources(getMarketSources().filter((source) => source.id !== id));
+}
+
+export async function syncMarketSourcesFromSupabase(): Promise<void> {
+  const data = await fetchMarketSources();
+  if (data.length) localStorage.setItem(marketSourcesStorageKey, JSON.stringify(data));
 }
 
 export function getActiveMarketSources() {

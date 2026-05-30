@@ -12,7 +12,17 @@ export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   if (user) return <Navigate to="/" replace />;
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setLoading(true);
+    setError("");
+    const result = await login(email, password);
+    setError(result.message ?? "");
+    setLoading(false);
+  }
 
   return (
     <main className="grid min-h-screen place-items-center overflow-hidden bg-padap-graphite p-4 text-padap-ink">
@@ -43,11 +53,13 @@ export default function Login() {
           <p className="mb-3 text-center text-xs font-semibold uppercase tracking-[0.18em] text-padap-green">PADAP Intelligence</p>
           <h1 className="text-center text-2xl font-semibold text-padap-ink">Compras & Precificacao</h1>
           <p className="mx-auto mt-3 max-w-sm text-center text-sm leading-6 text-padap-muted">Acesse sua conta para acompanhar cotacoes, propostas, pacotes e inteligencia de mercado.</p>
-          <form className="mt-8 space-y-4" onSubmit={(event) => { event.preventDefault(); const result = login(email, password); setError(result.message || ""); }}>
+          <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
             <label className="block text-sm font-medium text-padap-ink"><span className="mb-2 flex items-center gap-2"><Mail size={15} />E-mail</span><Input value={email} onChange={(event) => setEmail(event.target.value)} /></label>
             <label className="block text-sm font-medium text-padap-ink"><span className="mb-2 flex items-center gap-2"><LockKeyhole size={15} />Senha</span><Input type="password" value={password} onChange={(event) => setPassword(event.target.value)} /></label>
             {error && <p className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
-            <Button className="w-full" type="submit">Entrar</Button>
+            <Button className="w-full" type="submit" disabled={loading}>
+              {loading ? "Entrando…" : "Entrar"}
+            </Button>
             <button className="w-full text-sm font-medium text-padap-emerald transition hover:text-padap-green" type="button">Esqueci minha senha</button>
           </form>
         </Card>

@@ -32,6 +32,8 @@ export type Campaign = {
   updatedAt: string;
 };
 
+import { deleteCampaign as dbDeleteCampaign, fetchCampaigns, upsertCampaigns } from "../lib/db/campaigns";
+
 const storageKey = "padap.purchases.campaigns";
 
 export const campaignStatuses: CampaignStatus[] = ["Rascunho", "Ativa", "Encerrada"];
@@ -132,6 +134,16 @@ export function loadCampaigns() {
 
 export function saveCampaigns(campaigns: Campaign[]) {
   writeStorage(campaigns);
+  upsertCampaigns(campaigns).catch(console.error);
+}
+
+export async function syncCampaignsFromSupabase(): Promise<void> {
+  const data = await fetchCampaigns();
+  if (data.length) writeStorage(data);
+}
+
+export async function removeCampaign(id: string): Promise<void> {
+  await dbDeleteCampaign(id).catch(console.error);
 }
 
 export function touchCampaign(campaign: Campaign): Campaign {

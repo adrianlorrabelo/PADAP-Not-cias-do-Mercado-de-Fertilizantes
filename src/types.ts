@@ -1,5 +1,20 @@
-export type Role = "Administrador Geral" | "Gestor / Gerente" | "Compras / Precificação" | "Consultor" | "Visualizador";
-export type CommercialStatus = "Aprovado" | "Atenção" | "Requer aprovação" | "Bloqueado" | "Reconfirmar por alteração cambial";
+export const Roles = {
+  Admin: "Administrador Geral",
+  Manager: "Gestor / Gerente",
+  Purchasing: "Compras / Precificação",
+  Consultant: "Consultor",
+  Viewer: "Visualizador",
+} as const;
+export type Role = typeof Roles[keyof typeof Roles];
+
+export const CommercialStatuses = {
+  Approved: "Aprovado",
+  Warning: "Atenção",
+  RequiresApproval: "Requer aprovação",
+  Blocked: "Bloqueado",
+  ReconfirmExchangeRate: "Reconfirmar por alteração cambial",
+} as const;
+export type CommercialStatus = typeof CommercialStatuses[keyof typeof CommercialStatuses];
 
 export interface User {
   id: string;

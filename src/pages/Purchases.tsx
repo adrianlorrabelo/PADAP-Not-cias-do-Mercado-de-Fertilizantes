@@ -1,7 +1,7 @@
 /* eslint-disable react-refresh/only-export-components */
 import { NavLink, Navigate, Outlet } from "react-router-dom";
 import { usePermissions } from "../hooks/usePermissions";
-import type { Role } from "../types";
+import { Roles, type Role } from "../types";
 
 export type PurchaseTab = {
   to: string;
@@ -9,16 +9,14 @@ export type PurchaseTab = {
   roles: Role[];
 };
 
-const pricingRole: Role = "Compras / Precificação";
-
 export const purchaseTabs: PurchaseTab[] = [
-  { to: "/compras/tabela-da-semana", label: "Lista Yara", roles: ["Administrador Geral", pricingRole] },
-  { to: "/compras/propostas", label: "Propostas", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole, "Consultor"] },
-  { to: "/compras/pacotes", label: "Pacotes", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/compras/estoque", label: "Estoque", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/compras/planner", label: "Planner", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/compras/campanhas", label: "Campanhas", roles: ["Administrador Geral", "Gestor / Gerente", pricingRole] },
-  { to: "/compras/carteira", label: "Carteira", roles: ["Administrador Geral", pricingRole] }
+  { to: "/compras/tabela-da-semana", label: "Lista Yara", roles: [Roles.Admin, Roles.Purchasing] },
+  { to: "/compras/propostas", label: "Propostas", roles: [Roles.Admin, Roles.Manager, Roles.Purchasing, Roles.Consultant] },
+  { to: "/compras/pacotes", label: "Pacotes", roles: [Roles.Admin, Roles.Manager, Roles.Purchasing] },
+  { to: "/compras/estoque", label: "Estoque", roles: [Roles.Admin, Roles.Manager, Roles.Purchasing] },
+  { to: "/compras/planner", label: "Planner", roles: [Roles.Admin, Roles.Manager, Roles.Purchasing] },
+  { to: "/compras/campanhas", label: "Campanhas", roles: [Roles.Admin, Roles.Manager, Roles.Purchasing] },
+  { to: "/compras/carteira", label: "Carteira", roles: [Roles.Admin, Roles.Purchasing] },
 ];
 
 export function canAccessPurchaseTab(tab: PurchaseTab, role?: Role) {

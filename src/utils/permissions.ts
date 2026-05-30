@@ -1,11 +1,11 @@
-import type { Role, User } from "../types";
+import { Roles, type Role, type User } from "../types";
 
 const permissions: Record<Role, string[]> = {
-  "Administrador Geral": ["*"],
-  "Gestor / Gerente": ["view:costs", "view:margins", "approve", "reports", "clients", "market"],
-  "Compras / Precificação": ["import:table", "create:proposal", "create:package", "whatsapp", "clients", "market"],
-  Consultor: ["own:proposals", "own:clients", "whatsapp"],
-  Visualizador: ["dashboard", "reports", "market"]
+  [Roles.Admin]: ["*"],
+  [Roles.Manager]: ["view:costs", "view:margins", "approve", "reports", "clients", "market"],
+  [Roles.Purchasing]: ["import:table", "create:proposal", "create:package", "whatsapp", "clients", "market"],
+  [Roles.Consultant]: ["own:proposals", "own:clients", "whatsapp"],
+  [Roles.Viewer]: ["dashboard", "reports", "market"],
 };
 
 export function verificarPermissaoUsuario(user: User | null, permission: string): boolean {

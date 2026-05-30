@@ -1,20 +1,20 @@
-import type { User } from "../types";
+import { Roles, type User } from "../types";
 
 export const mockUsers: User[] = [
-  { id: "u-admin", name: "Mariana PADAP", email: "admin@padap.com.br", role: "Administrador Geral", position: "Diretoria", status: "Ativo", lastAccess: new Date().toISOString() },
-  { id: "u-gestor", name: "Rafael Costa", email: "gestor@padap.com.br", role: "Gestor / Gerente", position: "Gerente Comercial", status: "Ativo", lastAccess: new Date().toISOString() },
-  { id: "u-compras", name: "Bruna Oliveira", email: "compras@padap.com.br", role: "Compras / Precificação", position: "Compras e Precificação", status: "Ativo", lastAccess: new Date().toISOString() },
-  { id: "u-consultor", name: "Lucas Almeida", email: "consultor@padap.com.br", role: "Consultor", position: "Consultor Agro", status: "Ativo", lastAccess: new Date().toISOString() },
-  { id: "u-viewer", name: "Ana Paula", email: "visualizador@padap.com.br", role: "Visualizador", position: "Controladoria", status: "Ativo", lastAccess: new Date().toISOString() },
-  { id: "u-off", name: "Usuário Inativo", email: "inativo@padap.com.br", role: "Consultor", position: "Consultor", status: "Desativado", lastAccess: "2026-04-20T10:00:00.000Z" }
+  { id: "u-admin", name: "Mariana PADAP", email: "admin@padap.com.br", role: Roles.Admin, position: "Diretoria", status: "Ativo", lastAccess: new Date().toISOString() },
+  { id: "u-gestor", name: "Rafael Costa", email: "gestor@padap.com.br", role: Roles.Manager, position: "Gerente Comercial", status: "Ativo", lastAccess: new Date().toISOString() },
+  { id: "u-compras", name: "Bruna Oliveira", email: "compras@padap.com.br", role: Roles.Purchasing, position: "Compras e Precificação", status: "Ativo", lastAccess: new Date().toISOString() },
+  { id: "u-consultor", name: "Lucas Almeida", email: "consultor@padap.com.br", role: Roles.Consultant, position: "Consultor Agro", status: "Ativo", lastAccess: new Date().toISOString() },
+  { id: "u-viewer", name: "Ana Paula", email: "visualizador@padap.com.br", role: Roles.Viewer, position: "Controladoria", status: "Ativo", lastAccess: new Date().toISOString() },
+  { id: "u-off", name: "Usuário Inativo", email: "inativo@padap.com.br", role: Roles.Consultant, position: "Consultor", status: "Desativado", lastAccess: "2026-04-20T10:00:00.000Z" },
 ];
 
-// Credenciais separadas dos dados de usuário — nunca incluídas na sessão
+// Credenciais lidas de variáveis de ambiente (definidas em .env.local, não versionadas)
 export const mockCredentials: Record<string, string> = {
-  "admin@padap.com.br": "admin123",
-  "gestor@padap.com.br": "gestor123",
-  "compras@padap.com.br": "compras123",
-  "consultor@padap.com.br": "consultor123",
-  "visualizador@padap.com.br": "viewer123",
-  "inativo@padap.com.br": "inativo123",
+  "admin@padap.com.br": import.meta.env.VITE_DEMO_PW_ADMIN ?? "",
+  "gestor@padap.com.br": import.meta.env.VITE_DEMO_PW_GESTOR ?? "",
+  "compras@padap.com.br": import.meta.env.VITE_DEMO_PW_COMPRAS ?? "",
+  "consultor@padap.com.br": import.meta.env.VITE_DEMO_PW_CONSULTOR ?? "",
+  "visualizador@padap.com.br": import.meta.env.VITE_DEMO_PW_VIEWER ?? "",
+  "inativo@padap.com.br": import.meta.env.VITE_DEMO_PW_INATIVO ?? "",
 };

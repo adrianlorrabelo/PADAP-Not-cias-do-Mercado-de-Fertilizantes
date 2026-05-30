@@ -1,4 +1,5 @@
 import type { ConsolidatedStockItem, MinimumStockRule, StockImportDraft, StockImportHistory, StockItem, StockStatus, StockUnit } from "../types";
+import { deleteAllStockItemsByUnit, fetchStockImportHistory, fetchStockItems, fetchStockMinimumRules, insertStockImportHistory, upsertStockItems, upsertStockMinimumRules } from "../lib/db/stock";
 
 export const stockUnits: StockUnit[] = ["São Gotardo", "Santa Juliana", "Campos Altos"];
 
@@ -48,6 +49,7 @@ export function loadStockItems() {
 
 export function saveStockItems(items: StockItem[]) {
   writeStoredArray(stockItemsKey, items);
+  upsertStockItems(items).catch(console.error);
 }
 
 export function loadMinimumRules() {
@@ -56,6 +58,7 @@ export function loadMinimumRules() {
 
 export function saveMinimumRules(rules: MinimumStockRule[]) {
   writeStoredArray(stockMinimumRulesKey, rules);
+  upsertStockMinimumRules(rules).catch(console.error);
 }
 
 export function loadImportHistory() {
@@ -64,6 +67,23 @@ export function loadImportHistory() {
 
 export function saveImportHistory(history: StockImportHistory[]) {
   writeStoredArray(stockHistoryKey, history);
+  // Supabase: only insert new entries (the most recent one)
+  if (history.length) insertStockImportHistory(history[0]).catch(console.error);
+}
+
+export async function syncStockFromSupabase(): Promise<void> {
+  const [items, rules, hist] = await Promise.all([
+    fetchStockItems(),
+    fetchStockMinimumRules(),
+    fetchStockImportHistory(),
+  ]);
+  if (items.length) writeStoredArray(stockItemsKey, items);
+  if (rules.length) writeStoredArray(stockMinimumRulesKey, rules);
+  if (hist.length) writeStoredArray(stockHistoryKey, hist);
+}
+
+export async function removeStockItemsByUnit(unit: StockUnit): Promise<void> {
+  await deleteAllStockItemsByUnit(unit).catch(console.error);
 }
 
 export function applyStockDraft(currentItems: StockItem[], currentHistory: StockImportHistory[], draft: StockImportDraft) {
