@@ -62,16 +62,19 @@ export function IndicatorMini({ label, value, tone }: { label: string; value: st
   return (
     <div className="rounded-md border border-padap-line bg-padap-field px-2 py-1.5">
       <p className="text-[10px] uppercase tracking-[0.12em] text-padap-muted">{label}</p>
-      <p className={tone === "amber" ? "font-semibold text-amber-100" : "font-semibold text-padap-emerald"}>{value}</p>
+      <p className={tone === "amber" ? "font-semibold text-amber-700" : "font-semibold text-padap-emerald"}>{value}</p>
     </div>
   );
 }
 
-export function StripItem({ label, value }: { label: string; value: ReactNode }) {
+export function StripItem({ label, value, icon }: { label: string; value: ReactNode; icon?: ReactNode }) {
   return (
-    <div>
-      <p className="text-[11px] uppercase leading-4 tracking-[0.12em] text-padap-muted">{label}</p>
-      <div className="mt-1 text-sm font-medium leading-5 text-padap-ink">{value}</div>
+    <div className="flex flex-col gap-1">
+      <div className="flex items-center gap-1.5">
+        {icon && <span className="text-padap-muted">{icon}</span>}
+        <p className="text-[11px] uppercase leading-4 tracking-[0.12em] text-padap-muted">{label}</p>
+      </div>
+      <div className="text-sm font-medium leading-5 text-padap-ink">{value}</div>
     </div>
   );
 }

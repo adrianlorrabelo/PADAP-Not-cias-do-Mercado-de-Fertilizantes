@@ -104,7 +104,7 @@ export function CurrencyPtaxCard({ indicators, proposals, onDetails }: CurrencyP
           <div className="flex items-start justify-between gap-3">
             <div>
               <h3 className="font-semibold text-padap-ink">Decisão comercial</h3>
-              <p className="mt-1 text-sm leading-6 text-padap-muted">Usar validade curta e revisar propostas antigas antes de confirmar preço indexado.</p>
+              <p className="mt-1 rounded-lg border-l-4 border-padap-green bg-padap-green/[0.06] px-3 py-2 text-sm leading-6 text-padap-muted">Usar validade curta e revisar propostas antigas antes de confirmar preço indexado.</p>
             </div>
             <Button variant="ghost" onClick={onDetails}>Ver impactos</Button>
           </div>
@@ -119,7 +119,7 @@ export function CurrencyPtaxCard({ indicators, proposals, onDetails }: CurrencyP
               </div>
             )) : (
               <div className="rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-muted">
-                Nenhuma proposta cambial crítica no mock atual.
+                Nenhum impacto cambial crítico identificado no momento.
               </div>
             )}
           </div>
@@ -147,40 +147,42 @@ export function CommercialIndicatorsPanel({ indicators }: { indicators: MarketCo
         <MiniMetric value={released} label="produtos liberados" />
         <MiniMetric value={reviewOrApproval} label="revisão/aprovação" />
       </div>
-      <p className="mt-4 rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-muted">
+      <p className="mt-4 rounded-lg border border-padap-line bg-padap-field p-3 text-xs leading-6 text-padap-muted">
         Estrutura temporária com dados simulados para validar a leitura comercial antes de conectar banco, integrações ou tabelas reais.
       </p>
       <div className="mt-4 overflow-x-auto">
         <table className="min-w-[1180px] w-full text-left text-sm">
           <thead className="text-xs uppercase tracking-[0.12em] text-padap-muted">
-            <tr>
-              <th className="pb-2 pr-4">PTAX/dólar atual</th>
-              <th className="pb-2 pr-4">Variação dólar</th>
-              <th className="pb-2 pr-4">Produto</th>
-              <th className="pb-2 pr-4">Família</th>
-              <th className="pb-2 pr-4 text-right">Custo base</th>
-              <th className="pb-2 pr-4 text-right">Preço final PADAP</th>
-              <th className="pb-2 pr-4 text-right">Margem mínima</th>
-              <th className="pb-2 pr-4 text-right">Margem atual</th>
-              <th className="pb-2 pr-4">Validade</th>
-              <th className="pb-2 pr-4">Status</th>
-              <th className="pb-2">Motivo</th>
+            <tr className="bg-padap-field">
+              <th className="py-3 pr-4 pl-3">PTAX/dólar atual</th>
+              <th className="py-3 pr-4">Variação dólar</th>
+              <th className="py-3 pr-4">Produto</th>
+              <th className="py-3 pr-4">Família</th>
+              <th className="py-3 pr-4 text-right">Custo base</th>
+              <th className="py-3 pr-4 text-right">Preço final PADAP</th>
+              <th className="py-3 pr-4 text-right">Margem mínima</th>
+              <th className="py-3 pr-4 text-right">Margem atual</th>
+              <th className="py-3 pr-4">Validade</th>
+              <th className="py-3 pr-4">Status</th>
+              <th className="py-3 pr-3">Motivo</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-padap-line">
             {rows.map((item) => (
-              <tr key={item.id}>
-                <td className="py-3 pr-4 font-semibold text-padap-ink">{item.ptaxCurrent.toFixed(2).replace(".", ",")}</td>
-                <td className="py-3 pr-4 text-padap-muted">{formatPercent(item.dollarVariationSinceLastUpdate)}</td>
-                <td className="py-3 pr-4 font-semibold text-padap-ink">{item.product}</td>
-                <td className="py-3 pr-4"><Badge tone={familyTone(item.productFamily)}>{item.productFamily}</Badge></td>
-                <td className="py-3 pr-4 text-right text-padap-muted">{formatCurrency(item.baseCost)}</td>
-                <td className="py-3 pr-4 text-right font-semibold text-padap-ink">{formatCurrency(item.padapFinalPrice)}</td>
-                <td className="py-3 pr-4 text-right text-padap-muted">{formatPercent(item.minimumMargin)}</td>
-                <td className="py-3 pr-4 text-right text-padap-muted">{formatPercent(item.currentMargin)}</td>
-                <td className="py-3 pr-4 text-padap-muted">{formatDateTime(item.proposalValidity)}</td>
-                <td className="py-3 pr-4"><Badge tone={commercialStatusTone(item.commercial.status)}>{item.commercial.status}</Badge></td>
-                <td className="py-3 text-padap-muted">{item.commercial.reason}</td>
+              <tr key={item.id} className="transition hover:bg-padap-green/[0.04] even:bg-padap-field/40">
+                <td className="py-3.5 pr-4 pl-3 font-semibold text-padap-ink">{item.ptaxCurrent.toFixed(2).replace(".", ",")}</td>
+                <td className="py-3.5 pr-4 text-padap-muted">{formatPercent(item.dollarVariationSinceLastUpdate)}</td>
+                <td className="py-3.5 pr-4 font-semibold text-padap-ink">{item.product}</td>
+                <td className="py-3.5 pr-4"><Badge tone={familyTone(item.productFamily)}>{item.productFamily}</Badge></td>
+                <td className="py-3.5 pr-4 text-right text-padap-muted">{formatCurrency(item.baseCost)}</td>
+                <td className="py-3.5 pr-4 text-right font-semibold text-padap-ink">{formatCurrency(item.padapFinalPrice)}</td>
+                <td className="py-3.5 pr-4 text-right text-padap-muted">{formatPercent(item.minimumMargin)}</td>
+                <td className="py-3.5 pr-4 text-right text-padap-muted">{formatPercent(item.currentMargin)}</td>
+                <td className="py-3.5 pr-4 text-padap-muted">{formatDateTime(item.proposalValidity)}</td>
+                <td className="py-3.5 pr-4"><Badge tone={commercialStatusTone(item.commercial.status)}>{item.commercial.status}</Badge></td>
+                <td className="max-w-[220px] py-3.5 pr-3">
+                  <span className="block truncate text-padap-muted" title={item.commercial.reason}>{item.commercial.reason}</span>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -224,7 +226,7 @@ export function FertilizerFamilyCard({ family, productKeys, indicators, products
         </div>
         <div className="mt-4 grid grid-cols-2 gap-2">
           <MiniMetric value={indicator?.value ?? (padap ? formatCurrency(padap.padapPrice) : "Mock")} label="referência" />
-          <MiniMetric value={`${score}/100`} label="score comercial" />
+          <MiniMetric value={<span className="rounded-full bg-padap-green/10 px-2 py-0.5 text-xs font-bold text-padap-emerald">{score}/100</span>} label="score comercial" />
         </div>
         <div className="mt-4 h-10">
           <Sparkline
@@ -237,7 +239,7 @@ export function FertilizerFamilyCard({ family, productKeys, indicators, products
           <IndicatorMini label="Semana" value={formatPercent(indicator?.week ?? product?.weeklyVariation ?? 0)} tone={(indicator?.week ?? product?.weeklyVariation ?? 0) >= 0 ? "amber" : "green"} />
         </div>
         <p className="mt-4 text-sm leading-6 text-padap-muted">{product?.reason ?? padap?.marketTrend ?? "Leitura mockada para manter a decisão sem integração externa."}</p>
-        <p className="mt-auto pt-3 text-sm leading-6 text-padap-emerald">{product?.recommendedAction ?? padap?.recommendedAction ?? "Monitorar antes de cotar."}</p>
+        <p className="mt-auto border-t border-padap-line pt-3 text-sm font-semibold leading-6 text-padap-emerald">{product?.recommendedAction ?? padap?.recommendedAction ?? "Monitorar antes de cotar."}</p>
       </div>
     </Card>
   );
@@ -269,9 +271,12 @@ export function ExchangeDecisionCard({ ratios }: { ratios: ExchangeRatioItem[] }
         })}
       </div>
       {main && (
-        <p className="mt-4 rounded-lg border border-padap-line bg-padap-field p-3 text-sm leading-6 text-padap-emerald">
-          Prioridade: usar {main.pair} como argumento comercial principal quando estiver favorável ao produtor.
-        </p>
+        <div className="mt-4 flex items-start gap-3 rounded-lg border-l-4 border-padap-green bg-padap-green/[0.06] py-3 pl-4 pr-3">
+          <TrendingUp size={14} className="mt-0.5 shrink-0 text-padap-emerald" />
+          <p className="text-sm leading-6 text-padap-emerald">
+            Prioridade: usar {main.pair} como argumento comercial principal quando estiver favorável ao produtor.
+          </p>
+        </div>
       )}
     </Card>
   );

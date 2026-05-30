@@ -72,7 +72,8 @@ export function ClimateNewsCard({ events }: { events: ClimateEvent[] }) {
         title="Notícias Climáticas"
         subtitle="Eventos meteorológicos com impacto direto na demanda de fertilizantes e logística de campo."
         action={
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs font-medium text-padap-muted">{events.length} evento{events.length !== 1 ? "s" : ""}</span>
             {criticalCount > 0 && <Badge tone="red">{criticalCount} crítico{criticalCount > 1 ? "s" : ""}</Badge>}
             {attentionCount > 0 && <Badge tone="amber">{attentionCount} em atenção</Badge>}
           </div>

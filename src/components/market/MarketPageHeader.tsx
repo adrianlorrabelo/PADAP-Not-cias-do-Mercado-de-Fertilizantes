@@ -37,19 +37,23 @@ export function MarketPageHeader({
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-padap-ink">Central de Inteligência de Mercado</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-padap-muted">Mercado, câmbio, fertilizantes, culturas e impacto comercial em um só lugar.</p>
         </div>
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <Button onClick={onRefresh} disabled={loading}>
             <RefreshCw size={16} className={loading ? "animate-spin" : ""} />
             Atualizar mercado agora
           </Button>
-          <Button variant="ghost" onClick={onReport}><FileText size={16} />Gerar relatório PDF</Button>
-          <Button variant="ghost" onClick={onBriefing}><Send size={16} />Gerar briefing WhatsApp</Button>
-          <Button variant="ghost" onClick={onManageSources}><ShieldCheck size={16} />Gerenciar fontes</Button>
-          <Button variant="ghost" onClick={onAutoUpdateConfig}><CalendarClock size={16} />Automático</Button>
-          <Button variant="amber" onClick={onMeeting}><Presentation size={16} />Modo reunião</Button>
-          <Button variant="ghost" className="h-10 w-10 px-0" onClick={onMenu} aria-label="Mais opções">
-            <MoreHorizontal size={18} />
-          </Button>
+          <div className="flex flex-wrap gap-1.5">
+            <Button variant="ghost" onClick={onReport}><FileText size={15} />Relatório PDF</Button>
+            <Button variant="ghost" onClick={onBriefing}><Send size={15} />Briefing WhatsApp</Button>
+            <Button variant="ghost" onClick={onManageSources}><ShieldCheck size={15} />Gerenciar fontes</Button>
+            <Button variant="ghost" onClick={onAutoUpdateConfig}><CalendarClock size={15} />Automático</Button>
+          </div>
+          <div className="flex items-center gap-1.5 sm:ml-auto">
+            <Button variant="amber" onClick={onMeeting}><Presentation size={15} />Modo reunião</Button>
+            <Button variant="ghost" className="h-10 w-10 px-0" onClick={onMenu} aria-label="Mais opções">
+              <MoreHorizontal size={18} />
+            </Button>
+          </div>
         </div>
       </div>
       {showMenu && (

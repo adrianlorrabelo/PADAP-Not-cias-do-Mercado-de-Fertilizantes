@@ -1,4 +1,4 @@
-import { CalendarClock } from "lucide-react";
+import { CalendarClock, CheckCircle2, Clock, Database, RefreshCw, Settings, ShieldCheck, Zap } from "lucide-react";
 import { Badge } from "../ui/Badge";
 import { Button } from "../ui/Button";
 import { StripItem } from "./MarketUI";
@@ -35,15 +35,15 @@ export function MarketUpdateStrip({
 
   return (
     <div className="rounded-xl border border-padap-line bg-padap-field px-4 py-3">
-      <div className="grid gap-3 text-sm md:grid-cols-2 xl:grid-cols-7">
-        <StripItem label="Última atualização geral" value={formatDateTime(latestHistory?.updatedAt ?? lastUpdate)} />
-        <StripItem label="Próxima janela manual" value={formatTime(nextManual)} />
-        <StripItem label="Próxima janela automática" value={nextAutoLabel} />
-        <StripItem label="Automático" value={<Badge tone={autoSettings.enabled ? "green" : "neutral"}>{autoStatus}</Badge>} />
-        <StripItem label="Última automática" value={lastAutoLabel} />
-        <StripItem label="Status da atualização" value={<Badge tone={statusTone(status)}>{status}</Badge>} />
-        <StripItem label="Fontes verificadas" value={checkedLabel} />
-        <StripItem label="Confiança" value={confidenceLabel} />
+      <div className="grid gap-3 text-sm md:grid-cols-4 xl:grid-cols-8">
+        <StripItem icon={<Clock size={12} />} label="Última atualização" value={formatDateTime(latestHistory?.updatedAt ?? lastUpdate)} />
+        <StripItem icon={<CalendarClock size={12} />} label="Próxima manual" value={formatTime(nextManual)} />
+        <StripItem icon={<Zap size={12} />} label="Próxima automática" value={nextAutoLabel} />
+        <StripItem icon={<Settings size={12} />} label="Automático" value={<Badge tone={autoSettings.enabled ? "green" : "neutral"}>{autoStatus}</Badge>} />
+        <StripItem icon={<RefreshCw size={12} />} label="Última automática" value={lastAutoLabel} />
+        <StripItem icon={<CheckCircle2 size={12} />} label="Status" value={<Badge tone={statusTone(status)}>{status}</Badge>} />
+        <StripItem icon={<Database size={12} />} label="Fontes verificadas" value={checkedLabel} />
+        <StripItem icon={<ShieldCheck size={12} />} label="Confiança" value={confidenceLabel} />
       </div>
       <div className="mt-3 flex flex-col gap-2 border-t border-padap-line pt-3 text-xs leading-5 text-padap-muted sm:flex-row sm:items-center sm:justify-between">
         <span>A atualização automática funciona enquanto o sistema estiver aberto no navegador.</span>
