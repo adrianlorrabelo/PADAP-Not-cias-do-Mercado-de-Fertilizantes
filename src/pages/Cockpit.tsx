@@ -78,8 +78,8 @@ export default function Cockpit() {
       {/* ── Banner executivo ── */}
       <div className="relative mb-7 overflow-hidden rounded-2xl border border-padap-line bg-white shadow-panel ring-1 ring-black/[0.02]">
 
-        {/* Conteúdo esquerdo */}
-        <div className="relative z-10 p-6 lg:max-w-[calc(100%-300px)]">
+        {/* Conteúdo */}
+        <div className="relative z-10 p-6">
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-padap-green/25 bg-padap-green/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-padap-emerald">
             <span className="h-1.5 w-1.5 rounded-full bg-padap-green" />
             Modo executivo
@@ -97,69 +97,8 @@ export default function Cockpit() {
           </p>
         </div>
 
-        {/* Painel direito — composição agrícola sobreposta */}
-        <div
-          className="absolute inset-y-0 right-0 hidden w-[320px] overflow-hidden lg:block"
-          style={{ background: "linear-gradient(150deg, #fdfaf3 0%, #f4f9f0 55%, #eaf5ec 100%)" }}
-        >
-          {/* Café — fundo, canto superior direito */}
-          <img
-            src="/images/banner-coffee.jpg" alt="" aria-hidden="true"
-            style={{
-              position: "absolute", top: "-10px", right: "-20px",
-              width: "180px", height: "220px",
-              objectFit: "cover", objectPosition: "center",
-              transform: "rotate(-4deg)",
-              WebkitMaskImage: "radial-gradient(ellipse 82% 80% at 52% 44%, black 36%, transparent 72%)",
-              maskImage: "radial-gradient(ellipse 82% 80% at 52% 44%, black 36%, transparent 72%)",
-              opacity: 0.88,
-            }}
-          />
-          {/* Alho — canto inferior esquerdo, visível com máscara */}
-          <img
-            src="/images/banner-garlic.jpg" alt="" aria-hidden="true"
-            style={{
-              position: "absolute", bottom: "-22px", left: "-12px",
-              width: "200px", height: "200px",
-              objectFit: "cover", objectPosition: "center 40%",
-              transform: "rotate(-8deg)",
-              WebkitMaskImage: "radial-gradient(ellipse 82% 78% at 48% 46%, black 40%, transparent 76%)",
-              maskImage: "radial-gradient(ellipse 82% 78% at 48% 46%, black 40%, transparent 76%)",
-              opacity: 0.95,
-            }}
-          />
-          {/* Cenoura — centro, elemento principal, inclinada */}
-          <img
-            src="/images/banner-carrot.jpg" alt="" aria-hidden="true"
-            style={{
-              position: "absolute", top: "-15px", left: "55px",
-              width: "215px", height: "300px",
-              objectFit: "cover", objectPosition: "center top",
-              transform: "rotate(6deg)",
-              WebkitMaskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 40%, transparent 76%)",
-              maskImage: "radial-gradient(ellipse 78% 82% at 50% 46%, black 40%, transparent 76%)",
-              opacity: 0.96,
-            }}
-          />
-          {/* Gradiente de fusão — borda esquerda */}
-          <div className="absolute inset-y-0 left-0 z-10 w-14 bg-gradient-to-r from-white to-transparent" />
-          {/* Gradiente de fusão — base */}
-          <div className="absolute inset-x-0 bottom-0 z-10 h-14 bg-gradient-to-t from-white/65 to-transparent" />
-          {/* Botões sobrepostos */}
-          <div className="absolute bottom-4 right-4 z-20 flex flex-col items-end gap-2">
-            <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-white/92 px-3 py-2 text-xs font-semibold text-padap-muted shadow-sm backdrop-blur-sm">
-              <Clock size={13} className="text-padap-green" />
-              Última atualização: {updatedAt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
-            </div>
-            <Button onClick={refreshPanel} className="min-h-9 text-xs shadow-glow">
-              <RefreshCw size={14} />
-              Atualizar painel
-            </Button>
-          </div>
-        </div>
-
-        {/* Botões mobile — visíveis apenas abaixo de lg */}
-        <div className="relative z-10 flex flex-col gap-2 border-t border-padap-line px-6 py-4 sm:flex-row sm:items-center lg:hidden">
+        {/* Botões */}
+        <div className="relative z-10 flex flex-col gap-2 border-t border-padap-line px-6 py-4 sm:flex-row sm:items-center">
           <div className="inline-flex items-center gap-2 rounded-lg border border-padap-line bg-padap-field px-3 py-2 text-xs font-semibold text-padap-muted">
             <Clock size={13} className="text-padap-green" />
             Última atualização: {updatedAt.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" })}
