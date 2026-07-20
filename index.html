@@ -452,25 +452,37 @@ function renderGrid(){
   });
 }
 
-async function fetchFeed(feed){
-  const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(feed.q)}+when:2d&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
+
+async function fetchViaRss2json(rssUrl){
   const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-  try{
-    const res = await fetch(api);
-    const data = await res.json();
-    if(data.status !== 'ok') throw new Error('rss2json error');
-    return data.items.map(it => ({
-      title: it.title,
-      link: it.link,
-      pubDate: it.pubDate,
-      excerpt: stripHtml(it.description).slice(0, 180),
-      source: (it.author && it.author.trim()) || hostFromUrl(it.link) || 'Fonte',
-      cat: feed.cat,
-    }));
-  }catch(e){
-    console.warn('Falha ao buscar feed:', feed.q, e);
-    return [];
+  const res = await fetch(api);
+  const data = await res.json();
+  if(data.status !== 'ok') throw new Error(data.message || 'rss2json error');
+  return data.items.map(it => ({
+    title: it.title,
+    link: it.link,
+    pubDate: it.pubDate,
+    excerpt: stripHtml(it.description).slice(0, 180),
+    source: (it.author && it.author.trim()) || hostFromUrl(it.link) || 'Fonte',
+  }));
+}
+
+// O plano gratuito do rss2json limita rajadas de requisições simultâneas,
+// então cada categoria é buscada uma de cada vez (com uma nova tentativa
+// em caso de falha passageira) em vez de todas ao mesmo tempo.
+async function fetchFeed(feed){
+  const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(feed.q)}+when:7d&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
+  for(let attempt = 0; attempt < 2; attempt++){
+    try{
+      const items = await fetchViaRss2json(rssUrl);
+      return items.map(it => ({ ...it, cat: feed.cat }));
+    }catch(e){
+      console.warn('Falha ao buscar feed:', feed.q, e);
+      if(attempt === 0) await sleep(800);
+    }
   }
+  return [];
 }
 
 async function loadNews(){
@@ -478,7 +490,11 @@ async function loadNews(){
   btn.classList.add('spinning');
   skeletons();
 
-  const results = await Promise.all(FEEDS.map(fetchFeed));
+  const results = [];
+  for(const feed of FEEDS){
+    results.push(await fetchFeed(feed));
+    await sleep(250);
+  }
   let merged = results.flat();
 
   // Dedupe by link/title
