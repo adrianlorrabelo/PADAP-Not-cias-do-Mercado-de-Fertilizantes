@@ -6,7 +6,7 @@
 <title>PADAP · Notícias do Mercado de Fertilizantes</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --white:#FFFFFF;
@@ -123,7 +123,24 @@
   .refresh-btn svg{transition:transform 0.5s ease;}
   .refresh-btn.spinning svg{animation:spin 0.8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg);}}
-  .newspaper-btn{
+  .view-toggle{display:flex; background:var(--gray); border-radius:999px; padding:3px; gap:2px;}
+  .view-btn{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    border:none;
+    background:transparent;
+    color:var(--gray-text);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:13px;
+    padding:7px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    transition:all 0.15s ease;
+  }
+  .view-btn.active{background:var(--white); color:var(--dark-green); box-shadow:0 1px 3px rgba(0,0,0,0.1);}
+  .print-btn{
     display:flex;
     align-items:center;
     gap:7px;
@@ -136,11 +153,10 @@
     font-weight:600;
     font-size:13px;
     cursor:pointer;
-    text-decoration:none;
     transition:background 0.15s ease, transform 0.1s ease;
   }
-  .newspaper-btn:hover{background:var(--gray);}
-  .newspaper-btn:active{transform:scale(0.97);}
+  .print-btn:hover{background:var(--gray);}
+  .print-btn:active{transform:scale(0.97);}
 
   /* ---------- Filters ---------- */
   .filters{
@@ -305,6 +321,40 @@
   }
   .retry-btn:hover{background:var(--gray);}
 
+  /* ---------- Jornal ---------- */
+  .newspaper-view{max-width:1040px; margin:0 auto;}
+  .masthead{text-align:center;}
+  .masthead .title{font-family:'Playfair Display',serif; font-weight:900; font-size:52px; letter-spacing:0.01em; color:var(--black); line-height:1;}
+  .masthead .subtitle{font-size:12.5px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase; color:var(--dark-green); margin-top:8px;}
+  .rule-thick{border-top:4px solid var(--black); margin-top:16px;}
+  .rule-thin{border-top:1px solid var(--black); margin-top:3px;}
+  .edition-row{padding:8px 2px 24px; text-align:center; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); border-bottom:2px solid var(--black);}
+  .np-lead{display:block; padding:26px 0 22px; border-bottom:1px solid var(--gray); text-decoration:none; color:inherit;}
+  .np-kicker{font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:var(--accent-dark); margin-bottom:8px;}
+  .np-lead-headline{font-family:'Playfair Display',serif; font-weight:800; font-size:32px; line-height:1.15; color:var(--black); margin:0 0 12px;}
+  .np-lead:hover .np-lead-headline{color:var(--dark-green);}
+  .np-lead-excerpt{font-size:16px; line-height:1.6; color:#3a3a3a; margin:0 0 10px; max-width:760px;}
+  .np-byline{font-size:11.5px; font-weight:600; color:var(--gray-text); text-transform:uppercase; letter-spacing:0.04em;}
+
+  .np-sections{column-count:3; column-gap:32px; margin-top:8px;}
+  @media (max-width:920px){ .np-sections{column-count:2;} }
+  @media (max-width:640px){ .np-sections{column-count:1;} }
+  .np-section{break-inside:avoid; margin-bottom:24px; display:inline-block; width:100%;}
+  .np-section-title{font-family:'Playfair Display',serif; font-weight:800; font-size:16px; color:var(--dark-green); margin:0 0 4px; text-transform:uppercase; letter-spacing:0.03em;}
+  .np-section-rule{border-top:2px solid var(--dark-green); margin-bottom:12px;}
+  .np-briefs{display:flex; flex-direction:column; gap:16px;}
+  .np-brief{display:block; break-inside:avoid; text-decoration:none; color:inherit;}
+  .np-brief-headline{font-family:'Playfair Display',serif; font-weight:700; font-size:15px; line-height:1.3; color:var(--black); margin:0 0 5px;}
+  .np-brief:hover .np-brief-headline{color:var(--dark-green);}
+  .np-brief-excerpt{font-size:12.5px; line-height:1.5; color:var(--gray-text); margin:0 0 5px;}
+  .np-colophon{margin-top:40px; border-top:2px solid var(--black); padding-top:12px; text-align:center; font-size:11px; color:var(--gray-text); text-transform:uppercase; letter-spacing:0.05em;}
+
+  @media print{
+    header .view-toggle, header .refresh-btn, .filters{display:none !important;}
+    .print-btn{display:none !important;}
+    .np-section, .np-lead, .np-brief{break-inside:avoid;}
+  }
+
   footer{
     border-top:1px solid var(--gray);
     padding:22px 24px;
@@ -327,25 +377,46 @@
     </div>
     <div class="header-status">
       <div class="live-pill"><span class="live-dot"></span><span id="updated-text">Carregando…</span></div>
+      <div class="view-toggle" id="view-toggle">
+        <button class="view-btn active" id="view-btn-noticias" data-view="noticias">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          Notícias
+        </button>
+        <button class="view-btn" id="view-btn-jornal" data-view="jornal">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+          Jornal
+        </button>
+      </div>
       <button class="refresh-btn" id="refresh-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
         Atualizar
       </button>
-      <a class="newspaper-btn" id="newspaper-btn" href="/api/newspaper" target="_blank" rel="noopener noreferrer">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
-        Ver Jornal
-      </a>
+      <button class="print-btn" id="print-btn" style="display:none" onclick="window.print()">Imprimir / Salvar PDF</button>
     </div>
   </div>
   <div class="filters" id="filters"></div>
 </header>
 
 <main>
-  <div class="section-label">
-    <h1>Radar de Notícias</h1>
-    <span class="count-text" id="count-text"></span>
+  <div id="grid-view">
+    <div class="section-label">
+      <h1>Radar de Notícias</h1>
+      <span class="count-text" id="count-text"></span>
+    </div>
+    <div class="grid" id="grid"></div>
   </div>
-  <div class="grid" id="grid"></div>
+
+  <div class="newspaper-view" id="newspaper-view" hidden>
+    <div class="masthead">
+      <div class="title">PADAP</div>
+      <div class="subtitle">Jornal de Notícias do Mercado de Fertilizantes</div>
+    </div>
+    <div class="rule-thick"></div>
+    <div class="rule-thin"></div>
+    <div class="edition-row" id="edition-row"></div>
+    <div id="newspaper-content"></div>
+    <div class="np-colophon">PADAP Notícias do Mercado de Fertilizantes · Edição gerada automaticamente</div>
+  </div>
 </main>
 
 <footer>
@@ -354,9 +425,11 @@
 
 <script>
 const CATEGORIES = ['Todas', 'Mercado', 'Ureia', 'Fosfatados', 'Potássio', 'Comércio Exterior', 'Câmbio', 'Geopolítica', 'Logística'];
+const CATEGORY_ORDER = CATEGORIES.slice(1);
 
 let allItems = [];
 let activeFilter = 'Todas';
+let currentView = 'noticias';
 let refreshTimer = null;
 
 function buildFilters(){
@@ -366,10 +439,25 @@ function buildFilters(){
     const chip = document.createElement('button');
     chip.className = 'chip' + (cat === activeFilter ? ' active' : '');
     chip.textContent = cat;
-    chip.onclick = () => { activeFilter = cat; buildFilters(); renderGrid(); };
+    chip.onclick = () => { activeFilter = cat; buildFilters(); renderCurrentView(); };
     box.appendChild(chip);
   });
-  document.getElementById('newspaper-btn').href = `/api/newspaper?category=${encodeURIComponent(activeFilter)}`;
+}
+
+function setView(view){
+  currentView = view;
+  document.getElementById('view-btn-noticias').classList.toggle('active', view === 'noticias');
+  document.getElementById('view-btn-jornal').classList.toggle('active', view === 'jornal');
+  document.getElementById('grid-view').hidden = view !== 'noticias';
+  document.getElementById('newspaper-view').hidden = view !== 'jornal';
+  document.getElementById('filters').style.display = view === 'noticias' ? '' : 'none';
+  document.getElementById('print-btn').style.display = view === 'jornal' ? '' : 'none';
+  renderCurrentView();
+}
+
+function renderCurrentView(){
+  if(currentView === 'jornal') renderNewspaper();
+  else renderGrid();
 }
 
 function skeletons(n=9){
@@ -454,6 +542,56 @@ function renderGrid(){
   });
 }
 
+function renderNewspaper(){
+  const items = activeFilter === 'Todas' ? allItems : allItems.filter(i => i.cat === activeFilter);
+  const content = document.getElementById('newspaper-content');
+  const editionRow = document.getElementById('edition-row');
+  const now = new Date();
+  editionRow.textContent = now.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase() +
+    ` · ${items.length} NOTÍCIA${items.length === 1 ? '' : 'S'}`;
+
+  if(items.length === 0){
+    content.innerHTML = `
+      <div class="state-box">
+        <h2>Nenhuma notícia encontrada</h2>
+        <p>Não há resultados para este filtro no momento. Tente outra categoria ou atualize novamente.</p>
+      </div>`;
+    return;
+  }
+
+  const sorted = items.slice().sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
+  const lead = sorted[0];
+  const rest = sorted.slice(1);
+
+  const leadHtml = `
+    <a class="np-lead" href="${lead.link}" target="_blank" rel="noopener noreferrer">
+      <div class="np-kicker">${escapeHtml(lead.cat)}</div>
+      <h1 class="np-lead-headline">${escapeHtml(lead.title)}</h1>
+      <p class="np-lead-excerpt">${escapeHtml(lead.excerpt)}</p>
+      <div class="np-byline">${escapeHtml(lead.source)} · ${escapeHtml(timeAgo(lead.pubDate))}</div>
+    </a>`;
+
+  const categoriesToShow = activeFilter === 'Todas' ? CATEGORY_ORDER : [activeFilter];
+  const sectionsHtml = categoriesToShow
+    .map(cat => [cat, rest.filter(i => i.cat === cat)])
+    .filter(([, list]) => list.length > 0)
+    .map(([cat, list]) => `
+      <div class="np-section">
+        <h2 class="np-section-title">${escapeHtml(cat)}</h2>
+        <div class="np-section-rule"></div>
+        <div class="np-briefs">
+          ${list.map(item => `
+            <a class="np-brief" href="${item.link}" target="_blank" rel="noopener noreferrer">
+              <h3 class="np-brief-headline">${escapeHtml(item.title)}</h3>
+              <p class="np-brief-excerpt">${escapeHtml(item.excerpt)}</p>
+              <div class="np-byline">${escapeHtml(item.source)} · ${escapeHtml(timeAgo(item.pubDate))}</div>
+            </a>`).join('')}
+        </div>
+      </div>`).join('');
+
+  content.innerHTML = `${leadHtml}<div class="np-sections">${sectionsHtml}</div>`;
+}
+
 async function loadNews(){
   const btn = document.getElementById('refresh-btn');
   btn.classList.add('spinning');
@@ -481,20 +619,24 @@ async function loadNews(){
     'Atualizado ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
 
   if(allItems.length === 0){
-    document.getElementById('grid').innerHTML = `
+    const errorHtml = `
       <div class="state-box">
         <h2>Não foi possível carregar as notícias</h2>
         <p>O serviço de notícias pode estar indisponível no momento. Verifique sua conexão e tente novamente.</p>
-        <button class="retry-btn" id="retry-btn">Tentar novamente</button>
+        <button class="retry-btn" onclick="loadNews()">Tentar novamente</button>
       </div>`;
+    document.getElementById('grid').innerHTML = errorHtml;
+    document.getElementById('newspaper-content').innerHTML = errorHtml;
     document.getElementById('count-text').textContent = '';
-    document.getElementById('retry-btn').onclick = loadNews;
+    document.getElementById('edition-row').textContent = '';
     return;
   }
-  renderGrid();
+  renderCurrentView();
 }
 
 document.getElementById('refresh-btn').addEventListener('click', loadNews);
+document.getElementById('view-btn-noticias').addEventListener('click', () => setView('noticias'));
+document.getElementById('view-btn-jornal').addEventListener('click', () => setView('jornal'));
 buildFilters();
 loadNews();
 
