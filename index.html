@@ -327,21 +327,10 @@
 </main>
 
 <footer>
-  Fontes: Google Notícias · Atualização automática a cada 12h, ou clique em "Atualizar" a qualquer momento.
+  Fontes: Google Notícias · Um robô busca notícias novas automaticamente todos os dias e guarda o histórico. Clique em "Atualizar" para ver as mais recentes já salvas.
 </footer>
 
 <script>
-const FEEDS = [
-  { q: 'fertilizantes mercado preço', cat: 'Mercado' },
-  { q: 'ureia preço Brasil', cat: 'Ureia' },
-  { q: 'MAP DAP fosfato fertilizante', cat: 'Fosfatados' },
-  { q: 'cloreto de potássio KCl fertilizante', cat: 'Potássio' },
-  { q: 'exportação importação fertilizantes Brasil', cat: 'Comércio Exterior' },
-  { q: 'dólar câmbio agronegócio', cat: 'Câmbio' },
-  { q: 'China Rússia fertilizantes exportação restrição', cat: 'Geopolítica' },
-  { q: 'porto frete logística fertilizantes Brasil', cat: 'Logística' },
-];
-
 const CATEGORIES = ['Todas', 'Mercado', 'Ureia', 'Fosfatados', 'Potássio', 'Comércio Exterior', 'Câmbio', 'Geopolítica', 'Logística'];
 
 let allItems = [];
@@ -393,16 +382,6 @@ function timeAgo(dateStr){
   return `há ${days} dias`;
 }
 
-function stripHtml(html){
-  const tmp = document.createElement('div');
-  tmp.innerHTML = html || '';
-  return (tmp.textContent || tmp.innerText || '').trim();
-}
-
-function hostFromUrl(url){
-  try{ return new URL(url).hostname.replace('www.',''); }catch(e){ return ''; }
-}
-
 function escapeHtml(str){
   const d = document.createElement('div');
   d.textContent = str;
@@ -452,62 +431,27 @@ function renderGrid(){
   });
 }
 
-function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
-
-async function fetchViaRss2json(rssUrl){
-  const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
-  const res = await fetch(api);
-  const data = await res.json();
-  if(data.status !== 'ok') throw new Error(data.message || 'rss2json error');
-  return data.items.map(it => ({
-    title: it.title,
-    link: it.link,
-    pubDate: it.pubDate,
-    excerpt: stripHtml(it.description).slice(0, 180),
-    source: (it.author && it.author.trim()) || hostFromUrl(it.link) || 'Fonte',
-  }));
-}
-
-// O plano gratuito do rss2json limita rajadas de requisições simultâneas,
-// então cada categoria é buscada uma de cada vez (com uma nova tentativa
-// em caso de falha passageira) em vez de todas ao mesmo tempo.
-async function fetchFeed(feed){
-  const rssUrl = `https://news.google.com/rss/search?q=${encodeURIComponent(feed.q)}+when:7d&hl=pt-BR&gl=BR&ceid=BR:pt-419`;
-  for(let attempt = 0; attempt < 2; attempt++){
-    try{
-      const items = await fetchViaRss2json(rssUrl);
-      return items.map(it => ({ ...it, cat: feed.cat }));
-    }catch(e){
-      console.warn('Falha ao buscar feed:', feed.q, e);
-      if(attempt === 0) await sleep(800);
-    }
-  }
-  return [];
-}
-
 async function loadNews(){
   const btn = document.getElementById('refresh-btn');
   btn.classList.add('spinning');
   skeletons();
 
-  const results = [];
-  for(const feed of FEEDS){
-    results.push(await fetchFeed(feed));
-    await sleep(250);
+  try{
+    const res = await fetch('/api/news?limit=300');
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Falha ao buscar notícias');
+    allItems = (data.items || []).map(it => ({
+      title: it.title,
+      link: it.link,
+      pubDate: it.pub_date,
+      excerpt: it.excerpt,
+      source: it.source,
+      cat: it.category,
+    }));
+  }catch(e){
+    console.warn('Falha ao buscar notícias:', e);
+    allItems = [];
   }
-  let merged = results.flat();
-
-  // Dedupe by link/title
-  const seen = new Set();
-  merged = merged.filter(it => {
-    const key = (it.title || '').toLowerCase().trim();
-    if(seen.has(key)) return false;
-    seen.add(key);
-    return true;
-  });
-
-  merged.sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
-  allItems = merged.slice(0, 60);
 
   btn.classList.remove('spinning');
   document.getElementById('updated-text').textContent =
@@ -531,8 +475,8 @@ document.getElementById('refresh-btn').addEventListener('click', loadNews);
 buildFilters();
 loadNews();
 
-// auto-refresh every 12h if the page stays open
-refreshTimer = setInterval(loadNews, 12 * 60 * 60 * 1000);
+// atualiza a cada 15min enquanto a página ficar aberta (o cron de coleta roda 1x/dia)
+refreshTimer = setInterval(loadNews, 15 * 60 * 1000);
 </script>
 
 </body>

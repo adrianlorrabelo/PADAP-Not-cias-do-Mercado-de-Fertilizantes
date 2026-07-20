@@ -1,58 +1,92 @@
 # PADAP · Notícias do Mercado de Fertilizantes
 
-Painel web (arquivo único, `index.html`) que exibe notícias recentes sobre o
-mercado de fertilizantes em formato de cards clicáveis, com a identidade
-visual da PADAP.
+Painel web que exibe notícias sobre o mercado de fertilizantes em formato de
+cards clicáveis, com a identidade visual da PADAP, e mantém um **histórico
+permanente** das notícias (mesmo depois que elas saem do radar do Google
+Notícias).
 
 ## O que o projeto faz
 
 - Busca notícias em português em 8 frentes: mercado geral, ureia, fosfatados
   (MAP/DAP), potássio, comércio exterior, câmbio, geopolítica e logística.
-- Usa o Google Notícias como fonte, via a API pública `rss2json.com` (sem
-  necessidade de chave de API).
+- Usa o Google Notícias como fonte, buscando o RSS diretamente do servidor
+  (sem depender de serviços gratuitos de terceiros como o rss2json).
+- Um cron job da Vercel roda 1x por dia, busca notícias novas e salva num
+  banco de dados Supabase — notícias antigas nunca são perdidas.
+- O frontend (`index.html`) só lê o que já está salvo no banco, via
+  `/api/news` — rápido e sem depender de APIs externas a cada visita.
 - Mostra cards clicáveis — cada um abre a notícia original em nova aba, com
   o nome da fonte.
 - Filtros por categoria no topo.
-- Atualização automática a cada 12h se a página ficar aberta, mais um botão
-  "Atualizar" manual.
 - Visual: fundo branco, logo da PADAP (embutida em base64 dentro do HTML),
   tipografia Sora (títulos) + Inter (texto), verde da marca como destaque.
-- 100% front-end: não precisa de backend, banco de dados nem build step.
-  É só um arquivo HTML que roda em qualquer navegador quando hospedado
-  via HTTPS (não funciona aberto localmente com `file://` por causa de
-  bloqueio de CORS do navegador).
 
-## Estrutura
+## Arquitetura
 
 ```
 padap-noticias/
-├── index.html   # o app inteiro (HTML + CSS + JS + logo embutida)
-└── README.md    # este arquivo
+├── index.html                  # frontend (HTML + CSS + JS + logo embutida)
+├── api/
+│   ├── cron-fetch-news.js      # busca RSS do Google Notícias e salva no Supabase
+│   └── news.js                 # lê o Supabase e devolve JSON pro frontend
+├── supabase/
+│   └── schema.sql               # tabela news_items + RLS
+├── vercel.json                  # agenda o cron (1x/dia)
+├── package.json                 # dependências das funções serverless
+└── .env.example                 # variáveis de ambiente necessárias
 ```
 
-## O que pedir ao Claude Code
+## Setup (você precisa fazer isso manualmente — contas e segredos não
+podem ser criados por mim)
 
-Cole algo como isto para o Claude Code, na pasta onde extraiu este projeto:
+### 1. Criar o projeto no Supabase
 
-> Este é o projeto "PADAP Notícias de Fertilizantes", um painel estático
-> em `index.html`. Quero que você:
-> 1. Inicialize um repositório git aqui.
-> 2. Crie um repositório novo no GitHub chamado `padap-noticias` (via `gh`)
->    e faça o push do conteúdo.
-> 3. Ative o GitHub Pages apontando para a branch principal, servindo a
->    raiz do repositório.
-> 4. Me devolva a URL final publicada.
+1. Crie uma conta/projeto em [supabase.com](https://supabase.com) (plano
+   gratuito é suficiente).
+2. Abra o **SQL Editor** do projeto e rode o conteúdo de
+   [`supabase/schema.sql`](supabase/schema.sql).
+3. Em **Project Settings → API**, copie:
+   - `Project URL` → variável `SUPABASE_URL`
+   - `anon public` key → variável `SUPABASE_ANON_KEY`
+   - `service_role` key → variável `SUPABASE_SERVICE_ROLE_KEY` (⚠️ nunca
+     exponha essa chave no frontend, só em variáveis de ambiente do
+     servidor)
 
-Depois disso, para futuras alterações (cores, termos de busca, categorias,
-layout dos cards), basta pedir ao Claude Code para editar o `index.html` e
-dar `git push` de novo — o GitHub Pages atualiza sozinho.
+### 2. Criar o projeto na Vercel
 
-## Possíveis evoluções (para pedir ao Claude Code depois)
+1. Crie uma conta em [vercel.com](https://vercel.com) e importe este
+   repositório Git (crie o repositório no GitHub primeiro, se ainda não
+   existir).
+2. Em **Project Settings → Environment Variables**, adicione:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - `CRON_SECRET` (qualquer string aleatória e secreta, ex: um UUID)
+3. Faça o deploy. O cron configurado em `vercel.json` passa a rodar
+   automaticamente todo dia às 9h (horário UTC).
 
+> **Nota sobre o plano gratuito (Hobby) da Vercel:** cron jobs no plano
+> gratuito rodam no máximo 1x por dia. Se precisar de atualizações mais
+> frequentes, é necessário o plano Pro (aí dá pra rodar a cada poucas
+> horas).
+
+### 3. Rodar localmente (opcional)
+
+```bash
+npm install
+cp .env.example .env.local   # preencha com os valores do Supabase
+npx vercel dev
+```
+
+Isso sobe o `index.html` e as funções `/api/*` localmente, simulando o
+ambiente da Vercel.
+
+## Possíveis evoluções
+
+- Botão para forçar uma busca imediata (endpoint separado, protegido, que
+  dispara o mesmo código do `cron-fetch-news.js` sob demanda).
 - Trocar/adicionar termos de busca por categoria (editar o array `FEEDS`
-  no `<script>` do `index.html`).
-- Adicionar um domínio próprio ao GitHub Pages.
-- Trocar a fonte de notícias por uma API paga/mais robusta, se o volume
-  de acessos crescer (o rss2json tem limite gratuito diário).
-- Guardar histórico de notícias (hoje o app não persiste nada, só mostra
-  o que está disponível no momento da visita).
+  em `api/cron-fetch-news.js`).
+- Adicionar um domínio próprio no projeto Vercel.
+- Login/autenticação para personalizar por consultor ou marcar notícias
+  como lidas (usando Supabase Auth).
