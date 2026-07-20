@@ -1,9 +1,0 @@
-<svg width="184" height="208" viewBox="0 0 184 208" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="padap-brand" x1="92" y1="16" x2="92" y2="190" gradientUnits="userSpaceOnUse">
-      <stop offset="0%" stop-color="#0f4c4f"/>
-      <stop offset="100%" stop-color="#1dba2c"/>
-    </linearGradient>
-  </defs>
-  <path fill-rule="evenodd" clip-rule="evenodd" d="M15 168V88C15 48.2355 47.2355 16 87 16H169V96C169 135.765 136.765 168 97 168H45V190L15 168ZM45 124V88C45 64.2518 64.2518 45 88 45H140V81C140 104.748 120.748 124 97 124H45Z" fill="url(#padap-brand)"/>
-</svg>
