@@ -62,6 +62,32 @@ async function fetchAndParseFeed(feed) {
     .filter((it) => it.link && it.title);
 }
 
+function brDateToIso(brDate) {
+  const [day, month, year] = brDate.split('/');
+  return `${year}-${month}-${day}`;
+}
+
+async function fetchAndStorePtax(supabase) {
+  const res = await fetch('https://api.bcb.gov.br/dados/serie/bcdata.sgs.1/dados/ultimos/1?formato=json');
+  if (!res.ok) throw new Error(`HTTP ${res.status} ao buscar PTAX no Banco Central`);
+  const data = await res.json();
+  const latest = Array.isArray(data) ? data[0] : null;
+  if (!latest) throw new Error('Resposta vazia da API do Banco Central');
+
+  const { error } = await supabase
+    .from('economic_indicators')
+    .upsert(
+      {
+        indicator: 'PTAX',
+        value: Number(latest.valor),
+        observed_at: brDateToIso(latest.data),
+        source: 'Banco Central (PTAX)',
+      },
+      { onConflict: 'indicator,observed_at', ignoreDuplicates: true },
+    );
+  if (error) throw error;
+}
+
 module.exports = async function handler(req, res) {
   const expected = `Bearer ${process.env.CRON_SECRET}`;
   if (!process.env.CRON_SECRET || req.headers['authorization'] !== expected) {
@@ -88,6 +114,12 @@ module.exports = async function handler(req, res) {
       errors.push({ feed: feed.q, error: String(e) });
     }
     await sleep(300);
+  }
+
+  try {
+    await fetchAndStorePtax(supabase);
+  } catch (e) {
+    errors.push({ feed: 'PTAX (Banco Central)', error: String(e) });
   }
 
   res.status(200).json({ ok: true, upserted, errors });

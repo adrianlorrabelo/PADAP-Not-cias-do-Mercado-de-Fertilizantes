@@ -329,6 +329,13 @@
   .rule-thick{border-top:4px solid var(--dark-green); margin-top:16px;}
   .rule-thin{border-top:1px solid var(--dark-green); margin-top:3px;}
   .edition-row{padding:8px 2px 24px; text-align:center; font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--gray-text); border-bottom:2px solid var(--dark-green);}
+  .np-summary-box{background:var(--mint, #F4F8F6); border-radius:14px; padding:16px 20px; margin:20px 0; }
+  .np-summary-controls{display:flex; align-items:center; gap:14px; flex-wrap:wrap; font-size:12.5px; color:var(--gray-text); font-weight:600;}
+  .np-summary-controls input[type="date"]{border:1px solid var(--gray); border-radius:8px; padding:6px 8px; font-family:'Inter',sans-serif; font-size:12.5px; color:var(--black);}
+  .np-summary-controls .print-btn{padding:7px 14px; font-size:12.5px;}
+  #summary-result{margin-top:12px; font-size:14.5px; line-height:1.6; color:var(--black);}
+  #summary-result .summary-hint{color:var(--gray-text); font-style:italic; font-size:13px;}
+  #summary-result .summary-error{color:#C0392B; font-size:13px;}
   .np-lead{display:block; padding:26px 0 22px; border-bottom:1px solid var(--gray); text-decoration:none; color:inherit;}
   .np-kicker{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent-dark); background:rgba(47,174,15,0.1); padding:4px 9px; border-radius:6px; display:inline-block; margin-bottom:10px;}
   .np-lead-headline{font-family:'Sora',sans-serif; font-weight:700; font-size:30px; line-height:1.2; color:var(--black); margin:0 0 12px;}
@@ -348,6 +355,24 @@
   .np-brief:hover .np-brief-headline{color:var(--dark-green);}
   .np-brief-excerpt{font-size:12.5px; line-height:1.5; color:var(--gray-text); margin:0 0 5px;}
   .np-colophon{margin-top:40px; border-top:2px solid var(--dark-green); padding-top:12px; text-align:center; font-size:11px; color:var(--gray-text); text-transform:uppercase; letter-spacing:0.05em;}
+
+  /* ---------- Preços ---------- */
+  .prices-view{max-width:900px; margin:0 auto;}
+  .price-form{display:flex; flex-wrap:wrap; gap:14px; align-items:end; background:var(--gray); border-radius:14px; padding:18px; margin-bottom:16px;}
+  .price-form-field{display:flex; flex-direction:column; gap:5px; flex:1; min-width:140px;}
+  .price-form-field-sm{min-width:90px; flex:0 0 100px;}
+  .price-form-field label{font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--gray-text);}
+  .price-form-field input{border:1px solid var(--gray); background:var(--white); border-radius:8px; padding:8px 10px; font-family:'Inter',sans-serif; font-size:13px; color:var(--black);}
+  #price-form-message{margin-bottom:14px; font-size:13px;}
+  #price-form-message .summary-error{color:#C0392B;}
+  #price-form-message .summary-hint{color:var(--accent-dark); font-weight:600;}
+
+  .prices-table{width:100%; border-collapse:collapse; border-radius:14px; overflow:hidden; box-shadow:0 0 0 1px var(--gray); margin-bottom:60px;}
+  .prices-table thead th{background:var(--dark-green); color:var(--white); text-align:left; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; padding:12px 16px;}
+  .prices-table tbody tr:nth-child(even){background:var(--mint, #F4F8F6);}
+  .prices-table tbody td{padding:12px 16px; font-size:13px; border-top:1px solid var(--gray); color:var(--black);}
+  .price-change-up{color:#C0392B; font-weight:600;}
+  .price-change-down{color:var(--accent-dark); font-weight:600;}
 
   @media print{
     header .view-toggle, header .refresh-btn, .filters{display:none !important;}
@@ -386,6 +411,10 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
           Jornal
         </button>
+        <button class="view-btn" id="view-btn-precos" data-view="precos">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Preços
+        </button>
       </div>
       <button class="refresh-btn" id="refresh-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
@@ -414,8 +443,88 @@
     <div class="rule-thick"></div>
     <div class="rule-thin"></div>
     <div class="edition-row" id="edition-row"></div>
+
+    <div class="np-summary-box" id="np-summary-box">
+      <div class="np-summary-controls">
+        <label>De <input type="date" id="summary-from"></label>
+        <label>Até <input type="date" id="summary-to"></label>
+        <button class="print-btn" id="summary-generate-btn">Gerar Resumo com IA</button>
+      </div>
+      <div id="summary-result"></div>
+    </div>
+
+    <div id="jornal-prices-section"></div>
+
     <div id="newspaper-content"></div>
     <div class="np-colophon">PADAP Notícias do Mercado de Fertilizantes · Edição gerada automaticamente</div>
+  </div>
+
+  <div class="prices-view" id="prices-view" hidden>
+    <div class="section-label">
+      <h1>Preços de Fertilizantes</h1>
+      <span class="count-text" id="prices-count-text"></span>
+    </div>
+
+    <form class="price-form" id="price-form">
+      <div class="price-form-field">
+        <label for="price-product">Produto</label>
+        <input list="product-options" id="price-product" required placeholder="Ex: Ureia">
+        <datalist id="product-options">
+          <option value="Ureia">
+          <option value="MAP">
+          <option value="DAP">
+          <option value="KCL">
+          <option value="TSP">
+          <option value="SSP">
+          <option value="Sulfato de Amônio">
+          <option value="Enxofre">
+          <option value="Ácido Sulfúrico">
+        </datalist>
+      </div>
+      <div class="price-form-field">
+        <label for="price-location">Praça</label>
+        <input list="location-options" id="price-location" required placeholder="Ex: CFR Paranaguá">
+        <datalist id="location-options">
+          <option value="CFR Paranaguá">
+          <option value="FOB Paranaguá">
+          <option value="FOB Rondonópolis">
+          <option value="FOB Sorriso/Sinop">
+          <option value="FOB Rio Grande">
+          <option value="FOB Candeias">
+        </datalist>
+      </div>
+      <div class="price-form-field price-form-field-sm">
+        <label for="price-min">Mínimo</label>
+        <input type="number" id="price-min" step="0.01" required placeholder="460">
+      </div>
+      <div class="price-form-field price-form-field-sm">
+        <label for="price-max">Máximo</label>
+        <input type="number" id="price-max" step="0.01" required placeholder="480">
+      </div>
+      <div class="price-form-field price-form-field-sm">
+        <label for="price-unit">Unidade</label>
+        <input id="price-unit" value="US$/t">
+      </div>
+      <div class="price-form-field price-form-field-sm">
+        <label for="price-date">Data</label>
+        <input type="date" id="price-date">
+      </div>
+      <button type="submit" class="refresh-btn" id="price-submit-btn">Adicionar Preço</button>
+    </form>
+    <div id="price-form-message"></div>
+
+    <table class="prices-table" id="prices-table">
+      <thead>
+        <tr>
+          <th>Produto</th>
+          <th>Praça</th>
+          <th>Atual</th>
+          <th>Última</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody id="prices-table-body"></tbody>
+    </table>
   </div>
 </main>
 
@@ -448,16 +557,59 @@ function setView(view){
   currentView = view;
   document.getElementById('view-btn-noticias').classList.toggle('active', view === 'noticias');
   document.getElementById('view-btn-jornal').classList.toggle('active', view === 'jornal');
+  document.getElementById('view-btn-precos').classList.toggle('active', view === 'precos');
   document.getElementById('grid-view').hidden = view !== 'noticias';
   document.getElementById('newspaper-view').hidden = view !== 'jornal';
+  document.getElementById('prices-view').hidden = view !== 'precos';
   document.getElementById('filters').style.display = view === 'noticias' ? '' : 'none';
   document.getElementById('print-btn').style.display = view === 'jornal' ? '' : 'none';
   renderCurrentView();
 }
 
 function renderCurrentView(){
-  if(currentView === 'jornal') renderNewspaper();
+  if(currentView === 'jornal'){ renderNewspaper(); loadJornalPrices(); }
+  else if(currentView === 'precos') loadPrices();
   else renderGrid();
+}
+
+async function loadJornalPrices(){
+  const section = document.getElementById('jornal-prices-section');
+  try{
+    const res = await fetch('/api/prices');
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Falha ao buscar preços.');
+
+    const ptax = data.ptax;
+    const ptaxHtml = ptax
+      ? `<div class="np-kicker" style="margin-bottom:10px;">Dólar PTAX: R$ ${Number(ptax.value).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:4})} (${new Date(ptax.observed_at + 'T00:00:00').toLocaleDateString('pt-BR')})</div>`
+      : '';
+
+    const items = (data.items || []).slice(0, 10);
+    if(items.length === 0){
+      section.innerHTML = ptaxHtml;
+      return;
+    }
+
+    const rows = items.map(item => {
+      const currentAvg = (Number(item.price_min) + Number(item.price_max)) / 2;
+      let changeClass = '';
+      if(item.previous_price_min != null){
+        const prevAvg = (Number(item.previous_price_min) + Number(item.previous_price_max)) / 2;
+        if(currentAvg > prevAvg) changeClass = 'price-change-up';
+        else if(currentAvg < prevAvg) changeClass = 'price-change-down';
+      }
+      return `<tr><td>${escapeHtml(item.product)}</td><td>${escapeHtml(item.location)}</td><td class="${changeClass}">${formatPriceRange(item.price_min, item.price_max, item.unit)}</td></tr>`;
+    }).join('');
+
+    section.innerHTML = `
+      ${ptaxHtml}
+      <table class="prices-table" style="margin-bottom:24px;">
+        <thead><tr><th>Produto</th><th>Praça</th><th>Preço Atual</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>`;
+  }catch(e){
+    section.innerHTML = '';
+  }
 }
 
 function skeletons(n=9){
@@ -634,10 +786,148 @@ async function loadNews(){
   renderCurrentView();
 }
 
+function toDateInputValue(date){
+  return date.toISOString().slice(0, 10);
+}
+
+function initSummaryControls(){
+  const today = new Date();
+  const weekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
+  document.getElementById('summary-from').value = toDateInputValue(weekAgo);
+  document.getElementById('summary-to').value = toDateInputValue(today);
+
+  document.getElementById('summary-generate-btn').addEventListener('click', async () => {
+    const from = document.getElementById('summary-from').value;
+    const to = document.getElementById('summary-to').value;
+    const resultBox = document.getElementById('summary-result');
+    const btn = document.getElementById('summary-generate-btn');
+
+    if(!from || !to){
+      resultBox.innerHTML = '<p class="summary-error">Escolha as duas datas.</p>';
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Gerando...';
+    resultBox.innerHTML = '<p class="summary-hint">Lendo as notícias do período e gerando o resumo com IA...</p>';
+
+    try{
+      const res = await fetch(`/api/summarize?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`);
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || 'Falha ao gerar resumo.');
+      if(!data.summary){
+        resultBox.innerHTML = '<p class="summary-hint">Nenhuma notícia encontrada nesse período.</p>';
+      }else{
+        resultBox.innerHTML = `<p>${escapeHtml(data.summary)}</p>`;
+      }
+    }catch(e){
+      resultBox.innerHTML = `<p class="summary-error">${escapeHtml(e.message)}</p>`;
+    }finally{
+      btn.disabled = false;
+      btn.textContent = 'Gerar Resumo com IA';
+    }
+  });
+}
+
+function formatPriceRange(min, max, unit){
+  if(min == null || max == null) return '—';
+  const fmt = (n) => Number(n).toLocaleString('pt-BR', { maximumFractionDigits: 2 });
+  return min === max ? `${fmt(min)} ${unit}` : `${fmt(min)}-${fmt(max)} ${unit}`;
+}
+
+function renderPricesTable(items){
+  const tbody = document.getElementById('prices-table-body');
+  const countText = document.getElementById('prices-count-text');
+
+  if(items.length === 0){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--gray-text); padding:30px;">Nenhum preço cadastrado ainda.</td></tr>';
+    countText.textContent = '';
+    return;
+  }
+
+  countText.textContent = `${items.length} produto${items.length===1?'':'s'} cadastrado${items.length===1?'':'s'}`;
+  tbody.innerHTML = items.map(item => {
+    const currentAvg = (Number(item.price_min) + Number(item.price_max)) / 2;
+    let changeClass = '';
+    let changeArrow = '';
+    if(item.previous_price_min != null && item.previous_price_max != null){
+      const prevAvg = (Number(item.previous_price_min) + Number(item.previous_price_max)) / 2;
+      if(currentAvg > prevAvg){ changeClass = 'price-change-up'; changeArrow = '▲ '; }
+      else if(currentAvg < prevAvg){ changeClass = 'price-change-down'; changeArrow = '▼ '; }
+    }
+    return `
+      <tr>
+        <td>${escapeHtml(item.product)}</td>
+        <td>${escapeHtml(item.location)}</td>
+        <td class="${changeClass}">${changeArrow}${formatPriceRange(item.price_min, item.price_max, item.unit)}</td>
+        <td>${formatPriceRange(item.previous_price_min, item.previous_price_max, item.unit)}</td>
+        <td>${new Date(item.observed_at + 'T00:00:00').toLocaleDateString('pt-BR')}</td>
+      </tr>`;
+  }).join('');
+}
+
+async function loadPrices(){
+  const tbody = document.getElementById('prices-table-body');
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--gray-text); padding:30px;">Carregando...</td></tr>';
+  try{
+    const res = await fetch('/api/prices');
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Falha ao buscar preços.');
+    renderPricesTable(data.items || []);
+  }catch(e){
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#C0392B; padding:30px;">${escapeHtml(e.message)}</td></tr>`;
+  }
+}
+
+function initPriceForm(){
+  document.getElementById('price-date').value = toDateInputValue(new Date());
+
+  document.getElementById('price-form').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const messageBox = document.getElementById('price-form-message');
+    const btn = document.getElementById('price-submit-btn');
+
+    const body = {
+      product: document.getElementById('price-product').value.trim(),
+      location: document.getElementById('price-location').value.trim(),
+      price_min: document.getElementById('price-min').value,
+      price_max: document.getElementById('price-max').value,
+      unit: document.getElementById('price-unit').value.trim() || 'US$/t',
+      observed_at: document.getElementById('price-date').value,
+    };
+
+    btn.disabled = true;
+    messageBox.innerHTML = '';
+
+    try{
+      const res = await fetch('/api/prices', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json();
+      if(!res.ok) throw new Error(data.error || 'Falha ao adicionar preço.');
+      messageBox.innerHTML = '<p class="summary-hint">Preço adicionado com sucesso.</p>';
+      document.getElementById('price-product').value = '';
+      document.getElementById('price-location').value = '';
+      document.getElementById('price-min').value = '';
+      document.getElementById('price-max').value = '';
+      loadPrices();
+    }catch(e){
+      messageBox.innerHTML = `<p class="summary-error">${escapeHtml(e.message)}</p>`;
+    }finally{
+      btn.disabled = false;
+    }
+  });
+}
+
 document.getElementById('refresh-btn').addEventListener('click', loadNews);
 document.getElementById('view-btn-noticias').addEventListener('click', () => setView('noticias'));
 document.getElementById('view-btn-jornal').addEventListener('click', () => setView('jornal'));
+document.getElementById('view-btn-precos').addEventListener('click', () => setView('precos'));
 buildFilters();
+initSummaryControls();
+initPriceForm();
 loadNews();
 
 // atualiza a cada 15min enquanto a página ficar aberta (o cron de coleta roda 1x/dia)
