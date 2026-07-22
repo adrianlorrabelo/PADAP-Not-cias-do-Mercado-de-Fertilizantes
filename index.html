@@ -634,7 +634,12 @@ async function initAuth(){
     btn.disabled = true;
     btn.textContent = 'Entrando...';
     const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if(error) errorBox.textContent = 'E-mail ou senha inválidos.';
+    if(error){
+      console.error('Falha no login:', error);
+      errorBox.textContent = error.message === 'Invalid login credentials'
+        ? 'E-mail ou senha inválidos.'
+        : `Erro ao entrar: ${error.message}`;
+    }
     btn.disabled = false;
     btn.textContent = 'Entrar';
   });
