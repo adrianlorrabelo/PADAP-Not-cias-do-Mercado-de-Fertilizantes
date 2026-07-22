@@ -1,11 +1,15 @@
 const { createClient } = require('@supabase/supabase-js');
 const Anthropic = require('@anthropic-ai/sdk');
+const { requireUser } = require('./_auth');
 
 function cleanText(str) {
   return String(str || '').replace(/\s+/g, ' ').trim();
 }
 
 module.exports = async function handler(req, res) {
+  const user = await requireUser(req, res);
+  if (!user) return;
+
   const from = typeof req.query.from === 'string' ? req.query.from : '';
   const to = typeof req.query.to === 'string' ? req.query.to : '';
 

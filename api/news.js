@@ -1,6 +1,10 @@
 const { createClient } = require('@supabase/supabase-js');
+const { requireUser } = require('./_auth');
 
 module.exports = async function handler(req, res) {
+  const user = await requireUser(req, res);
+  if (!user) return;
+
   const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANON_KEY);
 
   const category = typeof req.query.category === 'string' ? req.query.category : '';

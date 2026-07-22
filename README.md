@@ -20,6 +20,8 @@ Notícias).
 - Filtros por categoria no topo.
 - Visual: fundo branco, logo da PADAP (embutida em base64 dentro do HTML),
   tipografia Sora (títulos) + Inter (texto), verde da marca como destaque.
+- Acesso restrito por login (Supabase Auth) — sem cadastro público, os
+  usuários são criados manualmente por quem administra o projeto.
 
 ## Arquitetura
 
@@ -52,7 +54,18 @@ podem ser criados por mim)
      exponha essa chave no frontend, só em variáveis de ambiente do
      servidor)
 
-### 2. Criar o projeto na Vercel
+### 2. Criar os usuários que terão acesso ao painel
+
+O site inteiro (notícias, jornal e preços) fica atrás de login — não existe
+cadastro público, então você controla quem entra criando os usuários
+manualmente:
+
+1. No painel do Supabase, vá em **Authentication → Users → Add user**.
+2. Preencha e-mail e senha de cada pessoa que deve ter acesso (marque
+   "Auto Confirm User" para não depender de e-mail de confirmação).
+3. Para remover o acesso de alguém, basta excluir o usuário na mesma tela.
+
+### 3. Criar o projeto na Vercel
 
 1. Crie uma conta em [vercel.com](https://vercel.com) e importe este
    repositório Git (crie o repositório no GitHub primeiro, se ainda não
@@ -70,7 +83,7 @@ podem ser criados por mim)
 > frequentes, é necessário o plano Pro (aí dá pra rodar a cada poucas
 > horas).
 
-### 3. Rodar localmente (opcional)
+### 4. Rodar localmente (opcional)
 
 ```bash
 npm install
@@ -88,5 +101,5 @@ ambiente da Vercel.
 - Trocar/adicionar termos de busca por categoria (editar o array `FEEDS`
   em `api/cron-fetch-news.js`).
 - Adicionar um domínio próprio no projeto Vercel.
-- Login/autenticação para personalizar por consultor ou marcar notícias
-  como lidas (usando Supabase Auth).
+- Personalizar por consultor ou marcar notícias como lidas usando o usuário
+  autenticado (o login com Supabase Auth já existe).
