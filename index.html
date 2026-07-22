@@ -633,12 +633,19 @@ async function initAuth(){
     errorBox.textContent = '';
     btn.disabled = true;
     btn.textContent = 'Entrando...';
-    const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-    if(error){
-      console.error('Falha no login:', error);
-      errorBox.textContent = error.message === 'Invalid login credentials'
-        ? 'E-mail ou senha inválidos.'
-        : `Erro ao entrar: ${error.message}`;
+    try{
+      const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if(error){
+        console.error('Falha no login:', error);
+        errorBox.textContent = error.message === 'Invalid login credentials'
+          ? 'E-mail ou senha inválidos.'
+          : `Erro ao entrar: ${error.message}`;
+      }else if(data.session){
+        showApp();
+      }
+    }catch(e){
+      console.error('Erro inesperado no login:', e);
+      errorBox.textContent = `Erro inesperado: ${e.message}`;
     }
     btn.disabled = false;
     btn.textContent = 'Entrar';
