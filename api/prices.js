@@ -1,5 +1,4 @@
 const { createClient } = require('@supabase/supabase-js');
-const { requireUser } = require('./_auth');
 
 function getSupabase(key) {
   return createClient(process.env.SUPABASE_URL, key);
@@ -87,9 +86,6 @@ async function handlePost(req, res) {
 }
 
 module.exports = async function handler(req, res) {
-  const user = await requireUser(req, res);
-  if (!user) return;
-
   if (req.method === 'GET') return handleGet(req, res);
   if (req.method === 'POST') return handlePost(req, res);
   res.status(405).json({ error: 'Método não suportado.' });
