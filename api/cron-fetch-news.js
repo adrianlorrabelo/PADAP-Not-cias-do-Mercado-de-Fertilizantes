@@ -11,6 +11,7 @@ const FEEDS = [
   { q: 'China Rússia fertilizantes exportação restrição', cat: 'Geopolítica' },
   { q: 'porto frete logística fertilizantes Brasil', cat: 'Logística' },
   { q: 'clima chuva seca previsão safra agricultura Brasil', cat: 'Clima' },
+  { q: 'El Niño La Niña clima Brasil agricultura', cat: 'Clima' },
 ];
 
 const HTML_ENTITIES = { nbsp: ' ', amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'", apos: "'" };
