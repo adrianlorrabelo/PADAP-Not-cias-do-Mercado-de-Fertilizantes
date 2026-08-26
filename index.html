@@ -158,6 +158,36 @@
   .print-btn:hover{background:var(--gray);}
   .print-btn:active{transform:scale(0.97);}
 
+  /* ---------- Search ---------- */
+  .search-row{
+    max-width:var(--max-w);
+    margin:0 auto;
+    padding:16px 24px 0;
+  }
+  .search-box{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:var(--white);
+    border:1px solid var(--gray);
+    border-radius:999px;
+    padding:9px 16px;
+    max-width:420px;
+    transition:border-color 0.15s ease;
+  }
+  .search-box:focus-within{border-color:var(--accent);}
+  .search-box svg{flex-shrink:0;color:var(--gray-text);}
+  .search-box input{
+    border:none;
+    outline:none;
+    background:transparent;
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    color:var(--dark-green);
+    width:100%;
+  }
+  .search-box input::placeholder{color:var(--gray-text);}
+
   /* ---------- Filters ---------- */
   .filters{
     max-width:var(--max-w);
@@ -375,7 +405,7 @@
   .price-change-down{color:var(--accent-dark); font-weight:600;}
 
   @media print{
-    header .view-toggle, header .refresh-btn, .filters{display:none !important;}
+    header .view-toggle, header .refresh-btn, .filters, .search-row{display:none !important;}
     .print-btn{display:none !important;}
     .np-section, .np-lead, .np-brief{break-inside:avoid;}
   }
@@ -410,6 +440,12 @@
       </div>
       <button class="print-btn" id="print-btn" style="display:none" onclick="window.print()">Imprimir / Salvar PDF</button>
     </div>
+  </div>
+  <div class="search-row">
+    <label class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="search-input" placeholder="Buscar notícias por palavra-chave...">
+    </label>
   </div>
   <div class="filters" id="filters"></div>
 </header>
@@ -517,7 +553,7 @@
 </main>
 
 <footer>
-  Fontes: Google Notícias · Um robô busca notícias novas automaticamente todos os dias e guarda o histórico. Clique em "Atualizar" para ver as mais recentes já salvas.
+  Fontes: Google Notícias · Um robô busca notícias novas automaticamente todos os dias e guarda o histórico.
 </footer>
 
 <script>
@@ -526,8 +562,29 @@ const CATEGORY_ORDER = CATEGORIES.slice(1);
 
 let allItems = [];
 let activeFilter = 'Todas';
+let searchQuery = '';
 let currentView = 'noticias';
 let refreshTimer = null;
+
+function normalizeText(str){
+  return String(str || '')
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase();
+}
+
+function filteredItems(){
+  let items = activeFilter === 'Todas' ? allItems : allItems.filter(i => i.cat === activeFilter);
+  if(searchQuery){
+    const q = normalizeText(searchQuery);
+    items = items.filter(i =>
+      normalizeText(i.title).includes(q) ||
+      normalizeText(i.excerpt).includes(q) ||
+      normalizeText(i.source).includes(q)
+    );
+  }
+  return items;
+}
 
 function buildFilters(){
   const box = document.getElementById('filters');
@@ -640,13 +697,16 @@ function escapeHtml(str){
 function renderGrid(){
   const grid = document.getElementById('grid');
   const countText = document.getElementById('count-text');
-  const items = activeFilter === 'Todas' ? allItems : allItems.filter(i => i.cat === activeFilter);
+  const items = filteredItems();
 
   if(items.length === 0){
+    const hint = searchQuery
+      ? `Nenhum resultado para "${escapeHtml(searchQuery)}". Tente outra palavra-chave ou categoria.`
+      : 'Não há resultados para este filtro no momento. Tente outra categoria — a lista é atualizada automaticamente.';
     grid.innerHTML = `
       <div class="state-box">
         <h2>Nenhuma notícia encontrada</h2>
-        <p>Não há resultados para este filtro no momento. Tente outra categoria — a lista é atualizada automaticamente.</p>
+        <p>${hint}</p>
       </div>`;
     countText.textContent = '';
     return;
@@ -681,7 +741,7 @@ function renderGrid(){
 }
 
 function renderNewspaper(){
-  const items = activeFilter === 'Todas' ? allItems : allItems.filter(i => i.cat === activeFilter);
+  const items = filteredItems();
   const content = document.getElementById('newspaper-content');
   const editionRow = document.getElementById('edition-row');
   const now = new Date();
@@ -924,6 +984,10 @@ function getAdminSecret(){
 }
 
 document.getElementById('view-btn-noticias').addEventListener('click', () => setView('noticias'));
+document.getElementById('search-input').addEventListener('input', (ev) => {
+  searchQuery = ev.target.value;
+  renderCurrentView();
+});
 buildFilters();
 initSummaryControls();
 initPriceForm();
