@@ -19,7 +19,7 @@ Notícias).
   o nome da fonte.
 - Filtros por categoria no topo.
 - Visual: fundo branco, logo da PADAP (embutida em base64 dentro do HTML),
-  tipografia Sora (títulos) + Inter (texto), verde da marca como destaque.
+  tipografia Space Grotesk, cores e logo oficiais do Manual de Marca PADAP.
 
 ## Arquitetura
 
