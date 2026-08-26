@@ -407,19 +407,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           Notícias
         </button>
-        <button class="view-btn" id="view-btn-jornal" data-view="jornal">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
-          Jornal
-        </button>
-        <button class="view-btn" id="view-btn-precos" data-view="precos">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-          Preços
-        </button>
       </div>
-      <button class="refresh-btn" id="refresh-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
-        Atualizar
-      </button>
       <button class="print-btn" id="print-btn" style="display:none" onclick="window.print()">Imprimir / Salvar PDF</button>
     </div>
   </div>
@@ -556,8 +544,6 @@ function buildFilters(){
 function setView(view){
   currentView = view;
   document.getElementById('view-btn-noticias').classList.toggle('active', view === 'noticias');
-  document.getElementById('view-btn-jornal').classList.toggle('active', view === 'jornal');
-  document.getElementById('view-btn-precos').classList.toggle('active', view === 'precos');
   document.getElementById('grid-view').hidden = view !== 'noticias';
   document.getElementById('newspaper-view').hidden = view !== 'jornal';
   document.getElementById('prices-view').hidden = view !== 'precos';
@@ -745,8 +731,6 @@ function renderNewspaper(){
 }
 
 async function loadNews(){
-  const btn = document.getElementById('refresh-btn');
-  btn.classList.add('spinning');
   skeletons();
 
   try{
@@ -766,7 +750,6 @@ async function loadNews(){
     allItems = [];
   }
 
-  btn.classList.remove('spinning');
   document.getElementById('updated-text').textContent =
     'Atualizado ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit', minute:'2-digit'});
 
@@ -940,10 +923,7 @@ function getAdminSecret(){
   return secret;
 }
 
-document.getElementById('refresh-btn').addEventListener('click', loadNews);
 document.getElementById('view-btn-noticias').addEventListener('click', () => setView('noticias'));
-document.getElementById('view-btn-jornal').addEventListener('click', () => setView('jornal'));
-document.getElementById('view-btn-precos').addEventListener('click', () => setView('precos'));
 buildFilters();
 initSummaryControls();
 initPriceForm();
