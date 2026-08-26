@@ -896,16 +896,26 @@ function initPriceForm(){
       observed_at: document.getElementById('price-date').value,
     };
 
+    const adminSecret = getAdminSecret();
+    if(!adminSecret){
+      messageBox.innerHTML = '<p class="summary-error">Senha de administrador necessária para cadastrar preços.</p>';
+      return;
+    }
+
     btn.disabled = true;
     messageBox.innerHTML = '';
 
     try{
       const res = await fetch('/api/prices', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-secret': adminSecret },
         body: JSON.stringify(body),
       });
       const data = await res.json();
+      if(res.status === 401){
+        localStorage.removeItem('padap_admin_secret');
+        throw new Error('Senha de administrador incorreta. Tente novamente.');
+      }
       if(!res.ok) throw new Error(data.error || 'Falha ao adicionar preço.');
       messageBox.innerHTML = '<p class="summary-hint">Preço adicionado com sucesso.</p>';
       document.getElementById('price-product').value = '';
@@ -919,6 +929,15 @@ function initPriceForm(){
       btn.disabled = false;
     }
   });
+}
+
+function getAdminSecret(){
+  let secret = localStorage.getItem('padap_admin_secret');
+  if(!secret){
+    secret = window.prompt('Senha de administrador (para cadastrar preços):') || '';
+    if(secret) localStorage.setItem('padap_admin_secret', secret);
+  }
+  return secret;
 }
 
 document.getElementById('refresh-btn').addEventListener('click', loadNews);

@@ -52,6 +52,12 @@ async function handleGet(req, res) {
 }
 
 async function handlePost(req, res) {
+  const expected = process.env.ADMIN_SECRET;
+  if (!expected || req.headers['x-admin-secret'] !== expected) {
+    res.status(401).json({ error: 'Não autorizado.' });
+    return;
+  }
+
   const body = req.body || {};
   const product = typeof body.product === 'string' ? body.product.trim() : '';
   const location = typeof body.location === 'string' ? body.location.trim() : '';

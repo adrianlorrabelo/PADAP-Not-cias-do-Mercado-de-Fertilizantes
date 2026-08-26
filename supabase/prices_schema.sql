@@ -45,3 +45,21 @@ create policy "Public read access"
   on economic_indicators for select
   to anon
   using (true);
+
+-- Cache de resumos gerados por IA (/api/summarize), por período (from/to).
+-- Evita chamar a API da Claude de novo para o mesmo período e serve como
+-- limite indireto de custo (nenhuma política de leitura/escrita pública:
+-- só o endpoint acessa, usando a service role key, que ignora RLS).
+create table if not exists news_summaries (
+  id bigint generated always as identity primary key,
+  from_date date not null,
+  to_date date not null,
+  summary text not null,
+  news_count integer not null default 0,
+  created_at timestamptz not null default now(),
+  unique (from_date, to_date)
+);
+
+create index if not exists news_summaries_created_at_idx on news_summaries (created_at desc);
+
+alter table news_summaries enable row level security;

@@ -28,9 +28,12 @@ padap-noticias/
 ├── index.html                  # frontend (HTML + CSS + JS + logo embutida)
 ├── api/
 │   ├── cron-fetch-news.js      # busca RSS do Google Notícias e salva no Supabase
-│   └── news.js                 # lê o Supabase e devolve JSON pro frontend
+│   ├── news.js                 # lê o Supabase e devolve JSON pro frontend
+│   ├── prices.js                # GET lê preços/câmbio; POST cadastra preço (protegido por ADMIN_SECRET)
+│   └── summarize.js             # gera resumo executivo via Claude API (com cache por período e limite diário)
 ├── supabase/
-│   └── schema.sql               # tabela news_items + RLS
+│   ├── schema.sql               # tabela news_items + RLS
+│   └── prices_schema.sql        # tabelas price_observations, economic_indicators, news_summaries + RLS
 ├── vercel.json                  # agenda o cron (1x/dia)
 ├── package.json                 # dependências das funções serverless
 └── .env.example                 # variáveis de ambiente necessárias
@@ -62,6 +65,8 @@ podem ser criados por mim)
    - `SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY`
    - `CRON_SECRET` (qualquer string aleatória e secreta, ex: um UUID)
+   - `ADMIN_SECRET` (senha para liberar o cadastro manual de preços — ver
+     abaixo)
 3. Faça o deploy. O cron configurado em `vercel.json` passa a rodar
    automaticamente todo dia às 9h (horário UTC).
 
